@@ -1,0 +1,13 @@
+nav(class="navbar navbar-default")
+	div(class="container-fluid")
+		div(class="navbar-header")
+			h3 Agent
+		div(class="nav navbar-nav navbar-right")
+			form(class="form-inline" action="/login" method="post")
+				div(class="form-group")
+					label Username
+					input(type="text" name="username")
+				div(class="form-group")
+					label Password
+					input(type="password" name="password")
+				input(type="submit" class="btn btn-primary" value="Login")
