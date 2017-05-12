@@ -20,6 +20,8 @@ require('./models/userModel.js');
 
 /*Route*/
 require('./controllers/landingPage/index.js').addRouter(app);
+require('./controllers/facultyPage/faculty.js').addRouter(app);
+require('./controllers/facultyPage/profile.js').addRouter(app);
 
 app.get('*', function(req, res){
 	return res.status(404).send('Page not found\n');

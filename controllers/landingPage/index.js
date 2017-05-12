@@ -26,8 +26,10 @@ router.post('/login', function(req, res){
 				if(result == true)
 				{
 					req.session.login = true;
-			        req.session.username = username;
-			        return res.send('Successfully logged in');
+			        req.session.email = user.email;
+			        req.session.name = user.name;
+                    if(user.status == 'faculty')
+			        	return res.redirect('/faculty/'+username);
 				}
 				else return res.send('Wrong password or username');
 			});

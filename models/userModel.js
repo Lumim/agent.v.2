@@ -29,12 +29,21 @@ const userSchema = new mongoose.Schema({
 	},
 	password: {
 		type: String,
-		required: true,
+		required: true
 	},
 	status: {
 		type: String,
 		required: true,
 		enum: ['faculty', 'student']
+	},
+	initial: {
+		type: String
+	},
+    department: {
+		type: String
+	},
+	officeRoom: {
+		type: String
 	}
 });
 
