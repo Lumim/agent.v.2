@@ -23,7 +23,12 @@ router.post('/login', function(req, res){
 		else{
 			bcrypt.compare(password, user.password, function(err, result){
 				if(err) return res.send('some error occured');
-				if(result == true) return res.send('Successfully logged in');
+				if(result == true)
+				{
+					req.session.login = true;
+			        req.session.username = username;
+			        return res.send('Successfully logged in');
+				}
 				else return res.send('Wrong password or username');
 			});
 		}

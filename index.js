@@ -13,6 +13,7 @@ app.use('/public', express.static(path.join(rootPath, '/public')));
 /*Configuration*/
 require('./configuration/bodyParser.js').addBodyParser(app);
 require('./configuration/database.js');
+require('./configuration/session.js').addSession(app);
 
 /*Model*/
 require('./models/userModel.js');
