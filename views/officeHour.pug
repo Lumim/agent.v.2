@@ -1,0 +1,28 @@
+div(class="container" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; padding-bottom:10px;")
+	div(class="row")
+		div(class="col-md-6")
+			h3 <b>Office Hours:</b>
+			each value, index in officeHours
+				div(class="row")
+					form(class="form-inline" action="/faculty/"+username+"/office-hour/"+index+"/delete" method="post")
+						div(class="col-md-3" style="margin-top: 25px;")
+							span !{value}
+						div(class="col-md-3" style="margin-top: 0px;")
+							input(type="submit" class="btn btn-danger" value="Cancel")
+		div(class="col-md-6")
+			h3 New Office Hour
+			form(action="/faculty/"+username+"/office-hour/add" method="post")
+				div(class="row")
+					div(class="col-md-2" style="margin-top: 20px;")
+						select(name="day")
+							option(value="Sunday") Sunday
+							option(value="Monday") Monday
+							option(value="Tuesday") Tuesday
+							option(value="Wednesday") Wednesday
+							option(value="Thursday") Thursday
+							option(value="Friday") Friday
+							option(value="Saturday") Saturday
+					div(class="col-md-2", style="margin-left: 20px;")
+						input(type="time" name="time" value="15:30")
+					div(class="col-md-2")
+						input(type="submit" class="btn btn-default" value="Add" style="margin-left: 100px;")

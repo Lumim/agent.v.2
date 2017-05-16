@@ -18,10 +18,13 @@ require('./configuration/session.js').addSession(app);
 /*Model*/
 require('./models/userModel.js');
 
+
 /*Route*/
 require('./controllers/landingPage/index.js').addRouter(app);
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
+require('./controllers/general/password.js').addRouter(app);
+require('./controllers/facultyPage/officeHour.js').addRouter(app);
 
 app.get('*', function(req, res){
 	return res.status(404).send('Page not found\n');

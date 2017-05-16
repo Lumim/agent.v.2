@@ -44,7 +44,10 @@ const userSchema = new mongoose.Schema({
 	},
 	officeRoom: {
 		type: String
-	}
+	},
+	officeHours: [{
+		type: String
+	}]
 });
 
 mongoose.model('User', userSchema); //set

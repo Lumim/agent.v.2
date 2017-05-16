@@ -22,3 +22,13 @@ input, label {
 h4{
 	margin-bottom: 20px;
 }
+footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:50px;
+   width:100%;
+   background:#999;
+   text-align:center;
+   padding-top: 20px;
+}
