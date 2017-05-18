@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
+const requireLoginMW = require('middlewares/requireLogin');
 
 router.post('/faculty/:username/office-hour/add', function(req, res){
 	const username = req.params.username;
@@ -54,6 +55,6 @@ router.post('/faculty/:username/office-hour/:index/delete', function(req, res){
 
 module.exports = {
 	addRouter(app){
-		app.use('/', router);
+		app.use('/', [requireLoginMW], router);
 	}
 }

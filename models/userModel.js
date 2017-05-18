@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Course = require("mongoose").model('Course');
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -47,6 +48,10 @@ const userSchema = new mongoose.Schema({
 	},
 	officeHours: [{
 		type: String
+	}],
+	courses: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Course'
 	}]
 });
 

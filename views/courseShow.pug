@@ -1,0 +1,13 @@
+doctype html
+html
+	include header.pug
+	body
+		include layout.pug
+		div(class="container" style="border: 2px solid black; padding-bottom: 10px;")
+			h3 <b>!{course.code}.!{course.section}</b>
+			div(class="container")
+				h4 <b>Name:</b>		  !{course.name}
+				h4 <b>Code:</b>		  !{course.code}
+				h4 <b>Section:</b>	  !{course.section}
+				h4 <b>Class Room:</b> !{course.classRoom}
+		include footer.pug

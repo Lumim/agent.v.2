@@ -5,9 +5,9 @@ div(class="container" style="border-bottom: 2px solid black; border-left: 2px so
 			each value, index in officeHours
 				div(class="row")
 					form(class="form-inline" action="/faculty/"+username+"/office-hour/"+index+"/delete" method="post")
-						div(class="col-md-3" style="margin-top: 20px;")
+						div(class="col-md-5" style="margin-top: 20px;")
 							span !{value}
-						div(class="col-md-3" style="margin-top: 0px;")
+						div(class="col-md-1" style="margin-top: 0px;")
 							input(type="submit" class="btn btn-danger" value="Delete")
 		div(class="col-md-6")
 			h3 New Office Hour
@@ -23,17 +23,16 @@ div(class="container" style="border-bottom: 2px solid black; border-left: 2px so
 							option(value="Friday") Friday
 							option(value="Saturday") Saturday
 				div(class="row")
-					div(class="col-md-2", style="margin-top: 20px;")
+					div(class="col-md-6", style="margin-top: 20px;")
 						select(name="startHour")
 							- var n = 1
 							while n <= 12
 								option(value=n)= n++
-					div(class="col-md-2", style="margin-top: 20px;")
+						span <b>:</b>
 						select(name="startMin")
 							- var n = 0
 							while n < 60
 								option(value=n)= n++
-					div(class="col-md-2", style="margin-top: 20px;")
 						select(name="amOrPm1")
 							option(value="am") am
 							option(value="pm") pm
@@ -41,17 +40,16 @@ div(class="container" style="border-bottom: 2px solid black; border-left: 2px so
 					div(class="col-md-6")
 						h5 to
 				div(class="row")
-					div(class="col-md-2")
+					div(class="col-md-6")
 						select(name="endHour")
 							- var n = 1
 							while n <= 12
 								option(value=n)= n++
-					div(class="col-md-2")
+						span <b>:</b>
 						select(name="endMin")
 							- var n = 0
 							while n < 60
 								option(value=n)= n++
-					div(class="col-md-2")
 						select(name="amOrPm2")
 							option(value="am") am
 							option(value="pm") pm

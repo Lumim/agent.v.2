@@ -8,12 +8,14 @@ router.get('/faculty/:username', [requireLoginMW], function(req, res){
 	User.findOne({
 		username
 	})
+	.populate('courses')
 	.exec(function(err, user){
 		if(err) return res.send('some error occured');
 		if(!user) {
 			return res.send('Wrong user');
 		}
 		else{
+			//console.log(user);
 			return res.render("faculty", user);
 		}
 	});

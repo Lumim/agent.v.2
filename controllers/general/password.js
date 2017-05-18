@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
 const bcrypt = require('bcryptjs');
+const requireLoginMW = require('middlewares/requireLogin');
 
 router.get('/faculty/:username/password/change', function(req, res){
 	const username = req.params.username;
@@ -59,6 +60,6 @@ router.post('/faculty/:username/password/change/save', function(req, res){
 
 module.exports = {
 	addRouter(app){
-		app.use('/', router);
+		app.use('/', [requireLoginMW], router);
 	}
 }

@@ -16,6 +16,7 @@ require('./configuration/database.js');
 require('./configuration/session.js').addSession(app);
 
 /*Model*/
+require('./models/courseModel.js');
 require('./models/userModel.js');
 
 
@@ -25,6 +26,7 @@ require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
 require('./controllers/general/password.js').addRouter(app);
 require('./controllers/facultyPage/officeHour.js').addRouter(app);
+require('./controllers/facultyPage/course.js').addRouter(app)
 
 app.get('*', function(req, res){
 	return res.status(404).send('Page not found\n');

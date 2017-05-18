@@ -3,7 +3,7 @@ html
   include header.pug
   body
     include layout.pug
-    div(class="container" style="padding-bottom:60px;")
+    div(class="container" style="padding-bottom:10px;")
       form(action="/faculty/"+username+"/profile/edit/save" method="post")
         div(class="form-group")
           label Name:
@@ -25,6 +25,6 @@ html
           input(type="text" name="officeRoom" value=officeRoom)
         div(class="form-group")
           input(type="submit" value="Save")
-    div(class="container")
+    div(class="container" style="padding-bottom:10px;")
       a(href="/faculty/"+username class="btn btn-danger" role="button", style="margin-bottom:10px;") Cancel
     include footer.pug
