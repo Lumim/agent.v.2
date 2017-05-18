@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
+const requireLoginMW = require('middlewares/requireLogin');
 
-router.get('/faculty/:username', function(req, res){
+router.get('/faculty/:username', [requireLoginMW], function(req, res){
 	const username = req.params.username;
 	User.findOne({
 		username

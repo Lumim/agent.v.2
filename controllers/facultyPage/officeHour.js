@@ -5,8 +5,13 @@ const User = require('mongoose').model('User');
 router.post('/faculty/:username/office-hour/add', function(req, res){
 	const username = req.params.username;
 	const day = req.body.day;
-	const time = req.body.time;
-	const newTime = day+" "+time;
+	const startHour = req.body.startHour;
+	const startMin = req.body.startMin;
+	const amOrPm1 = req.body.amOrPm1;
+	const endHour = req.body.endHour;
+	const endMin = req.body.endMin;
+	const amOrPm2 = req.body.amOrPm2;
+	const newTime = day+" "+startHour+":"+startMin+amOrPm1+"-"+endHour+":"+endMin+amOrPm2;
 
 	User.findOne({
 		username

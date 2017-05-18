@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
+const requireLoginMW = require('middlewares/requireLogin');
 
 router.get('/faculty/:username/profile/edit', function(req, res){
 	const username = req.params.username;
@@ -46,6 +47,6 @@ router.post('/faculty/:username/profile/edit/save', function(req, res){
 
 module.exports = {
 	addRouter(app){
-		app.use('/', router);
+		app.use('/', [requireLoginMW], router);
 	}
 }
