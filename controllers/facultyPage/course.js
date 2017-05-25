@@ -16,7 +16,7 @@ router.post('/faculty/:username/course/add', function(req, res ){
 		name,
 		code,
 		section,
-		classRoom
+		classRoom,
 	});
 	course.save(function(err){
 		if(err) return res.send('some error occured');

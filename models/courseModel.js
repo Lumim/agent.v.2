@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Marksheet = require("mongoose").model('Marksheet');
 
 const courseSchema = new mongoose.Schema({
 	name: {
@@ -18,6 +19,10 @@ const courseSchema = new mongoose.Schema({
 	},
 	classRoom: {
 		type: String
+	},
+	marksheet: {
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Marksheet'
 	}
 });
 

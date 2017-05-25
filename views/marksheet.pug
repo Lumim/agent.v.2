@@ -1,0 +1,10 @@
+doctype html
+html
+	include header.pug
+	body
+		include layout.pug
+		div(class="container" style="border: 2px solid black; padding-bottom: 10px;")
+			form(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
+				input(type="file" name="csvdata" accept="csv")
+				input(type="submit")
+		include footer.pug
