@@ -9,26 +9,29 @@ const examSchema = new mongoose.Schema({
 		type: String
 	},
 	totalMark:{
-		type: Number
+		type: String
 	},
 	averageMark:{
-		type: Number
+		type: String
 	},
 	highestMark:{
-		type: Number
+		type: String
 	},
 	totalPresent:{
-		type: Number
+		type: String
 	},
 	parcentageCount:{
-		type: Number
+		type: String
 	},
 	sum:{
-	    type: Number
+	    type: String
 	},
     best:{
-    	type: Number
-    }
+    	type: String
+    },
+    marks:[{
+    	type: String
+    }]
 });
 
 mongoose.model('Exam', examSchema);

@@ -33,33 +33,45 @@ html
 						th Name
 						th ID
 						th Email
-						each value in marksheet.quiz
-							th !{value.name}
-						if marksheet.quiz.length > 0
-							th !{marksheet.totalQuiz.name}
-						each value in marksheet.mid
-							th !{value.name}
-						if marksheet.mid.length > 0
-							th !{marksheet.totalMid.name}
-						each value in marksheet.assignment
-							th !{value.name}
-						if marksheet.assignment.length > 0
-							th !{marksheet.totalAssignment.name}
+						- let x = marksheet.quiz
+						include examTitle.pug
+						- x = marksheet.mid
+						include examTitle.pug
+						- x = marksheet.assignment
+						include examTitle.pug
+						- x = marksheet.project
+						include examTitle.pug
+						- x = marksheet.presentation
+						include examTitle.pug
+						- x = marksheet.fieldWork
+						include examTitle.pug
+						- x = marksheet.final
+						include examTitle.pug
 						th Attendance
 						th Total
 						th Grade
 				tbody
-					each value, index in marksheet.studentMarks
+					each value, index in marksheet.name
 						tr
 							td !{index+1}
-							td !{value.name}
-							td !{value.ID}
-							td !{value.email}
-							each mark in value.quiz
-								td !{mark}
-							if value.quiz.length > 0
-								td !{marksheet.studentMarks.totalQuiz}
-							td !{marksheet.studentMarks.attendance}
-							td !{marksheet.studentMarks.total}
-							td !{marksheet.studentMarks.grade}
+							td !{marksheet.name[index]}
+							td !{marksheet.ID[index]}
+							td !{marksheet.email[index]}
+							- x = marksheet.quiz
+							include examBody.pug
+							- x = marksheet.mid
+							include examBody.pug
+							- x = marksheet.assignment
+							include examBody.pug
+							- x = marksheet.project
+							include examBody.pug
+							- x = marksheet.presentation
+							include examBody.pug
+							- x = marksheet.fieldWork
+							include examBody.pug
+							- x = marksheet.final
+							include examBody.pug
+							td !{marksheet.attendance[index]}
+							td !{marksheet.total[index]}
+							td !{marksheet.grade[index]}
 		include footer.pug
