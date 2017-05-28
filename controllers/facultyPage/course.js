@@ -5,6 +5,7 @@ const Course = require('mongoose').model('Course'); //get
 const Marksheet = require('mongoose').model('Marksheet');
 const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
+const deleteMarksheet = require('middlewares/deleteMarksheet');
 
 router.post('/faculty/:username/course/add', function(req, res ){
 	const username = req.params.username;
@@ -124,12 +125,16 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 	User.findOne({
 		username
 	})
+	.populate('courses')
 	.exec(function(err, user){
 		if(err) return res.send('some error occured');
 		if(!user) {
 			return res.send('Wrong user');
 		}
 		else{
+			//Delete the marksheet and subdocuments
+			deleteMarksheet(user.courses[index].marksheet);
+			//Delete course 
 			const _id = user.courses[index];
 			Course.findOne({
 				_id
