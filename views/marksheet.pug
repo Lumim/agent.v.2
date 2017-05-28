@@ -3,8 +3,63 @@ html
 	include header.pug
 	body
 		include layout.pug
-		div(class="container" style="border: 2px solid black; padding-bottom: 10px;")
-			form(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
-				input(type="file" name="csvdata" accept="csv")
-				input(type="submit")
+		div(class="container" style="padding-bottom: 10px;")
+			div(class="row")
+				div(class="col-md-5")
+					form(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
+						input(type="file" name="csvdata" accept="csv")
+						input(type="submit" value="Upload")
+				div(class="col-md-3")
+					form
+						button(type="submit" class="btn btn-default" style="margin-top: 20px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+				div(class="col-md-4")
+					form(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
+						div(class="col-md-2")
+							select(name="exam")
+								option(value="assignment") Assignment
+								option(value="fieldWork") Field Work
+								option(value="final") Final
+								option(value="mid") Mid
+								option(value="quiz") Quiz
+								option(value="presentation") Presentation
+								option(value="project") Project
+						div(class="col-md-2")
+							input(type="submit" class="btn btn-default" value="Add")
+		div(class="container")
+			table(class="table table-striped table-bordered table-hover table-condensed table-responsive")
+				thead
+					tr
+						th No.
+						th Name
+						th ID
+						th Email
+						each value in marksheet.quiz
+							th !{value.name}
+						if marksheet.quiz.length > 0
+							th !{marksheet.totalQuiz.name}
+						each value in marksheet.mid
+							th !{value.name}
+						if marksheet.mid.length > 0
+							th !{marksheet.totalMid.name}
+						each value in marksheet.assignment
+							th !{value.name}
+						if marksheet.assignment.length > 0
+							th !{marksheet.totalAssignment.name}
+						th Attendance
+						th Total
+						th Grade
+				tbody
+					each value, index in marksheet.studentMarks
+						tr
+							td !{index+1}
+							td !{value.name}
+							td !{value.ID}
+							td !{value.email}
+							each mark in value.quiz
+								td !{mark}
+							if value.quiz.length > 0
+								td !{marksheet.studentMarks.totalQuiz}
+							td !{marksheet.studentMarks.attendance}
+							td !{marksheet.studentMarks.total}
+							td !{marksheet.studentMarks.grade}
 		include footer.pug

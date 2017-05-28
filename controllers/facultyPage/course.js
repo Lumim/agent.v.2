@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const User = require('mongoose').model('User'); //get
 const Course = require('mongoose').model('Course'); //get
+const Marksheet = require('mongoose').model('Marksheet');
 const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
 
@@ -12,31 +13,36 @@ router.post('/faculty/:username/course/add', function(req, res ){
 	const section = req.body.section;
 	const classRoom = req.body.classRoom;
 
-	const course = new Course({
-		name,
-		code,
-		section,
-		classRoom,
-	});
-	course.save(function(err){
+	const marksheet = new Marksheet({});
+	marksheet.save(function(err){
 		if(err) return res.send('some error occured');
-		User.findOne({
-			username
-		})
-		.exec(function(err, user){
+		const course = new Course({
+			name,
+			code,
+			section,
+			classRoom,
+			marksheet: marksheet._id
+		});
+		course.save(function(err){
 			if(err) return res.send('some error occured');
-			if(!user) {
-				return res.send('Wrong user');
-			}
-			else{
-				User.update({_id: user._id}, {$addToSet: {courses: course._id}}, function(err){
-					if (err) return res.send('some error occured');
-					return res.redirect("/faculty/"+username);
-				});
-			}
+			User.findOne({
+				username
+			})
+			.exec(function(err, user){
+				if(err) return res.send('some error occured');
+				if(!user) {
+					return res.send('Wrong user');
+				}
+				else{
+					User.update({_id: user._id}, {$addToSet: {courses: course._id}}, function(err){
+						if (err) return res.send('some error occured');
+						return res.redirect("/faculty/"+username);
+					});
+				}
+			});
 		});
 	});
-})
+});
 
 router.get('/faculty/:username/course/:index', function(req, res ){
 	const username = req.params.username;

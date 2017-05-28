@@ -57,6 +57,9 @@ const studentMarkSchema = new mongoose.Schema({
     totalFinal: {
     	type: Number
     },
+    attendance: {
+        type: Number
+    },
     total: [{
     	type: Number
     }],
