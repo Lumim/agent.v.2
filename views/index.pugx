@@ -1,0 +1,12 @@
+doctype html
+html
+	include header.pug
+	body
+		include login.pug
+		div(class="container" style="padding-bottom:60px;")
+			div(class="row")
+				div(class="col-md-6")
+					h2 Agent is a class room management system with many new features.
+				div(class="col-md-6")
+					include signup.pug
+		include footer.pug
