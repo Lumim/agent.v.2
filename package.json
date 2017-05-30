@@ -9,6 +9,7 @@
   "author": "Nabila Ahmed",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "connect-mongo": "^1.3.2",

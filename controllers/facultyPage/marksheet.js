@@ -10,6 +10,7 @@ const deleteMarksheet = require('middlewares/deleteMarksheet');
 const csv = require('csv');
 const multer = require('multer');
 const fs = require('fs');
+const async = require('async');
 
 router.get('/faculty/:username/course/:index/marksheet', function(req, res){
 	const username = req.params.username;
@@ -117,15 +118,80 @@ router.get('/faculty/:username/course/:index/marksheet/edit', function(req, res)
 	})
 	.populate({path: 'courses', 
 		populate:{path: 'marksheet', 
-			populate:{path: 'quiz totalQuiz studentMarks'}}})
+			populate:{path: 'quiz mid assignment project presentation fieldWork final'}}})
 	.exec(function(err, user){
 		if(err) return res.send('some error occured');
 		if(!user) {
 			return res.send('Wrong user');
 		}
 		else{
-			return res.send("200 OK");
-			//return res.render("marksheet", {name: user.name, username: username, index: index, marksheet: user.courses[index].marksheet});
+			return res.render("marksheetEdit", {name: user.name, username: username, index: index, marksheet: user.courses[index].marksheet});
+		}
+	});
+});
+
+const calculation = function(x, studentNo, req, asyncCB ){
+	async.eachOf(x,function(value,index,cb){
+		if ( index == 0 ) return cb(null);
+		let temp = [], parcentage = [], fieldName, mark, highestMark = value.highestMark, chart = new Array(12);
+		
+		for(let j=0; j<studentNo; j++){
+			fieldName = value.name+'_'+j;
+			mark = req.body[fieldName];
+			temp.push(mark);
+
+			if(mark=='' || isNaN(mark)){
+				parcentage.push('');
+			}
+			else{
+				let p = ((mark/value.totalMark)*100).toFixed(2);
+				parcentage.push('('+p+'%)');
+				highestMark = Math.max(highestMark, mark);
+				if(p <= 10) chart[0]++;
+				else if(p <= 20) chart[1]++;
+				else if(p <= 30) chart[2]++;
+				else if(p <= 40) chart[3]++;
+				else if(p <= 50) chart[4]++;
+				else if(p <= 60) chart[5]++;
+				else if(p <= 70) chart[6]++;
+				else if(p <= 80) chart[7]++;
+				else if(p <= 90) chart[8]++;
+				else if(p <= 100) chart[9]++;
+			}
+		}
+		Exam.update({_id: value._id}, {$set: { marks: temp, parcentage: parcentage, highestMark: highestMark, pieChart: chart}})
+		.exec(cb);
+	}, asyncCB );
+	
+};
+
+router.post('/faculty/:username/course/:index/marksheet/edit/save', function(req, res){
+	const username = req.params.username;
+	const index = req.params.index;
+	User.findOne({
+		username
+	})
+	.populate({path: 'courses', 
+		populate:{path: 'marksheet', 
+			populate:{path: 'quiz mid assignment project presentation fieldWork final'}}})
+	.exec(function(err, user){
+		if(err) return res.send('some error occured');
+		if(!user) {
+			return res.send('Wrong user');
+		}
+		else{
+			const studentNo = user.courses[index].marksheet.name.length;
+			async.parallel([function(cb){calculation(user.courses[index].marksheet.quiz, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.mid, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.assignemnt, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.project, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.presentation, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.fieldWork, studentNo, req, cb)},
+				function(cb){calculation(user.courses[index].marksheet.final, studentNo, req, cb)}],
+				function(err){
+					if(err) return res.send('some error occured');
+					return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
+				});
 		}
 	});
 });
@@ -167,9 +233,12 @@ router.post('/faculty/:username/course/:index/marksheet/add', function(req, res)
 						//For each exam make a new entry for student
 						const studentNo = user.courses[index].marksheet.name.length;
 						const mark = new Array(studentNo);
-						for(let i=0; i<studentNo; i++)
+						const parcentage = new Array(studentNo);
+						for(let i=0; i<studentNo; i++){
 							mark[i] = '';
-						Exam.update({_id: totExam._id}, {$pushAll: {marks: mark}}, function(err){
+							parcentage[i]= '';
+						}
+						Exam.update({_id: totExam._id}, {$set: {marks: mark, parcentage: parcentage}}, function(err){
 							if(err) res.send('some error occured');
 							//Now add the exam
 							no = no+1;
@@ -181,7 +250,7 @@ router.post('/faculty/:username/course/:index/marksheet/add', function(req, res)
 								temp[examType] = exam._id;
 								Marksheet.update(query, {$push: temp}, function(err){
 									if (err) return res.send('some error occured');
-									Exam.update({_id: exam._id}, {$pushAll: {marks: mark}}, function(err){
+									Exam.update({_id: exam._id}, {$set: {marks: mark, parcentage: parcentage}}, function(err){
 										if(err) res.send('some error occured');
 										res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
 									});
@@ -208,9 +277,12 @@ router.post('/faculty/:username/course/:index/marksheet/add', function(req, res)
 						//For each exam make a new entry for student
 						const studentNo = user.courses[index].marksheet.name.length;
 						const mark = new Array(studentNo);
-						for(let i=0; i<studentNo; i++)
+						const parcentage = new Array(studentNo);
+						for(let i=0; i<studentNo; i++){
 							mark[i] = '';
-						Exam.update({_id: exam._id}, {$pushAll: {marks: mark}}, function(err){
+							parcentage[i] = '';
+						}
+						Exam.update({_id: exam._id}, {$set: {marks: mark, parcentage: parcentage}}, function(err){
 							if(err) res.send('some error occured');
 							res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
 						});
