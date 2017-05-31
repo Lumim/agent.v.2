@@ -1,10 +1,11 @@
-doctype html
-html
-	include header.pug
-	body
-		div(style="padding-bottom:60px;")
-			include layout.pug
-			include profile.pug
-			include officeHour.pug
-			include course.pug
-		include footer.pug
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	div
+		include profile.pug
+		include officeHour.pug
+		include course.pug
+	include footer.pug

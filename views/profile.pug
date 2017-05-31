@@ -1,15 +1,14 @@
-div(class="container" style="border: 2px solid black; padding-bottom: 10px;")
-	h3 <b>Profile:</b>
-	div
-		h4 <b>Name:</b>		!{name}
-		h4 <b>Email:</b>		!{email}
-		h4 <b>Username:</b>	!{username}
-		h4 <b>School:</b>		!{school}
-		h4 <b>Country:</b>		!{country}
-		h4 <b>Status:</b>		!{status}
-		h4 <b>Initial:</b>		!{initial}
-		h4 <b>Department:</b>	!{department}
-		h4 <b>Office Room:</b>	!{officeRoom}
-		div(style="display:inline-block;")
-			a(href="/faculty/"+username+"/profile/edit" class="btn btn-default" role="button", style="margin-bottom:10px; margin-right:10px;") Edit
-			a(href="/faculty/"+username+"/password/change" class="btn btn-default" role="button", style="margin-bottom:10px;") Change Password
+.border-1.p-3.mb-3
+	h3 Profile:
+	p <b>Name:</b>		!{name}
+	p <b>Email:</b>		!{email}
+	p <b>Username:</b>	!{username}
+	p <b>School:</b>		!{school}
+	p <b>Country:</b>		!{country}
+	p <b>Status:</b>		!{status}
+	p <b>Initial:</b>		!{initial}
+	p <b>Department:</b>	!{department}
+	p <b>Office Room:</b>	!{officeRoom}
+
+	a.btn.btn-secondary.mr-2(href="/faculty/"+username+"/profile/edit", role="button") Edit
+	a.btn.btn-secondary(href="/faculty/"+username+"/password/change", role="button") Change Password

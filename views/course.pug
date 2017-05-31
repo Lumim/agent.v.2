@@ -1,29 +1,31 @@
-div(class="container" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; padding-bottom:10px;")
-	div(class="row")
-		div(class="col-md-6")
-			h3 <b>Courses:</b>
+.border-1.p-3
+	.row
+		.col
+			h3 Courses:
 			each value, index in courses
-				form(style="margin-bottom: 10px;")
-					button(type="submit" class="btn btn-link" style="margin-top: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index) !{value.code}.!{value.section}
-					button(type="submit" class="btn btn-default" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/edit") Edit
-					button(type="submit" class="btn btn-danger" style="margin-right: 5px;" formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/delete") Delete
-					button(type="submit" class="btn btn-info" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/marksheet") Marksheet
-					button(type="submit" class="btn btn-info" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/resource") Resource
-					button(type="submit" class="btn btn-info" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/post") Post
-		div(class="col-md-6")
+				form.mt-1.d-flex.justify-content-between
+					div
+						button.mr-1.btn.btn-link(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index)= value.code + '.' + value.section
+					div
+						button.mr-1.btn.btn-secondary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/edit") Edit
+						button.mr-1.btn.btn-danger(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/delete") Delete
+						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/marksheet") Marksheet
+						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/resource") Resource
+						button.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/post") Post
+		.col-5
 			h3 Add Course
 			form(action="/faculty/"+username+"/course/add" method="post")
-				div(class="form-group")
+				.form-group
 					label Course Name
-					input(type="text" name="name" required)
-				div(class="form-group")
+					input.form-control(type="text", name="name", required)
+				.form-group
 					label Course Code
-					input(type="text" name="code" required)
-				div(class="form-group")
+					input.form-control(type="text", name="code" required)
+				.form-group
 					label Section
-					input(type="text" name="section" required)
-				div(class="form-group")
+					input.form-control(type="text", name="section" required)
+				.form-group
 					label Class Room
-					input(type="text" name="classRoom")
-				div(class="form-group")
-					input(type="submit" class="btn btn-default" value="Add")
+					input.form-control(type="text", name="classRoom")
+				.form-group
+					input.btn.btn-primary(type="submit", value="Add")

@@ -1,0 +1,29 @@
+div(class="container" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; padding-bottom:10px;")
+	div(class="row")
+		div(class="col-md-6")
+			h3 <b>Courses:</b>
+			each value, index in courses
+				form(style="margin-bottom: 10px;")
+					button(type="submit" class="btn btn-link" style="margin-top: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index) !{value.code}.!{value.section}
+					button(type="submit" class="btn btn-default" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/edit") Edit
+					button(type="submit" class="btn btn-danger" style="margin-right: 5px;" formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/delete") Delete
+					button(type="submit" class="btn btn-info" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/marksheet") Marksheet
+					button(type="submit" class="btn btn-info" style="margin-right: 5px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/resource") Resource
+					button(type="submit" class="btn btn-info" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/post") Post
+		div(class="col-md-6")
+			h3 Add Course
+			form(action="/faculty/"+username+"/course/add" method="post")
+				div(class="form-group")
+					label Course Name
+					input(type="text" name="name" required)
+				div(class="form-group")
+					label Course Code
+					input(type="text" name="code" required)
+				div(class="form-group")
+					label Section
+					input(type="text" name="section" required)
+				div(class="form-group")
+					label Class Room
+					input(type="text" name="classRoom")
+				div(class="form-group")
+					input(type="submit" class="btn btn-default" value="Add")

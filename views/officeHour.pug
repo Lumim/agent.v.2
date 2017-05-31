@@ -1,20 +1,17 @@
-div(class="container" style="border-bottom: 2px solid black; border-left: 2px solid black; border-right: 2px solid black; padding-bottom:10px;")
-	div(class="row")
-		div(class="col-md-6")
-			h3 <b>Office Hours:</b>
+.border-1.p-3.mb-3
+	.row
+		.col
+			h3 Office Hours:
 			each value, index in officeHours
-				div(class="row")
-					form(class="form-inline" action="/faculty/"+username+"/office-hour/"+index+"/delete" method="post")
-						div(class="col-md-5" style="margin-top: 20px;")
-							span !{value}
-						div(class="col-md-1" style="margin-top: 0px;")
-							input(type="submit" class="btn btn-danger" value="Delete")
-		div(class="col-md-6")
+				form.mt-1.form-inline.d-flex.justify-content-between(action="/faculty/"+username+"/office-hour/"+index+"/delete", method="post")
+					span= value
+					input.btn.btn-danger(type="submit", value="Delete")
+		.col
 			h3 New Office Hour
-			form(action="/faculty/"+username+"/office-hour/add" method="post")
-				div(class="row")
-					div(class="col-md-6" style="margin-top: 20px;")
-						select(name="day")
+			form(action="/faculty/"+username+"/office-hour/add", method="post")
+				.row
+					.col
+						select.form-control(name="day")
 							option(value="Sunday") Sunday
 							option(value="Monday") Monday
 							option(value="Tuesday") Tuesday
@@ -22,37 +19,40 @@ div(class="container" style="border-bottom: 2px solid black; border-left: 2px so
 							option(value="Thursday") Thursday
 							option(value="Friday") Friday
 							option(value="Saturday") Saturday
-				div(class="row")
-					div(class="col-md-6", style="margin-top: 20px;")
-						select(name="startHour")
+				.row.mt-2
+					.col-2
+						label.col-form-label <b> From: </bold>
+					.col
+						select.form-control(name="startHour")
 							- var n = 1
 							while n <= 12
 								option(value=n)= n++
-						span <b>:</b>
-						select(name="startMin")
+					.col
+						select.form-control(name="startMin")
 							- var n = 0
 							while n < 60
 								option(value=n)= n++
-						select(name="amOrPm1")
+					.col
+						select.form-control(name="amOrPm1")
 							option(value="am") am
 							option(value="pm") pm
-				div(class="row")
-					div(class="col-md-6")
-						h5 to
-				div(class="row")
-					div(class="col-md-6")
-						select(name="endHour")
+				.row.mt-2
+					.col-2
+						label.col-form-label <bold> To: </bold>
+					.col
+						select.form-control(name="endHour")
 							- var n = 1
 							while n <= 12
 								option(value=n)= n++
-						span <b>:</b>
-						select(name="endMin")
+					.col
+						select.form-control(name="endMin")
 							- var n = 0
 							while n < 60
 								option(value=n)= n++
-						select(name="amOrPm2")
+					.col
+						select.form-control(name="amOrPm2")
 							option(value="am") am
 							option(value="pm") pm
-				div(class="row")
-					div(class="col-md-6")
-						input(type="submit" class="btn btn-default" value="Add")
+				.row.mt-2
+					.col
+						input.btn.btn-primary(type="submit", value="Add")

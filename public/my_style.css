@@ -19,9 +19,9 @@
     float:left;
     margin-top: 20px;
 }*/
-h4{
+/*h4{
 	margin-bottom: 20px;
-}
+}*/
 footer {
    position:fixed;
    left:0px;
@@ -31,4 +31,13 @@ footer {
    background:#999;
    text-align:center;
    padding-top: 20px;
+}
+
+/*This is so that footer does not cover page elements*/
+.container {
+  margin-bottom: 55px;
+}
+
+.border-1 {
+  border: 1px solid black;
 }
