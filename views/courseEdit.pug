@@ -1,24 +1,22 @@
-doctype html
-html
-  include header.pug
-  body
-    include layout.pug
-    div(class="container" style="padding-bottom:10px;")
-      form(action="/faculty/"+username+"/course/"+index+"/edit/save" method="post")
-        div(class="form-group")
-          label Name:
-          input(type="text" name="name" value=course.name)
-        div(class="form-group")
-          label Code:
-          input(type="text" name="code" value=course.code)
-        div(class="form-group")
-          label Section:
-          input(type="text" name="section" value=course.section)
-        div(class="form-group")
-          label Class Room
-          input(type="text" name="classRoom" value=course.classRoom)
-        div(class="form-group")
-          input(type="submit" value="Save")
-    div(class="container" style="padding-bottom:10px;")
-      a(href="/faculty/"+username class="btn btn-danger" role="button", style="margin-bottom:10px;") Cancel
-    include footer.pug
+extends flexLayout.pug
+
+block header
+  include layout.pug
+
+block content
+  form(action="/faculty/"+username+"/course/"+index+"/edit/save" method="post")
+    .form-group
+      label.font-weight-bold Name:
+      input.form-control(type="text" name="name" value=course.name)
+    .form-group
+      label.font-weight-bold Code:
+      input.form-control(type="text" name="code" value=course.code)
+    .form-group
+      label.font-weight-bold Section:
+      input.form-control(type="text" name="section" value=course.section)
+    .form-group
+      label.font-weight-bold Class Room
+      input.form-control(type="text" name="classRoom" value=course.classRoom)
+    .form-group
+      input.btn.btn-primary(type="submit" value="Save")
+      a.btn.btn-secondary.ml-2(href="/faculty/"+username role="button") Cancel

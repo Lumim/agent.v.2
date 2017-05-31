@@ -1,96 +1,77 @@
-doctype html
-html
-	include header.pug
-	body
-		include layout.pug
-		block head
-			div(class="container" style="padding-bottom: 10px;")
-				div(class="row")
-					div(class="col-md-5")
-						form(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
-							input(type="file" name="csvdata" accept="csv")
-							input(type="submit" value="Upload")
-					div(class="col-md-3")
-						form
-							button(type="submit" class="btn btn-default" style="margin-top: 20px;" formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
-					div(class="col-md-4")
-						form(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
-							div(class="col-md-2")
-								select(name="exam")
-									option(value="assignment") Assignment
-									option(value="fieldWork") Field Work
-									option(value="final") Final
-									option(value="mid") Mid
-									option(value="quiz") Quiz
-									option(value="presentation") Presentation
-									option(value="project") Project
-							div(class="col-md-2")
-								input(type="submit" class="btn btn-default" value="Add")
-		
-		- var examTitle = function(x){
-			each value, index in x
-				if index > 0
-					th !{value.name}
-			if x.length > 0
-				th !{x[0].name}
-		- }
-		block function
-			- var examBody = function(x, index){
-				each exam, index2 in x
-					if index2 > 0
-						td !{exam.marks[index]} !{exam.parcentage[index]}
-				if x.length > 0
-					td !{x[0].marks[index]} !{x[0].parcentage[index]}
-			- }
+extends flexLayout.pug
 
-		block body
-			div(class="container")
-				table(class="table table-striped table-bordered table-hover table-condensed table-responsive")
-					thead
-						tr
-							th No.
-							th Name
-							th ID
-							th Email
-							- let x = marksheet.quiz
-							- examTitle(x)
-							- x = marksheet.mid
-							- examTitle(x)
-							- x = marksheet.assignment
-							- examTitle(x)
-							- x = marksheet.project
-							- examTitle(x)
-							- x = marksheet.presentation
-							- examTitle(x)
-							- x = marksheet.fieldWork
-							- examTitle(x)
-							- x = marksheet.final
-							- examTitle(x)
-							th Attendance
-							th Total
-							th Grade
-					tbody
-						each value, index in marksheet.name
-							tr
-								td !{index+1}
-								td !{marksheet.name[index]}
-								td !{marksheet.ID[index]}
-								td !{marksheet.email[index]}
-								- x = marksheet.quiz
-								- examBody(x, index)
-								- x = marksheet.mid
-								- examBody(x, index)
-								- x = marksheet.assignment
-								- examBody(x, index)
-								- x = marksheet.project
-								- examBody(x, index)
-								- x = marksheet.presentation
-								- examBody(x, index)
-								- x = marksheet.fieldWork
-								- examBody(x, index)
-								- x = marksheet.final
-								- examBody(x, index)
-								td !{marksheet.attendance[index]}
-								td !{marksheet.total[index]}
-								td !{marksheet.grade[index]}
-		include footer.pug
+block header
+	include layout.pug
+
+block content
+	.d-flex.align-items-center.justify-content-between
+		form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
+			.custom-file
+				input.cutom-file-input(type="file" name="csvdata" accept="csv")
+				span.custom-file-control
+			input.ml-2.btn.btn-primary(type="submit" value="Upload")
+
+		form.form-inline
+			button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+
+		form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
+			.d-flex.justify-content-end.w-100
+				select.mr-2.form-control(name="exam")
+					option(value="assignment") Assignment
+					option(value="fieldWork") Field Work
+					option(value="final") Final
+					option(value="mid") Mid
+					option(value="quiz") Quiz
+					option(value="presentation") Presentation
+					option(value="project") Project
+
+				input.btn.btn-primary(type="submit", value="Add")
+
+	table.mt-3.table
+		thead
+			tr
+				th No.
+				th Name
+				th ID
+				th Email
+				- let x = marksheet.quiz
+				include examTitle.pug
+				- x = marksheet.mid
+				include examTitle.pug
+				- x = marksheet.assignment
+				include examTitle.pug
+				- x = marksheet.project
+				include examTitle.pug
+				- x = marksheet.presentation
+				include examTitle.pug
+				- x = marksheet.fieldWork
+				include examTitle.pug
+				- x = marksheet.final
+				include examTitle.pug
+				th Attendance
+				th Total
+				th Grade
+		tbody
+			each value, index in marksheet.name
+				tr
+					td !{index+1}
+					td !{marksheet.name[index]}
+					td !{marksheet.ID[index]}
+					td !{marksheet.email[index]}
+					- x = marksheet.quiz
+					include examBody.pug
+					- x = marksheet.mid
+					include examBody.pug
+					- x = marksheet.assignment
+					include examBody.pug
+					- x = marksheet.project
+					include examBody.pug
+					- x = marksheet.presentation
+					include examBody.pug
+					- x = marksheet.fieldWork
+					include examBody.pug
+					- x = marksheet.final
+					include examBody.pug
+					td !{marksheet.attendance[index]}
+					td !{marksheet.total[index]}
+					td !{marksheet.grade[index]}

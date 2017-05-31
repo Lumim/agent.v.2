@@ -1,30 +1,29 @@
-doctype html
-html
-  include header.pug
-  body
-    include layout.pug
-    div(class="container" style="padding-bottom:10px;")
-      form(action="/faculty/"+username+"/profile/edit/save" method="post")
-        div(class="form-group")
-          label Name:
-          input(type="text" name="name" value=name)
-        div(class="form-group")
-          label School:
-          input(type="text" name="school" value=school)
-        div(class="form-group")
-          label Country:
-          input(type="text" name="country" value=country)
-        div(class="form-group")
-          label Initial
-          input(type="text" name="initial" value=initial)
-        div(class="form-group")
-          label Department
-          input(type="text" name="department" value=department)
-        div(class="form-group")
-          label Office Room
-          input(type="text" name="officeRoom" value=officeRoom)
-        div(class="form-group")
-          input(type="submit" value="Save")
-    div(class="container" style="padding-bottom:10px;")
-      a(href="/faculty/"+username class="btn btn-danger" role="button", style="margin-bottom:10px;") Cancel
-    include footer.pug
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+
+  form(action="/faculty/"+username+"/profile/edit/save", method="post")
+    .form-group
+      label.font-weight-bold Name:
+      input.form-control(type="text" name="name" value=name)
+    .form-group
+      label.font-weight-bold School:
+      input.form-control(type="text" name="school" value=school)
+    .form-group
+      label.font-weight-bold Country:
+      input.form-control(type="text" name="country" value=country)
+    .form-group
+      label.font-weight-bold Initial
+      input.form-control(type="text" name="initial" value=initial)
+    .form-group
+      label.font-weight-bold Department
+      input.form-control(type="text" name="department" value=department)
+    .form-group
+      label.font-weight-bold Office Room
+      input.form-control(type="text" name="officeRoom" value=officeRoom)
+    .form-group
+      input.btn.btn-primary(type="submit" value="Save")
+      a.btn.btn-secondary.ml-2(href="/faculty/"+username, role="button") Cancel
