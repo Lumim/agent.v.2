@@ -1,0 +1,24 @@
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	.border-1.p-3.mb-3
+		.row
+			.col
+				if type == 'single'
+					h3 Exam:
+					p <b>Name:</b>			!{exam.name}
+					p <b>Date:</b>			!{exam.date}
+					p <b>Total Mark:</b>	!{exam.totalMark}
+					p <b>Highest Mark:</b>	!{exam.highestMark}
+				if type == 'total'
+					h3 Total Exam:
+					p <b>Name:</b>				!{exam.name}
+					p <b>Best:</b>				!{exam.best}
+					p <b>Parcentage Count:</b>	!{exam.parcentageCount}
+					p <b>Highest Mark:</b>		!{exam.highestMark}
+				a.btn.btn-secondary.mr-2(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url+"/edit", role="button") Edit
+			.col
+				#piechart

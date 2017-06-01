@@ -1,0 +1,24 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+
+  form(action="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url+"/edit/save", method="post")
+    if type == 'single'
+      .form-group
+        label.font-weight-bold Date:
+        input.form-control(type="text" name="date" value=exam.date)
+      .form-group
+        label.font-weight-bold Total Mark:
+        input.form-control(type="text" name="totalMark" value=exam.totalMark)
+    if type == 'total'
+      .form-group
+        label.font-weight-bold Best:
+        input.form-control(type="text" name="best" value=exam.best)
+      .form-group
+        label.font-weight-bold Parcentage Count:
+        input.form-control(type="text" name="parcentageCount" value=exam.parcentageCount)
+    input.btn.btn-primary(type="submit" value="Save")
+    a.btn.btn-secondary.ml-2(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url, role="button") Cancel

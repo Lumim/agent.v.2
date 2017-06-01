@@ -1,16 +1,16 @@
 extend marksheet.pug
 
-block head 
-
 block function
-	- var examBody = function(x, index){
-		each exam, index2 in x
-			if index2 > 0
+	- var examBody = function(x, no){
+		each exam, no2 in x
+			if no2 > 0
 				td
-					input(type="text", name=exam.name+'_'+index, value=exam.marks[index])
+					input(type="text", name=exam.name+'_'+no, value=exam.marks[no])
 		if x.length > 0
-			td !{x[0].marks[index]} !{x[0].parcentage[index]} 
+			td !{x[0].marks[no]}
 	- }
+
+block head 
 
 block body
 	div(class="container")
@@ -36,34 +36,34 @@ block body
 						- examTitle(x)
 						- x = marksheet.final
 						- examTitle(x)
-						th Attendance
-						th Total
+						th Attendance(%)
+						th Total(%)
 						th Grade
 				tbody
-					each value, index in marksheet.name
+					each value, no in marksheet.name
 						tr
-							td !{index+1}
-							td !{marksheet.name[index]}
-							td !{marksheet.ID[index]}
-							td !{marksheet.email[index]}
+							td !{no+1}
+							td !{marksheet.name[no]}
+							td !{marksheet.ID[no]}
+							td !{marksheet.email[no]}
 							- x = marksheet.quiz
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.mid
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.assignment
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.project
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.presentation
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.fieldWork
-							- examBody(x, index)
+							- examBody(x, no)
 							- x = marksheet.final
-							- examBody(x, index)
+							- examBody(x, no)
 							td
-								input(type="text", name='attendance_'+index, value=marksheet.attendance[index])
-							td !{marksheet.total[index]}
+								input(type="text", name='attendance_'+no, value=marksheet.attendance[no])
+							td !{marksheet.total[no]}
 							td
-								input(type="text", name='grade_'+index, value=marksheet.grade[index])
+								input(type="text", name='grade_'+no, value=marksheet.grade[no])
 			input(type="submit" value="Save")
 		a(href="/faculty/"+username+"/course/"+index+"/marksheet" class="btn btn-danger" role="button") Cancel
