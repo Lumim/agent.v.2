@@ -1,59 +1,58 @@
 const mongoose = require('mongoose');
-const Exam = require("mongoose").model('Exam');
-const StudentMark = require("mongoose").model('StudentMark');
+// const Exam = require("mongoose").model('Exam');
 
 const marksheetSchema = new mongoose.Schema({
-    name:[{
+    name: [{
         type: String,
         required: true,
-        maxlengthL: 100
+        maxlengthL: 100,
     }],
     ID: [{
         type: String,
-        maxlength: 100
+        maxlength: 100,
     }],
     email: [{
         type: String,
         required: true,
-        maxlength: 100
+        maxlength: 100,
     }],
     quiz: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        ref: 'Exam',
     }],
     mid: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     assignment: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     project: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     presentation: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     fieldWork: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     final: [{
-    	type: mongoose.Schema.Types.ObjectId,
-        ref: 'Exam'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Exam',
     }],
     attendance: [{
-        type: String
+        type: String,
     }],
     total: [{
-        type: String
+        type: String,
     }],
     grade: [{
-        type: String
-    }]
+        type: String,
+    }],
 });
 
 mongoose.model('Marksheet', marksheetSchema);

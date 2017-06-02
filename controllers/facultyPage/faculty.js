@@ -21,6 +21,11 @@ router.get('/faculty/:username', [requireLoginMW], function(req, res){
 	});
 });
 
+router.get('/faculty/:username/logout', [requireLoginMW], function(req, res){
+	req.session.destroy();
+	return res.redirect('/');
+});
+
 module.exports = {
 	addRouter(app){
 		app.use('/', router);

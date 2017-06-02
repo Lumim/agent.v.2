@@ -6,24 +6,23 @@ const rootPath = __dirname;
 
 app.set('port', 3000);
 app.set('view engine', 'pug');
-app.set('views', path.join(rootPath, './views')); //It will front end files from this folder
+app.set('views', path.join(rootPath, './views')); // It renders html from views folder
 
 app.use('/public', express.static(path.join(rootPath, '/public')));
 
-/*Configuration*/
+/* Configuration */
 require('./configuration/bodyParser.js').addBodyParser(app);
 require('./configuration/database.js');
 require('./configuration/session.js').addSession(app);
 
-/*Model*/
-require('./models/studentMarkModel.js');
+/* Model */
 require('./models/examModel.js');
 require('./models/marksheetModel.js');
 require('./models/courseModel.js');
 require('./models/userModel.js');
 
 
-/*Route*/
+/* Route */
 require('./controllers/landingPage/index.js').addRouter(app);
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
@@ -34,12 +33,13 @@ require('./controllers/facultyPage/marksheet.js').addRouter(app);
 require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
+require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
 
-
-app.get('*', function(req, res){
+// If no route match, shows 404 error
+app.get('*', function(req, res) {
 	return res.status(404).send('Page not found\n');
 });
 
-server.listen(app.get('port'), function(){
+server.listen(app.get('port'), function() {
 	console.log(`Server running at port ${app.get('port')}`);
 });

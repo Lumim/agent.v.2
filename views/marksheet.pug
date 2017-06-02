@@ -77,7 +77,9 @@ block content
 			tbody
 				each value, no in marksheet.name
 					tr
-						td !{no+1}
+						td !{no+1} 
+							form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
+								input(type="submit" value="Delete")
 						td !{marksheet.name[no]}
 						td !{marksheet.ID[no]}
 						td !{marksheet.email[no]}

@@ -4,3 +4,5 @@ nav.navbar.navbar-default.mb-2
 			h3 Agent
 		div
 			h3 !{name}
+			form(action="/faculty/"+username+"/logout", method="get")
+				input(type="submit", value="Logout")

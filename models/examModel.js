@@ -1,41 +1,41 @@
 const mongoose = require('mongoose');
 
 const examSchema = new mongoose.Schema({
-	name:{
+	name: {
 		type: String,
-		required: true
+		required: true,
 	},
-	url:{
+	url: {
 		type: String,
-		required: true
+		required: true,
 	},
-	date:{
-		type: String
-	},
-	totalMark:{
+	date: {
 		type: String,
-		default: '100'
 	},
-	highestMark:{
+	totalMark: {
 		type: String,
-		default: '0'
+		default: '100',
 	},
-	parcentageCount:{
+	highestMark: {
 		type: String,
-		default: '100'
+		default: '0',
 	},
-    best:{
-    	type: String
+	parcentageCount: {
+		type: String,
+		default: '100',
+	},
+    best: {
+		type: String,
     },
-    pieChart:[{
-    	type: String
+    pieChart: [{
+		type: String,
     }],
-    marks:[{
-    	type: String
+    marks: [{
+		type: String,
     }],
-    parcentage:[{
-    	type:String
-    }]
+    parcentage: [{
+		type: String,
+    }],
 });
 
 mongoose.model('Exam', examSchema);
