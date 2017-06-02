@@ -29,8 +29,11 @@ require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
 require('./controllers/general/password.js').addRouter(app);
 require('./controllers/facultyPage/officeHour.js').addRouter(app);
-require('./controllers/facultyPage/course.js').addRouter(app)
-require('./controllers/facultyPage/marksheet.js').addRouter(app)
+require('./controllers/facultyPage/course.js').addRouter(app);
+require('./controllers/facultyPage/marksheet.js').addRouter(app);
+require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
+require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
+require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 
 
 app.get('*', function(req, res){

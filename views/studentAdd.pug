@@ -1,0 +1,19 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+
+  form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/add/save", method="post")
+    .form-group
+      label.font-weight-bold Name:
+      input.form-control(type="text" name="name" required="true")
+    .form-group
+      label.font-weight-bold ID:
+      input.form-control(type="text" name="ID" required="true")
+    .form-group
+      label.font-weight-bold Email:
+      input.form-control(type="text" name="email" required="true")
+    input.btn.btn-primary(type="submit" value="Save")
+  a.btn.btn-secondary.ml-2(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url, role="button") Cancel

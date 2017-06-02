@@ -31,7 +31,10 @@ block content
 				input.ml-2.btn.btn-primary(type="submit" value="Upload")
 
 			form.form-inline
-				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
+
+			form.form-inline
+				button.btn.btn-primary(type="Add Student", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
 
 			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
 				.d-flex.justify-content-end.w-100
