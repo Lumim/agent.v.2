@@ -2,7 +2,6 @@ nav.navbar.navbar-default.mb-2
 	.d-flex.align-items-center.justify-content-between
 		.navbar-brand
 			h3 Agent
-		div
+		div.d-flex
 			h3 !{name}
-			form(action="/faculty/"+username+"/logout", method="get")
-				input(type="submit", value="Logout")
+			a.ml-2.btn.btn-primary(href="/faculty/"+username+"/logout") Logout

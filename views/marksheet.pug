@@ -7,22 +7,22 @@ block content
 	- var examTitle = function(x, no)
 		each exam, no2 in x
 			if no2 > 0
-				th 
+				th
 					a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url) !{exam.name}
 		if x.length > 0
 			th
 				a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+x[0].url) !{x[0].name}(%)
-	
+
 	block function
 		- var examBody = function(x, no){
 			each exam, no2 in x
 				if no2 > 0
-					td !{exam.marks[no]} !{exam.parcentage[no]} 
+					td !{exam.marks[no]} !{exam.parcentage[no]}
 			if x.length > 0
 				td !{x[0].marks[no]}
 		- }
-	
-	block head
+
+	block marksheetHead
 		.d-flex.align-items-center.justify-content-between
 			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
 				.custom-file
@@ -34,7 +34,7 @@ block content
 				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
 
 			form.form-inline
-				button.btn.btn-primary(type="Add Student", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
 
 			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
 				.d-flex.justify-content-end.w-100
@@ -49,8 +49,8 @@ block content
 
 					input.btn.btn-primary(type="submit", value="Add")
 
-	block body
-		table.mt-3.table
+	block marksheetBody
+		table.mt-3.table.table-striped.table-bordered.table-hover.table-condensed.table-responsive
 			thead
 				tr
 					th No.
@@ -74,12 +74,11 @@ block content
 					th Attendance(%)
 					th Total(%)
 					th Grade
+					th Delete
 			tbody
 				each value, no in marksheet.name
 					tr
-						td !{no+1} 
-							form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
-								input(type="submit" value="Delete")
+						td !{no+1}
 						td !{marksheet.name[no]}
 						td !{marksheet.ID[no]}
 						td !{marksheet.email[no]}
@@ -100,3 +99,6 @@ block content
 						td !{marksheet.attendance[no]}
 						td !{marksheet.total[no]}
 						td !{marksheet.grade[no]}
+						td
+							form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
+								input.btn.btn-danger(type="submit", value="Delete")

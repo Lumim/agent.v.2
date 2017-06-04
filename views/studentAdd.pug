@@ -3,8 +3,6 @@ block header
   include layout.pug
 
 block content
-
-
   form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/add/save", method="post")
     .form-group
       label.font-weight-bold Name:
@@ -16,4 +14,4 @@ block content
       label.font-weight-bold Email:
       input.form-control(type="text" name="email" required="true")
     input.btn.btn-primary(type="submit" value="Save")
-  a.btn.btn-secondary.ml-2(href="/faculty/"+username+"/course/"+index+"/marksheet/", role="button") Cancel
+    a.btn.btn-secondary.ml-2(href="/faculty/"+username+"/course/"+index+"/marksheet/", role="button") Cancel

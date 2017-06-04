@@ -3,9 +3,9 @@
 		.col
 			h3 Office Hours:
 			each value, index in officeHours
-				form.mt-1.form-inline.d-flex.justify-content-between(action="/faculty/"+username+"/office-hour/"+index+"/delete", method="post")
+				form.mt-1.form-inline.d-flex(action="/faculty/"+username+"/office-hour/"+index+"/delete", method="post")
 					span= value
-					input.btn.btn-danger(type="submit", value="Delete")
+					input.ml-3.btn.btn-danger(type="submit", value="Delete")
 		.col-5
 			h3 New Office Hour
 			form(action="/faculty/"+username+"/office-hour/add", method="post")
