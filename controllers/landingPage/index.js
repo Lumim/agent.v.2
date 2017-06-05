@@ -25,13 +25,16 @@ router.post('/login', function(req, res) {
       username,
     })
     .exec(function(err, user) {
-      if (err) return res.send('some error occured');
+      if (err) {
+        return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
+      }
       if (!user) {
-        // req.flash('error', 'Username not found');
         return res.send('Wrong password or username');
       } else {
         bcrypt.compare(password, user.password, function(err, result) {
-          if (err) return res.send('some error occured');
+          if (err) {
+            return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
+          }
           if (result === true) {
             req.session.login = true;
             req.session.email = user.email;
@@ -60,9 +63,11 @@ router.post('/signup', function(req, res) {
   const password = req.body.password;
   const status = req.body.portal;
 
-  //Autogen salt and hash
+  // Autogen salt and hash
   bcrypt.hash(password, require('../../secret.js').round, function(err, hash) {
-    if (err) return res.send('some error occured');
+    if (err) {
+      return res.render('error.pug', { title: '500', message: 'ReferenceError: error is not defined' });
+    }
     else {
       const user = new User({
         name,
@@ -71,19 +76,21 @@ router.post('/signup', function(req, res) {
         school,
         country,
         password: hash,
-        status
+        status,
       });
 
       user.save(function(err) {
-        if (err) return res.send('some error occured');
-        return res.send('ok');
+        if (err) {
+          return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
+        }
+        return res.send('Successfully signed in.');
       });
     }
   });
-})
+});
 
 module.exports = {
   addRouter(app) {
     app.use('/', router);
-  }
-}
+  },
+};
