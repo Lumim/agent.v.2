@@ -6,7 +6,7 @@ const courseSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		maxlength: 100
-	}, 
+	},
 	code: {
 		type: String,
 		required: true,

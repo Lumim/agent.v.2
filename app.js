@@ -20,6 +20,7 @@ require('./models/examModel.js');
 require('./models/marksheetModel.js');
 require('./models/courseModel.js');
 require('./models/userModel.js');
+require('./models/preRegistration.js');
 
 
 /* Route */
@@ -34,6 +35,7 @@ require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
+require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 
 // If no route match, shows 404 error
 app.get('*', function(req, res) {

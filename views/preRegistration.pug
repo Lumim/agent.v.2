@@ -1,0 +1,13 @@
+.border-1.p-3
+  .row
+    .col
+      table.table
+        thead
+          tr
+            th Subject
+            th Registered
+        tbody
+          tr
+            each course in courses
+              td !{course.courseID}
+              td !{course.seats}
