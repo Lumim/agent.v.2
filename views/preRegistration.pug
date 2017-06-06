@@ -14,6 +14,7 @@ block content
 							th #
 							th Course ID
 							th Registared
+							th Register
 
 					tbody
 						- for (var i = 1; i < courses.length; ++i) {
@@ -21,5 +22,9 @@ block content
 									td !{i}
 									td !{courses[i].courseID}
 									td !{courses[i].seats}
+									td
+										- var id = courses[i].courseID
+										form(action="/preregistrations/"+id, method="post")
+											input(class="btn btn-primary",type="submit", name="register", value="register")
 									br
 						- }

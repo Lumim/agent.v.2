@@ -14,8 +14,19 @@ router.get('/preregistrations', (req, res) => {
   })
 })
 
+router.post('/preregistrations/:id', (req, res) => {
+	const ID = req.params.id
+	PreRegistration.findOneAndUpdate({"courseID": ID}, {$inc: {"seats": 1}})
+	.exec((err, course) => {
+		if(err || course === null) return res.send('some error occured');
+		else{
+			res.redirect("/preregistrations")
+		}
+	});
+});
+
 module.exports = {
   addRouter(app) {
-    app.use('/', router)
+    app.use('/', router);
   }
 }
