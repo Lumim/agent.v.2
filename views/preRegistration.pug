@@ -1,13 +1,25 @@
-.border-1.p-3
-  .row
-    .col
-      table.table
-        thead
-          tr
-            th Subject
-            th Registered
-        tbody
-          tr
-            each course in courses
-              td !{course.courseID}
-              td !{course.seats}
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	div.container
+		div.row
+			div.col-3
+			div.col-6
+				table.table
+					thead
+						tr
+							th #
+							th Course ID
+							th Registared
+
+					tbody
+						- for (var i = 1; i < courses.length; ++i) {
+								tr
+									td !{i}
+									td !{courses[i].courseID}
+									td !{courses[i].seats}
+									br
+						- }
