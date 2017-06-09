@@ -9,18 +9,19 @@ router.get('/', function(req, res) {
   User.findOne({
     username,
   })
-  .populate('courses')
-  .exec(function(err, faculty) {
-    if (err || !faculty) {
+  .populate({path: 'courses', 
+    populate:{path: 'marksheet'}})
+  .exec(function(err, student) {
+    if (err || !student) {
       return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
     } else {
-      return res.render('faculty', faculty); // sending the whole faculty document
+      return res.render('student', student); // sending the whole faculty document
     }
   });
 });
 
 module.exports = {
   addRouter(app) {
-    app.use('/faculty/:username', [requireLoginMW, matchUsername], router);
+    app.use('/student/:username', [requireLoginMW, matchUsername], router);
   },
 };

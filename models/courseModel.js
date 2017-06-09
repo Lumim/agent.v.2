@@ -17,12 +17,12 @@ const courseSchema = new mongoose.Schema({
 		required: true,
 	},
 	classRoom: {
-		type: String
+		type: String,
 	},
 	marksheet: {
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'Marksheet'
-	}
+	},
 });
 
 mongoose.model('Course', courseSchema); //set

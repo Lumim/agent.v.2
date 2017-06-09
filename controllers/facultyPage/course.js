@@ -133,20 +133,22 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 		}
 		else{
 			//Delete the marksheet and subdocuments
-			deleteMarksheet(user.courses[index].marksheet);
-			//Delete course 
-			const _id = user.courses[index];
-			Course.findOne({
-				_id
-			})
-			.remove(function(err){
-				if (err) return res.send('some error occured');
-			});
+			deleteMarksheet(user.courses[index].marksheet, user.courses[index], function(err){
+				if(err) return res.send(err);
+				//Delete course 
+				const _id = user.courses[index];
+				Course.findOne({
+					_id
+				})
+				.remove(function(err){
+					if (err) return res.send('some error occured');
+				});
 
-			user.courses.splice(index, 1);
-			user.save(function(err){
-				if (err) return res.send('some error occured');
-				return res.redirect("/faculty/"+username);
+				user.courses.splice(index, 1);
+				user.save(function(err){
+					if (err) return res.send('some error occured');
+					return res.redirect("/faculty/"+username);
+				});
 			});
 		}
 	});

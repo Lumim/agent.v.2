@@ -6,10 +6,10 @@ const router = express.Router();
 router.get('/', function(req, res) {
   if (req.session && req.session.login) { // Already logged in
     const { username, status } = req.session;
-    if (status === 'faculty') {
+    if (status.toString() === 'faculty') {
       return res.redirect('/faculty/' + username);
     } else {
-      return res.send('Not impelemented yet');
+      return res.redirect('/student/' + username);
     }
   } else {
     return res.render('index');
@@ -41,10 +41,10 @@ router.post('/login', function(req, res) {
             req.session.name = user.name;
             req.session.username = username;
             req.session.status = user.status;
-            if (user.status === 'faculty') {
+            if (user.status.toString() === 'faculty') {
               return res.redirect('/faculty/' + username);
             } else {
-              return res.send('Not impelemented yet');
+              return res.redirect('/student/' + username);
             }
           } else {
             return res.send('Wrong password or username');
@@ -87,6 +87,11 @@ router.post('/signup', function(req, res) {
       });
     }
   });
+});
+
+router.get('/logout', function(req, res) {
+  req.session.destroy();
+  return res.redirect('/');
 });
 
 module.exports = {

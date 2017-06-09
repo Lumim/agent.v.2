@@ -19,7 +19,8 @@ block content
 					p <b>Best:</b>				!{exam.best}
 					p <b>Parcentage Count:</b>	!{exam.parcentageCount}
 					p <b>Highest Mark:</b>		!{exam.highestMark}
-				a.btn.btn-primary(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url+"/edit", role="button") Edit
-				a.ml-2.btn.btn-secondary(href="/faculty/"+username+"/course/"+index+"/marksheet" role="button") Cancel
+				if status.toString() == 'faculty'
+					a.btn.btn-primary(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url+"/edit", role="button") Edit
+					a.ml-2.btn.btn-secondary(href="/faculty/"+username+"/course/"+index+"/marksheet" role="button") Cancel
 			.col
 				#piechart

@@ -1,0 +1,27 @@
+.border-1.p-3
+	.row
+		.col-6
+			h3 Courses:
+			each value, index in courses
+				form.mt-1.d-flex.justify-content-between
+					div
+						each value2, index2 in value.marksheet.email
+							if value2.toString() === email.toString()
+								if value.marksheet.courseStatus[index2] === 'accept'
+									button.mr-1.btn.btn-link(type="submit", formmethod="get", formaction="/student/"+username+"/course/"+index)= value.code + '.' + value.section
+									div
+										button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/marksheet") Marksheet
+										button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/resource") Resource
+										button.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/post") Post
+		.col-6
+			h3 New Course Request
+			each value, index in courses
+				form.mt-1.d-flex.justify-content-between
+					div
+						each value2, index2 in value.marksheet.email
+							if value2.toString() === email.toString()
+								if value.marksheet.courseStatus[index2].toString() === 'pending'
+									button.mr-1.btn.btn-link(type="submit", formmethod="get", formaction="/student/"+username+"/course/"+index)= value.code + '.' + value.section
+									div
+										button.mr-1.btn.btn-info(type="submit", formmethod="post" formaction="/student/"+username+"/course/"+index+"/accept") Accept
+										button.mr-1.btn.btn-info(type="submit", formmethod="post" formaction="/student/"+username+"/course/"+index+"/reject") Reject

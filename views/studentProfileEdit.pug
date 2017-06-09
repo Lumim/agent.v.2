@@ -1,0 +1,23 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+
+  form(action="/student/"+username+"/profile/edit/save", method="post")
+    .form-group
+      label.font-weight-bold Name:
+      input.form-control(type="text" name="name" value=name)
+    .form-group
+      label.font-weight-bold School:
+      input.form-control(type="text" name="school" value=school)
+    .form-group
+      label.font-weight-bold Country:
+      input.form-control(type="text" name="country" value=country)
+    .form-group
+      label.font-weight-bold ID
+      input.form-control(type="text" name="ID" value=ID)
+    .form-group
+      input.btn.btn-primary(type="submit" value="Save")
+      a.btn.btn-secondary.ml-2(href="/student/"+username, role="button") Cancel
