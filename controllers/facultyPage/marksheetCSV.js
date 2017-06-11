@@ -78,15 +78,24 @@ router.post('/faculty/:username/course/:index/marksheet/csv/upload', multer({des
 										.exec(function(err, student){
 											if(err) return callBack(err);
 											if(!student){
-												console.log('Not implemented yet');
+												to.push(value.email);
+												return callBack(null);
 											}
 											else{
-												User.update({_id: student._id}, {$push: {courses: user.courses[index]}}, function(err){
-													if(err) return callBack(err);
-													//Have to sent request mail
-													to.push(value.email);
-													return callBack(null);
-												});
+												if(student.status.toString() != 'student') {
+													Marksheet.update({_id: marksheet._id}, {$pull: {name: value.name, ID: value.ID, email: value.email, courseStatus: 'pending'}}, function(err){
+														if(err) return callBack(err);
+														else return callBack(null); //Send an alert that eamil is a faculty email
+													});
+												}
+												else {
+													User.update({_id: student._id}, {$push: {courses: user.courses[index]}}, function(err){
+														if(err) return callBack(err);
+														//Have to sent request mail
+														to.push(value.email);
+														return callBack(null);
+													});
+												}
 											}
 										});
 									});

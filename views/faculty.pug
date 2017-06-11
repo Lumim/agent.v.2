@@ -7,5 +7,6 @@ block content
 	div
 		include profile.pug
 		include officeHour.pug
-		include course.pug
+		if whoIsLooking.toString() === 'faculty'
+			include course.pug
 	include footer.pug

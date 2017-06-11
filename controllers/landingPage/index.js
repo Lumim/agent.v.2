@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('mongoose').model('User'); // get
+const Course = require('mongoose').model('Course');
+const Marksheet = require('mongoose').model('Marksheet');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 
@@ -83,7 +85,29 @@ router.post('/signup', function(req, res) {
         if (err) {
           return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
         }
-        return res.send('Successfully signed in.');
+        else if (status.toString() === 'student') {
+          // Find out all the marksheets which has the email in their email array. 
+          Marksheet.find({
+            email,
+          }, function(err, docs) {
+            if (err) return res.send(err);
+            // Find out all the courses whose marksheets find in docs.
+            Course.find({
+              marksheet: docs,
+            }, function(err, courses) {
+              if (err) return res.send(err);
+              User.update({_id: user._id},
+                // Push one by one course into courses
+                {$pushAll: {courses: courses}}, function(err) {
+                  if (err) return res.send(err);
+                  else return res.send('Successfully signed in.');
+                });
+            });
+          });
+        }
+        else {
+          return res.send('Successfully signed in.');
+        }
       });
     }
   });

@@ -23,6 +23,15 @@ const courseSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'Marksheet'
 	},
+	facultyName: {
+		type: String,
+	},
+	facultyEmail: {
+		type: String,
+	},
+	facultyUsername: {
+		type: String,
+	},
 });
 
 mongoose.model('Course', courseSchema); //set

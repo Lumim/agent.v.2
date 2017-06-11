@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
-const requireLoginMW = require('middlewares/requireLogin');
-const matchUsername = require('middlewares/matchUsername');
+//const requireLoginMW = require('middlewares/requireLogin');
+//const matchUsername = require('middlewares/matchUsername');
 
-router.get('/', function(req, res) {
-  const username = req.session.username; // session username is same as ligin username
+router.get('/faculty/:username', function(req, res) {
+  const username = req.params.username; // session username is same as login username
+  console.log(username);
   User.findOne({
     username,
   })
@@ -14,13 +15,18 @@ router.get('/', function(req, res) {
     if (err || !faculty) {
       return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
     } else {
-      return res.render('faculty', faculty); // sending the whole faculty document
+      if ( req.session && req.session.login && req.session.username === req.params.username)
+        return res.render('faculty', {faculty: faculty, whoIsLooking: 'faculty'}); // sending the whole faculty document
+      else {
+        return res.render('faculty', {faculty: faculty, whoIsLooking: 'other'});
+      }
     }
   });
 });
 
 module.exports = {
   addRouter(app) {
-    app.use('/faculty/:username', [requireLoginMW, matchUsername], router);
+    //app.use('/faculty/:username', [requireLoginMW, matchUsername], router);
+    app.use('/', router);
   },
 };

@@ -10,4 +10,7 @@ html
 				h4 <b>Code:</b>		  !{course.code}
 				h4 <b>Section:</b>	  !{course.section}
 				h4 <b>Class Room:</b> !{course.classRoom}
+				h4 <b>Faculty Name:</b>
+					a(href='/faculty/'+course.facultyUsername) !{course.facultyName}
+				h4 <b>Facutl Email Address: !{course.facultyEmail}
 		include footer.pug

@@ -22,7 +22,10 @@ router.post('/faculty/:username/course/add', function(req, res ){
 			code,
 			section,
 			classRoom,
-			marksheet: marksheet._id
+			marksheet: marksheet._id,
+			facultyName: req.session.name,
+			facultyEmail: req.session.email,
+			facultyUsername: req.session.username,
 		});
 		course.save(function(err){
 			if(err) return res.send('some error occured');
@@ -135,6 +138,7 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 			//Delete the marksheet and subdocuments
 			deleteMarksheet(user.courses[index].marksheet, user.courses[index], function(err){
 				if(err) return res.send(err);
+				console.log('I am here 5');
 				//Delete course 
 				const _id = user.courses[index];
 				Course.findOne({

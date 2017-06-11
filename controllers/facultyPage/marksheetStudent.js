@@ -37,15 +37,22 @@ router.post('/faculty/:username/course/:index/marksheet/student/add/save', funct
 				if(err) return res.send(err);
 				User.findOne({
 					email: email,
-					status: 'student',
 				})
 				.exec(function(err, student) {
 					if(err) return res.send(err);
 					if(!student) {
-						return res.send('Not implemented yet');
+						return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
 					}
 					else {
-						User.update({_id: student._id},
+						if (student.status.toString() != 'student') {
+							Marksheet.update({_id: faculty.courses[index].marksheet._id}, {$pull: {name: name, ID: ID, email: email, courseStatus: 'pending'}})
+							.exec(function(err) {
+								if(err) return res.send(err);
+								else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet'); // Need to Sent an alert
+							});
+						}
+						else {
+							User.update({_id: student._id},
 							{$push: {courses: faculty.courses[index]._id}}, function(err) {
 								if (err) return res.send(err);
                                 const to = [email];
@@ -59,6 +66,7 @@ router.post('/faculty/:username/course/:index/marksheet/student/add/save', funct
 								   } else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
 		            			});
 							});
+						}
 					}
 				});
 			});
