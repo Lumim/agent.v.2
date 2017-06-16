@@ -25,6 +25,7 @@ require('./models/userModel.js');
 /* Route */
 require('./controllers/landingPage/index.js').addRouter(app);
 require('./controllers/general/password.js').addRouter(app);
+require('./controllers/general/post.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);

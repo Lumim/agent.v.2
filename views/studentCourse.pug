@@ -12,7 +12,7 @@
 									div
 										button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/marksheet") Marksheet
 										button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/resource") Resource
-										button.btn.btn-info(type="submit", formmethod="get" formaction="/student/"+username+"/course/"+index+"/post") Post
+										button.btn.btn-info(type="submit", formmethod="get" formaction="/"+username+"/course/"+index+"/post") Post
 		.col-6
 			h3 New Course Request
 			each value, index in courses

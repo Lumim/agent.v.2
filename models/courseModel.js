@@ -40,6 +40,39 @@ const courseSchema = new mongoose.Schema({
 			type: String,
 		},
 	}],
+	post: [{
+		date: {
+			type: Date,
+			default: Date.now,
+		},
+		title: {
+			type: String,
+		},
+		body: {
+			type: String,
+		},
+		creatorName: {
+			type: String,
+		},
+		creatorEmail: {
+			type: String,
+		},
+		comment: [{
+			date: {
+				type: Date,
+				default: Date.now,
+			},
+			body: {
+				type: String,
+			},
+			creatorName: {
+				type: String,
+			},
+			creatorEmail: {
+				type: String,
+			},
+		}],
+	}],
 });
 
 mongoose.model('Course', courseSchema); //set
