@@ -32,6 +32,14 @@ const courseSchema = new mongoose.Schema({
 	facultyUsername: {
 		type: String,
 	},
+	resources: [{
+		path: {
+			type: String,
+		},
+		fileName: {
+			type: String,
+		},
+	}],
 });
 
 mongoose.model('Course', courseSchema); //set

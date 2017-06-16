@@ -15,7 +15,6 @@ router.get('/', function(req, res) {
     if (err || !student) {
       return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
     } else {
-      console.log(student);
       return res.render('student', student); // sending the whole faculty document
     }
   });

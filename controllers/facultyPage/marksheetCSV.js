@@ -12,7 +12,7 @@ const fs = require('fs');
 const async = require('async');
 const sendEmail = require('mailer').sendEmail;
 
-router.post('/faculty/:username/course/:index/marksheet/csv/upload', multer({dest: 'uploads/'}).single('csvdata'), function(req, res){
+router.post('/faculty/:username/course/:index/marksheet/csv/upload', multer({dest: 'uploads/csv/'}).single('csvdata'), function(req, res){
 	const username = req.params.username;
 	const index = req.params.index;
 
@@ -53,9 +53,9 @@ router.post('/faculty/:username/course/:index/marksheet/csv/upload', multer({des
 					// when the end of the CSV document is reached
 		       		.on("end", function() {
 		       			//Delete the local file in uploads/ folder.
-		       			fs.readdir('uploads/', function(err, items) {
+		       			fs.readdir('uploads/csv/', function(err, items) {
 		   					items.forEach(function(file) {
-		        				fs.unlink('./uploads/' + file, function(err){
+		        				fs.unlink('./uploads/csv/' + file, function(err){
 		        					if(err) return res.send('some error occured');
 		        				});
 		   			 		});

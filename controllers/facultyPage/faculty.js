@@ -6,7 +6,6 @@ const User = require('mongoose').model('User');
 
 router.get('/faculty/:username', function(req, res) {
   const username = req.params.username; // session username is same as login username
-  console.log(username);
   User.findOne({
     username,
   })

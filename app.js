@@ -24,9 +24,10 @@ require('./models/userModel.js');
 
 /* Route */
 require('./controllers/landingPage/index.js').addRouter(app);
+require('./controllers/general/password.js').addRouter(app);
+
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
-require('./controllers/general/password.js').addRouter(app);
 require('./controllers/facultyPage/officeHour.js').addRouter(app);
 require('./controllers/facultyPage/course.js').addRouter(app);
 require('./controllers/facultyPage/marksheet.js').addRouter(app);
@@ -34,10 +35,13 @@ require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
+require('./controllers/facultyPage/resource.js').addRouter(app);
+
 require('./controllers/studentPage/student.js').addRouter(app);
 require('./controllers/studentPage/course.js').addRouter(app);
 require('./controllers/studentPage/marksheet.js').addRouter(app);
 require('./controllers/studentPage/profile.js').addRouter(app);
+require('./controllers/studentPage/resource.js').addRouter(app);
 
 // If no route match, shows 404 error
 app.get('*', function(req, res) {

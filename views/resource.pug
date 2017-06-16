@@ -1,0 +1,18 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+  each value, i in course.resources
+    form
+      a(href = '/download/'+value.path) !{value.fileName}
+      if status == 'faculty'
+        button(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/resource/"+value.path+'/delete') Delete
+      br
+  if status == 'faculty'
+    form.form-inline(action="/faculty/"+username+"/course/"+index+"/resource/upload" method="post" enctype="multipart/form-data")
+        .custom-file
+          input.cutom-file-input(type="file" name="file")
+          span.custom-file-control
+        input.ml-2.btn.btn-primary(type="submit" value="Upload")

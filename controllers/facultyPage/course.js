@@ -6,6 +6,8 @@ const Marksheet = require('mongoose').model('Marksheet');
 const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
 const deleteMarksheet = require('middlewares/deleteMarksheet');
+const fs = require('fs');
+const async = require('async');
 
 router.post('/faculty/:username/course/add', function(req, res ){
 	const username = req.params.username;
@@ -138,20 +140,27 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 			//Delete the marksheet and subdocuments
 			deleteMarksheet(user.courses[index].marksheet, user.courses[index], function(err){
 				if(err) return res.send(err);
-				console.log('I am here 5');
-				//Delete course 
-				const _id = user.courses[index];
-				Course.findOne({
-					_id
-				})
-				.remove(function(err){
-					if (err) return res.send('some error occured');
-				});
-
-				user.courses.splice(index, 1);
-				user.save(function(err){
-					if (err) return res.send('some error occured');
-					return res.redirect("/faculty/"+username);
+				//Delete resource
+				async.eachOf(user.courses[index].resources,function(value,i,callBack) {
+					fs.unlink(value.path, function(err) {
+						if(err) return callBack(err);
+						else return callBack(null);
+					});
+				}, function(err) {
+					if(err) return res.send(err);
+					//Delete course 
+					const _id = user.courses[index];
+					Course.findOne({
+						_id
+					})
+					.remove(function(err){
+						if (err) return res.send('some error occured');
+						user.courses.splice(index, 1);
+						user.save(function(err){
+							if (err) return res.send('some error occured');
+							return res.redirect("/faculty/"+username);
+						});
+					});
 				});
 			});
 		}
