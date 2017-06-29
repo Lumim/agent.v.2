@@ -20,6 +20,7 @@ require('./models/examModel.js');
 require('./models/marksheetModel.js');
 require('./models/courseModel.js');
 require('./models/userModel.js');
+require('./models/groupModel.js');
 
 
 /* Route */
@@ -37,6 +38,7 @@ require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
 require('./controllers/facultyPage/resource.js').addRouter(app);
+require('./controllers/facultyPage/group.js').addRouter(app);
 
 require('./controllers/studentPage/student.js').addRouter(app);
 require('./controllers/studentPage/course.js').addRouter(app);

@@ -12,6 +12,7 @@
 						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+faculty.username+"/course/"+index+"/marksheet") Marksheet
 						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+faculty.username+"/course/"+index+"/resource") Resource
 						button.btn.btn-info(type="submit", formmethod="get" formaction='/'+faculty.username+"/course/"+index+"/post") Post
+						button.btn.btn-info(type="submit", formmethod="get" formaction='/faculty/'+faculty.username+"/course/"+index+"/group") Group
 		.col-5
 			h3 Add Course
 			form(action="/faculty/"+faculty.username+"/course/add" method="post")

@@ -1,0 +1,21 @@
+extends flexLayout.pug
+block header
+	include layout.pug
+
+block content
+
+	form
+		label Group Name:
+		input(type="text", name="groupName" required)
+		br
+		label Task Title:
+		input(type="text", name="taskTitle")
+		br
+		label 
+			b Members:
+		br
+		each value, i in nominies
+			span !{value.name} (!{value.email}) 
+			input(type="checkbox", name="member", value=value)
+			br
+		button.mr-1.btn.btn-info(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/group/new/save") Save
