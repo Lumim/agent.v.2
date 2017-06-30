@@ -8,24 +8,6 @@ const requireLoginMW = require("middlewares/requireLogin");
 const deleteMarksheet = require('middlewares/deleteMarksheet');
 const async = require('async');
 
-router.get('/faculty/:username/course/:index/group', function(req, res ){
-	const username = req.params.username;
-	const index = req.params.index;
-	User.findOne({
-		username,
-	})
-	.populate({path: 'courses', 
-		populate:{path: 'groups',}})
-	.exec(function(err, faculty) {
-		if(err || !faculty) {
-			return res.send('Some error occured');
-		}
-		else {
-			return res.render("group.pug", {name: faculty.name, username: username, index: index, groups: faculty.courses[index].groups});
-		}
-	});
-});
-
 router.get('/faculty/:username/course/:index/group/new', function(req, res ){
 	const username = req.params.username;
 	const index = req.params.index;
@@ -61,6 +43,7 @@ router.post('/faculty/:username/course/:index/group/new/save', function(req, res
 	const index = req.params.index;
 	const group = new Group({
 	});
+	group.facultyEmail = req.session.email;
 	group.groupName = req.body.groupName;
 	group.taskTitle = req.body.taskTitle;
 	const members = req.body.member;
