@@ -7,9 +7,9 @@ block content
   each value, i in attachments
     form
       a(href = '/download/'+value.path) !{value.fileName}
-      button(type="submit", formmethod="post" formaction="/"+username+"/course/"+index+"/resource/"+value.path+'/delete') Delete
+      button(type="submit", formmethod="post" formaction="/"+username+"/group/"+id+"/attachment/"+value.path+'/delete') Delete
       br
-  form.form-inline(action="/"+username+"/course/"+index+"/attachemnt/upload" method="post" enctype="multipart/form-data")
+  form.form-inline(action="/"+username+"/group/"+id+"/attachment/upload" method="post" enctype="multipart/form-data")
       .custom-file
         input.cutom-file-input(type="file" name="file")
         span.custom-file-control

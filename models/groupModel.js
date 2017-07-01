@@ -26,7 +26,7 @@ const groupSchema = new mongoose.Schema({
 			type: String,
 		},
 	}],
-	duscussion: [{
+	discussion: [{
 		date: {
 			type: Date,
 			default: Date.now,

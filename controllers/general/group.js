@@ -7,6 +7,8 @@ const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
 const deleteMarksheet = require('middlewares/deleteMarksheet');
 const async = require('async');
+const multer = require('multer');
+const fs = require('fs');
 
 router.get('/:username/course/:index/group', function(req, res ){
 	const username = req.params.username;
@@ -90,11 +92,37 @@ router.get('/:username/group/:id/attachment', function(req, res ){
 			.exec(function(err, grp) {
 				if(!grp || err) return res.send('Some error occured');
 				else
-					return res.render("attachment.pug", {name: name, username: username, attachments: grp.attachments});
+					return res.render("attachment.pug", {name: name, username: username, id: id, attachments: grp.attachments});
 			});
 		}
 	});
 });
+
+router.get('/:username/group/:id/discussion', function(req, res ){
+	const username = req.session.username;
+	const name = req.session.name;
+	const email = req.session.email;
+	const id = req.params.id;
+
+	validUser(email, id, function(err) {
+		if(err) {
+			return res.send(err);
+		}
+		else {
+			Group.findOne({
+				_id: id,
+			})
+			.exec(function(err, grp) {
+				if(!grp || err) return res.send('Some error occured');
+				else
+					return res.render("discussion.pug", {name: name, username: username, email: email, id: id, discussion: grp.discussion});
+			});
+		}
+	});
+});
+
+
+
 
 module.exports = {
 	addRouter(app){

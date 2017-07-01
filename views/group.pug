@@ -11,7 +11,7 @@ block content
 			p !{value2} (!{value.membersEmail[j]})
 		form
 			button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/"+username+"/group/"+value._id+"/attachment") Attachment
-			button.btn.btn-info(type="submit", formmethod="get" formaction='/'+username+"/course/"+index+"/post") Discussion
+			button.btn.btn-info(type="submit", formmethod="get" formaction='/'+username+"/group/"+value._id+"/discussion") Discussion
 		hr
 	if status.toString() == 'faculty'
 		form

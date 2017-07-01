@@ -28,6 +28,8 @@ require('./controllers/landingPage/index.js').addRouter(app);
 require('./controllers/general/password.js').addRouter(app);
 require('./controllers/general/post.js').addRouter(app);
 require('./controllers/general/group.js').addRouter(app);
+require('./controllers/general/attachment.js').addRouter(app);
+require('./controllers/general/discussion.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/profile.js').addRouter(app);
