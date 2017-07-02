@@ -79,6 +79,45 @@ router.post('/faculty/:username/course/:index/group/new/save', function(req, res
 	});
 });
 
+router.post('/faculty/:username/course/:no/group/:id/member/:memberNo/delete', function(req, res ){
+	const username = req.params.username;
+	const no = req.params.no;
+	const id = req.params.id;
+	const memberNo = req.params.memberNo;
+	
+	Group.findOne({
+		_id: id
+	})
+	.exec(function(err, grp) {
+		if(err || !grp) return res.send('some error occured');
+		else {
+			grp.membersName.splice(no, 1);
+			grp.membersEmail.splice(no, 1);
+			grp.save(function(err) {
+				if (err) return res.send(err);
+				else return res.redirect('/'+username+'/course/'+no+'/group');
+			});
+		}
+	});
+});
+
+router.post('/faculty/:username/course/:no/group/:id/delete', function(req, res ){
+	const username = req.params.username;
+	const no = req.params.no;
+	const id = req.params.id;
+	
+	Group.findOne({
+		_id: id
+	})
+	.remove(function(err) {
+		if(err) return res.send('some error occured');
+		else {
+			return res.redirect('/'+username+'/course/'+no+'/group');
+		}
+	});
+});
+
+
 module.exports = {
 	addRouter(app){
 		app.use('/', [requireLoginMW], router);
