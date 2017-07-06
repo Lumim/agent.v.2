@@ -1,0 +1,19 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+  each value, i in files
+    form
+      span <b>Date:</b> !{value.date.toDateString()} 
+      span <b>Submitted by:</b> !{value.submittedBy.name} 
+      <b>File:</b> 
+      a(href = '/download/'+value.file.path) !{value.file.fileName}
+      br
+  if status == 'student'
+    form.form-inline(action="/student/"+username+"/course/"+index+"/submission/upload" method="post" enctype="multipart/form-data")
+        .custom-file
+          input.cutom-file-input(type="file" name="file")
+          span.custom-file-control
+        input.ml-2.btn.btn-primary(type="submit" value="Upload")
