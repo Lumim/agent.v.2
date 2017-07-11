@@ -7,6 +7,7 @@ const Exam = require('mongoose').model('Exam');
 const requireLoginMW = require('middlewares/requireLogin');
 const deleteMarksheet = require('middlewares/deleteMarksheet');
 const async = require('async');
+const sendEmail = require('mailer').sendEmail;
 
 
 router.get('/faculty/:username/course/:index/marksheet/student/add', function(req, res){
@@ -31,11 +32,44 @@ router.post('/faculty/:username/course/:index/marksheet/student/add/save', funct
 	.exec(function(err, faculty){
 		if(err) return res.send(err);
 		else{
-			Marksheet.update({_id: faculty.courses[index].marksheet._id}, {$push: {name: name, ID: ID, email: email}})
+			Marksheet.update({_id: faculty.courses[index].marksheet._id}, {$push: {name: name, ID: ID, email: email, courseStatus: 'pending'}})
 			.exec(function(err){
 				if(err) return res.send(err);
-				else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
-			})
+				User.findOne({
+					email: email,
+				})
+				.exec(function(err, student) {
+					if(err) return res.send(err);
+					if(!student) {
+						return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
+					}
+					else {
+						if (student.status.toString() != 'student') {
+							Marksheet.update({_id: faculty.courses[index].marksheet._id}, {$pull: {name: name, ID: ID, email: email, courseStatus: 'pending'}})
+							.exec(function(err) {
+								if(err) return res.send(err);
+								else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet'); // Need to Sent an alert
+							});
+						}
+						else {
+							User.update({_id: student._id},
+							{$push: {courses: faculty.courses[index]._id}}, function(err) {
+								if (err) return res.send(err);
+                                const to = [email];
+								const from = 'no-reply@agent-v2.com';
+				   				const subject = 'New Course Request';
+							    const text = 'Please login to your Agent account and response to the request';
+							    const html = '';
+							    return sendEmail({ to, from, subject, text, html }, function(err) {
+								   if (err) {
+								     return res.send(err);
+								   } else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
+		            			});
+							});
+						}
+					}
+				});
+			});
 		}
 	});
 });
@@ -62,29 +96,34 @@ router.post('/faculty/:username/course/:index/marksheet/student/:no/delete', fun
 	.exec(function(err, faculty){
 		if(err) return res.send(err);
 		else{
-			const marksheet = faculty.courses[index].marksheet;
-			marksheet.name.splice(index, 1);
-			marksheet.ID.splice(index, 1);
-			marksheet.email.splice(index, 1);
-			marksheet.attendance.splice(index, 1);
-			marksheet.total.splice(index, 1);
-			marksheet.grade.splice(index, 1);
-			marksheet.save(function(err){
-				if(err) return res.send(err);
-				async.parallel([
-				function(cb){deleteExam(faculty.courses[index].marksheet.quiz, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.mid, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.assignment, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.project, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.presentation, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.fieldWork, studentNo, cb)},
-				function(cb){deleteExam(faculty.courses[index].marksheet.final, studentNo, cb)},],
-				function(err){
-					console.log('After all delete');
-					if(err) return res.send(err);
-					else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
+			User.update({email: faculty.courses[index].marksheet.email[studentNo]},
+				{$pull: {courses: faculty.courses[index]._id}}, function(err) {
+					if (err) return res.send(err);
+					const marksheet = faculty.courses[index].marksheet;
+					marksheet.name.splice(studentNo, 1);
+					marksheet.ID.splice(studentNo, 1);
+					marksheet.courseStatus.splice(studentNo, 1);
+					marksheet.email.splice(studentNo, 1);
+					marksheet.attendance.splice(studentNo, 1);
+					marksheet.total.splice(studentNo, 1);
+					marksheet.grade.splice(studentNo, 1);
+					marksheet.save(function(err){
+						if(err) return res.send(err);
+						async.parallel([
+						function(cb){deleteExam(faculty.courses[index].marksheet.quiz, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.mid, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.assignment, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.project, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.presentation, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.fieldWork, studentNo, cb)},
+						function(cb){deleteExam(faculty.courses[index].marksheet.final, studentNo, cb)},],
+						function(err){
+							console.log('After all delete');
+							if(err) return res.send(err);
+							else return res.redirect('/faculty/'+username+'/course/'+index+'/marksheet');
+						});
+					});
 				});
-			});
 		}
 	});
 });

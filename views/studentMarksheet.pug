@@ -1,0 +1,74 @@
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	- var examTitle = function(x, no)
+		each exam, no2 in x
+			if no2 > 0
+				th
+					a(href="/student/"+username+"/course/"+index+"/marksheet/"+exam.url) !{exam.name}
+		if x.length > 0
+			th
+				a(href="/student/"+username+"/course/"+index+"/marksheet/"+x[0].url) !{x[0].name}(%)
+
+	block function
+		- var examBody = function(x, no){
+			each exam, no2 in x
+				if no2 > 0
+					td !{exam.marks[no]} !{exam.parcentage[no]}
+			if x.length > 0
+				td !{x[0].marks[no]}
+		- }
+
+	block marksheetBody
+		table.mt-3.table.table-striped.table-bordered.table-hover.table-condensed.table-responsive
+			thead
+				tr
+					th No.
+					th Name
+					th ID
+					th Email
+					th status
+					- let x = marksheet.quiz
+					- examTitle(x)
+					- x = marksheet.mid
+					- examTitle(x)
+					- x = marksheet.assignment
+					- examTitle(x)
+					- x = marksheet.project
+					- examTitle(x)
+					- x = marksheet.presentation
+					- examTitle(x)
+					- x = marksheet.fieldWork
+					- examTitle(x)
+					- x = marksheet.final
+					- examTitle(x)
+					th Attendance(%)
+					th Total(%)
+					th Grade
+			tbody
+				tr
+					td !{no+1}
+					td !{marksheet.name[no]}
+					td !{marksheet.ID[no]}
+					td !{marksheet.email[no]}
+					td !{marksheet.courseStatus[no]}
+					- x = marksheet.quiz
+					- examBody(x, no)
+					- x = marksheet.mid
+					- examBody(x, no)
+					- x = marksheet.assignment
+					- examBody(x, no)
+					- x = marksheet.project
+					- examBody(x, no)
+					- x = marksheet.presentation
+					- examBody(x, no)
+					- x = marksheet.fieldWork
+					- examBody(x, no)
+					- x = marksheet.final
+					- examBody(x, no)
+					td !{marksheet.attendance[no]}
+					td !{marksheet.total[no]}
+					td !{marksheet.grade[no]}

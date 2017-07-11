@@ -1,15 +1,17 @@
 const express = require('express');
 const User = require('mongoose').model('User'); // get
+const Course = require('mongoose').model('Course');
+const Marksheet = require('mongoose').model('Marksheet');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 router.get('/', function(req, res) {
   if (req.session && req.session.login) { // Already logged in
     const { username, status } = req.session;
-    if (status === 'faculty') {
+    if (status.toString() === 'faculty') {
       return res.redirect('/faculty/' + username);
     } else {
-      return res.send('Not impelemented yet');
+      return res.redirect('/student/' + username);
     }
   } else {
     return res.render('index');
@@ -41,10 +43,10 @@ router.post('/login', function(req, res) {
             req.session.name = user.name;
             req.session.username = username;
             req.session.status = user.status;
-            if (user.status === 'faculty') {
+            if (user.status.toString() === 'faculty') {
               return res.redirect('/faculty/' + username);
             } else {
-              return res.send('Not impelemented yet');
+              return res.redirect('/student/' + username);
             }
           } else {
             return res.send('Wrong password or username');
@@ -83,10 +85,37 @@ router.post('/signup', function(req, res) {
         if (err) {
           return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
         }
-        return res.send('Successfully signed in.');
+        else if (status.toString() === 'student') {
+          // Find out all the marksheets which has the email in their email array. 
+          Marksheet.find({
+            email,
+          }, function(err, docs) {
+            if (err) return res.send(err);
+            // Find out all the courses whose marksheets find in docs.
+            Course.find({
+              marksheet: docs,
+            }, function(err, courses) {
+              if (err) return res.send(err);
+              User.update({_id: user._id},
+                // Push one by one course into courses
+                {$pushAll: {courses: courses}}, function(err) {
+                  if (err) return res.send(err);
+                  else return res.send('Successfully signed in.');
+                });
+            });
+          });
+        }
+        else {
+          return res.send('Successfully signed in.');
+        }
       });
     }
   });
+});
+
+router.get('/logout', function(req, res) {
+  req.session.destroy();
+  return res.redirect('/');
 });
 
 module.exports = {

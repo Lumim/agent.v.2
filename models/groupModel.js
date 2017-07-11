@@ -1,38 +1,24 @@
 const mongoose = require("mongoose");
-const Marksheet = require("mongoose").model('Marksheet');
 
-const courseSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
-		maxlength: 100
-	},
-	code: {
-		type: String,
-		required: true,
-		maxlength: 20
-	},
-	section: {
-		type: String,
-		required: true,
-	},
-	classRoom: {
-		type: String,
-	},
-	marksheet: {
-		type: mongoose.Schema.Types.ObjectId,
-        ref: 'Marksheet'
-	},
-	facultyName: {
-		type: String,
-	},
+const groupSchema = new mongoose.Schema({
 	facultyEmail: {
 		type: String,
+		required: true,
 	},
-	facultyUsername: {
+	groupName: {
+		type: String,
+		required: true,
+	},
+	taskTitle: {
 		type: String,
 	},
-	resources: [{
+	membersName: [{
+		type: String,
+	}],
+	membersEmail: [{
+		type: String,
+	}],
+	attachments: [{
 		path: {
 			type: String,
 		},
@@ -40,7 +26,7 @@ const courseSchema = new mongoose.Schema({
 			type: String,
 		},
 	}],
-	post: [{
+	discussion: [{
 		date: {
 			type: Date,
 			default: Date.now,
@@ -73,10 +59,5 @@ const courseSchema = new mongoose.Schema({
 			},
 		}],
 	}],
-	groups: [{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Group',
-	}],
 });
-
-mongoose.model('Course', courseSchema); //set
+mongoose.model('Group', groupSchema); //set

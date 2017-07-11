@@ -16,6 +16,9 @@ const marksheetSchema = new mongoose.Schema({
         required: true,
         maxlength: 100,
     }],
+    courseStatus: [{
+        type: String,
+    }],
     quiz: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Exam',

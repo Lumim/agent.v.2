@@ -1,0 +1,46 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block content
+
+  div
+    h4 New Post:
+    form(action='/'+username+'/group/'+id+'/discussion/add', method='post')
+      .form-group
+        label.font-weight-bold Title:
+        input.form-control(type="text" name="title")
+      .form-group
+        label.font-weight-bold Message:
+        input.form-control(type="text" name="body")
+      .form-group
+        input.btn.btn-primary(type="submit" value="Post")
+        a.btn.btn-secondary.ml-2(href='/'+username+'/group/'+id+'/discussion', role="button") Cancel
+
+  each value, i in discussion
+    div
+      p !{value.date.toDateString()}
+      p By !{value.creatorName}
+      h5 !{value.title}
+      p !{value.body}
+      form
+        if value.creatorEmail.toString() === email
+          button(type="submit", formmethod="post" formaction='/'+username+"/group/"+id+"/discussion/"+i+'/delete') Delete
+      p Comments:
+      div
+        each value2, j in value.comment
+          p !{value2.date.toDateString()}
+          p By !{value2.creatorName}
+          p !{value2.body}
+          form
+            if value2.creatorEmail.toString() === email
+              button(type="submit", formmethod="post" formaction='/'+username+"/group/"+id+"/discussion/"+i+'/comment/'+j+'/delete') Delete
+        div
+          form(action='/'+username+'/group/'+id+'/discussion/'+i+'/comment/add', method='post')
+            .form-group
+              label.font-weight-bold New Comment:
+              input.form-control(type="text" name="body")
+            .form-group
+              input.btn.btn-primary(type="submit" value="Comment")
+              a.btn.btn-secondary.ml-2(href='/'+username+'/group/'+id+'/discussion', role="button") Cancel
+    hr

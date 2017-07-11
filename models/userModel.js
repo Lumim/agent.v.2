@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-// const Course = require("mongoose").model('Course');
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -12,6 +11,9 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		unique: true,
 		maxlength: 100,
+	},
+	ID: {
+		type: String,
 	},
 	username: {
 		type: String,

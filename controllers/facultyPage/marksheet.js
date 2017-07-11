@@ -14,6 +14,7 @@ const async = require('async');
 router.get('/faculty/:username/course/:index/marksheet', function(req, res){
 	const username = req.params.username;
 	const index = req.params.index;
+	//const status = new Array();
 	User.findOne({
 		username
 	})

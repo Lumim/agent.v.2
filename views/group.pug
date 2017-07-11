@@ -1,0 +1,21 @@
+extends flexLayout.pug
+block header
+	include layout.pug
+
+block content
+
+	each value, i in groups
+		p !{value.groupName}
+		p !{value.taskTitle}
+		each value2, j in value.membersName
+			spam !{value2} (!{value.membersEmail[j]})
+			form
+				button.mr-1.btn.btn-info(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/group/"+value._id+"/member/"+j+'/delete') Delete Member
+		form
+			button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/"+username+"/group/"+value._id+"/attachment") Attachment
+			button.btn.btn-info(type="submit", formmethod="get" formaction='/'+username+"/group/"+value._id+"/discussion") Discussion
+			button.mr-1.btn.btn-info(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/group/"+value._id+'/delete') Delete Group
+		hr
+	if status.toString() == 'faculty'
+		form
+			button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+username+"/course/"+index+"/group/new") New Group

@@ -57,6 +57,7 @@ block content
 					th Name
 					th ID
 					th Email
+					th status
 					- let x = marksheet.quiz
 					- examTitle(x)
 					- x = marksheet.mid
@@ -82,6 +83,7 @@ block content
 						td !{marksheet.name[no]}
 						td !{marksheet.ID[no]}
 						td !{marksheet.email[no]}
+						td !{marksheet.courseStatus[no]}
 						- x = marksheet.quiz
 						- examBody(x, no)
 						- x = marksheet.mid

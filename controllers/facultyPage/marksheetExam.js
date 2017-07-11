@@ -130,9 +130,9 @@ router.get('/faculty/:username/course/:index/marksheet/:exam-:no', function(req,
 		}
 		else{
 			if(no == 'total')
-				return res.render("exam", {name: user.name, username: username, index: index, type: 'total', exam: user.courses[index].marksheet[exam][0]});
+				return res.render("exam", {name: user.name, username: username, index: index, status: user.status, type: 'total', exam: user.courses[index].marksheet[exam][0]});
 			else
-				return res.render("exam", {name: user.name, username: username, index: index, type: 'single', exam: user.courses[index].marksheet[exam][no]});
+				return res.render("exam", {name: user.name, username: username, index: index, status: user.status, type: 'single', exam: user.courses[index].marksheet[exam][no]});
 		}
 	});
 });

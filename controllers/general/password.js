@@ -4,7 +4,11 @@ const User = require('mongoose').model('User');
 const bcrypt = require('bcryptjs');
 const requireLoginMW = require('middlewares/requireLogin');
 
-router.get('/faculty/:username/password/change', function(req, res){
+router.get('/:person/:username/password/change', function(req, res){
+	const person = req.params.person;
+	if(person.toString() != 'student' && person.toString() != 'faculty') {
+		return res.send('page no found');
+	}
 	const username = req.params.username;
 	User.findOne({
 		username
@@ -20,7 +24,11 @@ router.get('/faculty/:username/password/change', function(req, res){
 	});
 });
 
-router.post('/faculty/:username/password/change/save', function(req, res){
+router.post('/:person/:username/password/change/save', function(req, res){
+	const person = req.params.person;
+	if(person.toString() != 'student' && person.toString() != 'faculty') {
+		return res.send('page no found');
+	}
 	const email = req.session.email;
 	const currentPassword = req.body.currentPassword;
 	const newPassword = req.body.newPassword;
