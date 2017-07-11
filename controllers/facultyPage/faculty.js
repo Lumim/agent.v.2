@@ -14,9 +14,10 @@ router.get('/faculty/:username', function(req, res) {
     if (err || !faculty) {
       return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
     } else {
-      if ( req.session && req.session.login && req.session.username === req.params.username)
+      if ( req.session && req.session.login && req.session.username === req.params.username) {
+				faculty.isChair = true;
         return res.render('faculty', {faculty: faculty, whoIsLooking: 'faculty'}); // sending the whole faculty document
-      else {
+      } else {
         return res.render('faculty', {faculty: faculty, whoIsLooking: 'other'});
       }
     }

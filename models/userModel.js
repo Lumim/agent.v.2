@@ -45,6 +45,9 @@ const userSchema = new mongoose.Schema({
     department: {
 		type: String,
 	},
+  isChair: {
+		type: Boolean,
+  },
 	officeRoom: {
 		type: String,
 	},
