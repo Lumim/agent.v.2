@@ -20,7 +20,6 @@ require('./models/examModel.js');
 require('./models/marksheetModel.js');
 require('./models/courseModel.js');
 require('./models/userModel.js');
-require('./models/preRegistration.js');
 require('./models/groupModel.js');
 require('./models/submissionModel.js');
 
@@ -42,7 +41,6 @@ require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
-require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 require('./controllers/facultyPage/resource.js').addRouter(app);
 require('./controllers/facultyPage/group.js').addRouter(app);
 require('./controllers/facultyPage/submission.js').addRouter(app);
