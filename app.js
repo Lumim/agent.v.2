@@ -22,6 +22,7 @@ require('./models/courseModel.js');
 require('./models/userModel.js');
 require('./models/groupModel.js');
 require('./models/submissionModel.js');
+require('./models/preRegistration.js');
 
 
 /* Route */
@@ -45,7 +46,7 @@ require('./controllers/facultyPage/resource.js').addRouter(app);
 require('./controllers/facultyPage/group.js').addRouter(app);
 require('./controllers/facultyPage/submission.js').addRouter(app);
 
-require('./controllers/facultyPage/submission.js').addRouter(app);
+require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 
 require('./controllers/studentPage/student.js').addRouter(app);
 require('./controllers/studentPage/course.js').addRouter(app);
