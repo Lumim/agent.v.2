@@ -45,6 +45,8 @@ require('./controllers/facultyPage/resource.js').addRouter(app);
 require('./controllers/facultyPage/group.js').addRouter(app);
 require('./controllers/facultyPage/submission.js').addRouter(app);
 
+require('./controllers/facultyPage/submission.js').addRouter(app);
+
 require('./controllers/studentPage/student.js').addRouter(app);
 require('./controllers/studentPage/course.js').addRouter(app);
 require('./controllers/studentPage/marksheet.js').addRouter(app);
