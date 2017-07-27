@@ -22,12 +22,10 @@ const userSchema = new mongoose.Schema({
 	},
 	school: {
 		type: String,
-		required: true,
 		maxlength: 100,
 	},
 	country: {
 		type: String,
-		required: true,
 		maxlength: 100,
 	},
 	password: {
