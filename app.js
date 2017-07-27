@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const path = require('path');
 const rootPath = __dirname;
+const flash = require('express-flash');
 
 app.set('port', 3000);
 app.set('view engine', 'pug');
@@ -14,6 +15,7 @@ app.use('/public', express.static(path.join(rootPath, '/public')));
 require('./configuration/bodyParser.js').addBodyParser(app);
 require('./configuration/database.js');
 require('./configuration/session.js').addSession(app);
+app.use(flash());
 
 /* Model */
 require('./models/examModel.js');
@@ -52,10 +54,18 @@ require('./controllers/studentPage/profile.js').addRouter(app);
 require('./controllers/studentPage/resource.js').addRouter(app);
 require('./controllers/studentPage/submission.js').addRouter(app);
 
+//Express error handling middleware
+app.use(function(err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
+  next();
+});
+
 // If no route match, shows 404 error
 app.get('*', function(req, res) {
 	return res.status(404).send('Page not found\n');
 });
+
 
 server.listen(app.get('port'), function() {
 	console.log(`Server running at port ${app.get('port')}`);

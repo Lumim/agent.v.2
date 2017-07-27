@@ -5,7 +5,11 @@ block header
 
 block content
 	.row.align-items-center
-		.col
-			h2 Agent is a class room management system with many new features.
-		.col
+		.col-6
+			h2 Agent is an online class room management system with many new features.
+		.col-6
 			include signup.pug
+
+block scripts
+	script(src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js")
+	script(src="../public/my_scripts/index_script.js")

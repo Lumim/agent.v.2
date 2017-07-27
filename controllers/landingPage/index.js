@@ -4,8 +4,9 @@ const Course = require('mongoose').model('Course');
 const Marksheet = require('mongoose').model('Marksheet');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
+const flash = require('middlewares/flash');
 
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
   if (req.session && req.session.login) { // Already logged in
     const { username, status } = req.session;
     if (status.toString() === 'faculty') {
@@ -86,11 +87,11 @@ router.post('/signup', function(req, res) {
           return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
         }
         else if (status.toString() === 'student') {
-          // Find out all the marksheets which has the email in their email array. 
+          // Find out all the marksheets which has the email in their email array.
           Marksheet.find({
             email,
           }, function(err, docs) {
-            if (err) return res.send(err);
+            if(err) return res.send(err);
             // Find out all the courses whose marksheets find in docs.
             Course.find({
               marksheet: docs,
@@ -120,6 +121,6 @@ router.get('/logout', function(req, res) {
 
 module.exports = {
   addRouter(app) {
-    app.use('/', router);
+    app.use('/', [flash], router);
   },
 };

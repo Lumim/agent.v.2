@@ -1,23 +1,37 @@
 doctype html
 html(lang='en')
   head
-    title Agent V2
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
 
-    link(rel="stylesheet", href="/public/vendor/bootstrap/css/bootstrap.css", media="screen", title="no title", charset="utf-8")
-    link(rel="stylesheet", href="/public/my_style.css", media="screen", title="no title", charset="utf-8")
+    title Agent
 
-  block head
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous")
+    link(rel="stylesheet", href="/public/my_styles/flex_layout_style.css", media="screen", title="no title", charset="utf-8")
+    block links
 
   body
-
     block header
 
+    block flash
+      if flash.success
+        div.alert.alert-success.text-center(role="alert") !{flash.success}
+          button.close(type="button" data-dismiss="alert" aria-label="Close")
+            span(aria-hidden="true") &times;
+      else if flash.error
+        div.alert.alert-danger.text-center(role="alert") !{flash.error}
+          button.close(type="button" data-dismiss="alert" aria-label="Close")
+            span(aria-hidden="true") &times;
+
     .container
-      .px-2
+      .mx-3.px-2
         block content
 
       include footer.pug
 
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     block scripts
 
     
