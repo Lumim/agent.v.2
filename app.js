@@ -24,6 +24,7 @@ require('./models/courseModel.js');
 require('./models/userModel.js');
 require('./models/groupModel.js');
 require('./models/submissionModel.js');
+require('./models/fileModel.js');
 
 
 /* Route */
@@ -57,13 +58,13 @@ require('./controllers/studentPage/submission.js').addRouter(app);
 //Express error handling middleware
 app.use(function(err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something broke!');
+  res.status(500).render('error', { title: '500', message: 'ReferenceError: error is not defined.' });
   next();
 });
 
 // If no route match, shows 404 error
 app.get('*', function(req, res) {
-	return res.status(404).send('Page not found\n');
+	return res.status(404).render('error', { title: '404', message: 'Page not found.' });
 });
 
 

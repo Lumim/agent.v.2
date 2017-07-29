@@ -1,0 +1,10 @@
+.delete {
+	color: red;
+}
+a.delete:hover {
+	color: red;
+}
+
+ul {
+	list-style: none;
+}

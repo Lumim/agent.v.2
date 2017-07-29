@@ -27,7 +27,8 @@ $(document).ready(function(){
                         $('#success-message').css('display', 'block');
                         setTimeout(function() {
                           $('#success-message').fadeOut('fast');
-                        }, 3000); // <-- time in milliseconds
+                        }, 5000); // <-- time in milliseconds
+                        $("#signup_form")[0].reset();
                       }
                       else {
                         if (data['name'] === false) {

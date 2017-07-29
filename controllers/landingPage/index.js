@@ -2,6 +2,7 @@ const express = require('express');
 const User = require('mongoose').model('User'); // get
 const Course = require('mongoose').model('Course');
 const Marksheet = require('mongoose').model('Marksheet');
+const File = require('mongoose').model('File');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
 const flash = require('middlewares/flash');
@@ -19,7 +20,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.post('/login', function(req, res) {
+router.post('/login', function(req, res, next) {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -29,14 +30,15 @@ router.post('/login', function(req, res) {
     })
     .exec(function(err, user) {
       if (err) {
-        return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
+        return next(err);  //passing to 500 error
       }
       if (!user) {
-        return res.send('Wrong password or username');
+        req.flash('error', 'Wrong password or username');
+        return res.redirect('/');
       } else {
         bcrypt.compare(password, user.password, function(err, result) {
           if (err) {
-            return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
+            return next(err);
           }
           if (result === true) {
             req.session.login = true;
@@ -50,7 +52,8 @@ router.post('/login', function(req, res) {
               return res.redirect('/student/' + username);
             }
           } else {
-            return res.send('Wrong password or username');
+            req.flash('error', 'Wrong password or username');
+            return res.redirect('/');
           }
         });
       }
@@ -109,7 +112,7 @@ router.post('/signup', function(req, res, next) {
       ],
     })
     .exec(function(err, user) {
-      if (err) next(err);
+      if (err) return next(err);
       if (user === null) {
         data.usename = true;
         // Create a new user if everything is valid.
@@ -117,40 +120,49 @@ router.post('/signup', function(req, res, next) {
           // Autogen salt and hash
           bcrypt.hash(password, require('../../secret.js').round, function(err, hash) {
             if (err) {
-              next(err);
+              return next(err);
             } else {
-              const user = new User({
-                name,
-                email,
-                username,
-                password: hash,
-                status,
+              const file = new File({
+                path: 'public/image/avatar.jpeg',
+                name: 'avatar.jpeg',
+                username: username,
               });
-              user.save(function(err) {
-                if (err) {
-                  next(err);
-                } else if (status.toString() === 'student') {
-                  // Find out all the marksheets which has the email in their email array.
-                  Marksheet.find({
-                    email,
-                  }, function(err, docs) {
-                    if (err) next(err);
-                    // Find out all the courses whose marksheets find in docs.
-                    Course.find({
-                      marksheet: docs,
-                    }, function(err, courses) {
-                      if (err) next(err);
-                      User.update({_id: user._id},
-                        // Push one by one course into courses
-                        {$pushAll: {courses: courses}}, function(err) {
-                          if (err) next(err);
-                          else return res.send(data);
-                        });
+              file.save(function(err) {
+                if (err) return next(err);
+                const user = new User({
+                  image: file._id,
+                  name,
+                  email,
+                  username,
+                  password: hash,
+                  status,
+                });
+                user.save(function(err) {
+                  if (err) {
+                    return next(err);
+                  } else if (status.toString() === 'student') {
+                    // Find out all the marksheets which has the email in their email array.
+                    Marksheet.find({
+                      email,
+                    }, function(err, docs) {
+                      if (err) return next(err);
+                      // Find out all the courses whose marksheets find in docs.
+                      Course.find({
+                        marksheet: docs,
+                      }, function(err, courses) {
+                        if (err) return next(err);
+                        User.update({_id: user._id},
+                          // Push one by one course into courses
+                          {$pushAll: {courses: courses}}, function(err) {
+                            if (err) return next(err);
+                            else return res.send(data);
+                          });
+                      });
                     });
-                  });
-                } else {
-                  return res.send(data);
-                }
+                  } else {
+                    return res.send(data);
+                  }
+                });
               });
             }
           });
