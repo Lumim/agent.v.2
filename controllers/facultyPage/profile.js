@@ -4,7 +4,9 @@ const User = require('mongoose').model('User');
 const File = require('mongoose').model('File');
 const requireLogin = require('middlewares/requireLogin');
 const matchUsername = require('middlewares/matchUsername');
+const flash = require('middlewares/flash');
 const multer = require('multer');
+const bcrypt = require('bcryptjs');
 const fs = require('fs');
 
 router.get('/profile', function(req, res, next) {
@@ -66,6 +68,7 @@ router.post('/profile/image',
 router.post('/profile/name', function(req, res, next) {
 	const username = req.session.username;
 	const name = req.body.name;
+	req.session.name = name;
 
 	User.update({username: username}, 
 		{$set: {name: name}}, function(err) {
@@ -105,6 +108,52 @@ router.post('/profile/education', function(req, res, next) {
 		});
 });
 
+router.post('/profile/experience', function(req, res, next) {
+	const username = req.session.username;
+	const fromYear = req.body.fromYear;
+	const toYear = req.body.toYear;
+	let timePeriod = '';
+	if(fromYear != '' && toYear != '')
+		timePeriod = fromYear + ' - ' + toYear;
+
+	User.update({username: username}, 
+		{$push: {experience: {
+			title: req.body.title,
+			company: req.body.company,
+			timePeriod: timePeriod,
+		}}}, function(err) {
+			if (err) next(err);
+			return res.send(null); 
+		});
+});
+
+router.post('/profile/aap', function(req, res, next) {
+	const username = req.session.username;
+
+	User.update({username: username}, 
+		{$push: {awardsAccomplishmentsAndPapers: {
+			title: req.body.title,
+			description: req.body.description,
+			year: req.body.year,
+		}}}, function(err) {
+			if (err) next(err);
+			return res.send(null); 
+		});
+});
+
+router.post('/profile/office', function(req, res, next) {
+	const username = req.session.username;
+
+	User.update({username: username}, 
+		{$push: {office: {
+			room: req.body.room,
+			timePeriod: req.body.timePeriod,
+		}}}, function(err) {
+			if (err) next(err);
+			return res.send(null); 
+		});
+});
+
 router.post('/profile/delete', function(req, res, next) {
 	const username = req.session.username;
 	const type = req.body.type;
@@ -123,52 +172,54 @@ router.post('/profile/delete', function(req, res, next) {
 	});
 });
 
-/*
-router.get('/faculty/:username/profile/edit', function(req, res){
-	const username = req.params.username;
-	User.findOne({
-		username
-	})
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			return res.render("profileEdit", user);
-		}
-	});
+router.get('/profile/password', function(req, res, next) {
+	const name = req.session.name;
+	const username = req.session.username;
+	return res.render('password', {user: {name: name, username: username}});
 });
 
-router.post('/faculty/:username/profile/edit/save', function(req, res){
-	const username = req.params.username;
-	User.findOne({
-		username
-	})
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			user.name = req.body.name;
-			user.school = req.body.school;
-			user.country = req.body.country;
-			user.initial = req.body.initial;
-			user.department = req.body.department;
-			user.officeRoom = req.body.officeRoom;
+router.post('/profile/password', function(req, res, next) {
+	const username = req.session.username;
+	const cpassword = req.body.cpassword;
+	const npassword = req.body.npassword;
+	const rpassword = req.body.rpassword;
+  	const data = {};
 
-			user.save(function(err){
-				if (err) return res.send('some error occured');
-				return res.redirect("/faculty/"+username);
-			});
-		}
-	});
+  	User.findOne({
+  		username,
+  	})
+  	.exec(function(err, user) {
+  		if (err) return next (err);
+  		bcrypt.compare(cpassword, user.password, function(err, result) {
+        	if (err) {
+        		return next(err);
+        	}
+        	data.cpassword = result;
+        	data.npassword = (!(npassword.length < 6 || npassword.lenghth > 30));
+        	data.rpassword = (npassword === rpassword);
+
+        	if(data.cpassword && data.npassword && data.rpassword) {
+        		bcrypt.hash(npassword, require('../../secret.js').round, function(err, hash) {
+        			if (err) return next(err);
+        			user.password = hash;
+        			user.save(function(err) {
+        				if (err) return next(err);
+        				// Flash is not working here
+        				req.flash('success', 'Password successfully changed.');
+        				req.session.destroy();
+        				return res.send(data);
+        			})
+        		});
+        	}
+        	else {
+        		return res.send(data);
+        	}
+        });
+  	});
 });
-*/
 
 module.exports = {
 	addRouter(app){
-		app.use('/user/:username', [requireLogin, matchUsername], router);
+		app.use('/user/:username', [requireLogin, matchUsername, flash], router);
 	}
 }

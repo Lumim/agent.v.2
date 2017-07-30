@@ -36,6 +36,7 @@ block content
 						a.ml-4.ID(href='javascript:;')
 							i.fa.fa-pencil-square-o(aria-hidden="true")
 			p <b>Status:</b>	!{user.status}
+			a(href='/user/'+user.username+'/profile/password') Change Password
 	.card
 		.card-block
 			.row
@@ -58,10 +59,78 @@ block content
 								if val.timePeriod != ''
 									span !{val.timePeriod} <br>
 							.col-2
-								a.delete.education(href='javascript:;')
-									i.fa.fa-times.red-cross
+								a.delete(href='javascript:;')
+									i.fa.fa-times.delete
 						hr
-
+	if user.status === 'faculty'
+		.card
+			.card-block
+				.row
+					.col-10
+						h4 Experience:
+					.col-2
+						a.ml-2(data-toggle="modal" data-target="#experienceModal" href='javascript:;')
+							i.fa.fa-plus(aria-hidden="true")
+				ul.experience
+					each val, index in user.experience
+						li
+							.row
+								.col-10
+									if val.title != ''
+										span <b>!{val.title}</b> <br>
+									if val.company != ''
+										span !{val.company} <br>
+									if val.timePeriod != ''
+										span !{val.timePeriod} <br>
+								.col-2
+									a.delete(href='javascript:;')
+										i.fa.fa-times.delete
+							hr
+	.card
+		.card-block
+			.row
+				.col-10
+					h4 Awards, Accomplishments and Papers:
+				.col-2
+					a.ml-2(data-toggle="modal" data-target="#aapModal" href='javascript:;')
+						i.fa.fa-plus(aria-hidden="true")
+			ul.aap
+				each val, index in user.awardsAccomplishmentsAndPapers
+					li
+						.row
+							.col-10
+								if val.title != ''
+									span <b>!{val.title}</b> <br>
+								if val.description != ''
+									span !{val.description} <br>
+								if val.year != ''
+									span !{val.year} <br>
+							.col-2
+								a.delete(href='javascript:;')
+									i.fa.fa-times.delete
+						hr
+	if user.status === 'faculty'
+		.card
+			.card-block
+				.row
+					.col-10
+						h4 Office:
+					.col-2
+						a.ml-2(data-toggle="modal" data-target="#officeModal" href='javascript:;')
+							i.fa.fa-plus(aria-hidden="true")
+				ul.office
+					each val, index in user.office
+						li
+							.row
+								.col-10
+									if val.room != ''
+										span <b>!{val.room}</b> <br>
+									if val.timePeriod != ''
+										span !{val.timePeriod} <br>
+								.col-2
+									a.delete(href='javascript:;')
+										i.fa.fa-times.delete
+							hr
 
 	.modal.fade#educationModal(role="dialog" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
@@ -82,6 +151,89 @@ block content
 				.modal-footer
 					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 					button.education(type="button" class="btn btn-primary" data-dismiss="modal") Save
+
+	.modal.fade#experienceModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5 Add Experience
+				.modal-body
+					.form-group
+						input#title(type="text" placeholder="Title").form-control
+					.form-group
+						input#company(type="text" placeholder="Company").form-control
+					.form-group
+						input#experienceFromYear(type="text" placeholder="From Year").form-control
+					.form-group
+						input#experienceToYear(type="text" placeholder="To Year/ Current").form-control
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button.experience(type="button" class="btn btn-primary" data-dismiss="modal") Save
+
+	.modal.fade#aapModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5 Add Awards, Accomplishment or Paper
+				.modal-body
+					.form-group
+						input#aaptitle(type="text" placeholder="Title").form-control
+					.form-group
+						textarea#description(placeholder="Description").form-control
+					.form-group
+						input#year(type="text" placeholder="Year").form-control
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button.aap(type="button" class="btn btn-primary" data-dismiss="modal") Save
+
+	.modal.fade#officeModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Add Office Place and Time
+				.modal-body
+					.form-group
+						input#room(type="text" placeholder="Room").form-control
+					.form-group
+						select#day.form-control
+							option(value="Sunday") Sunday
+							option(value="Monday") Monday
+							option(value="Tuesday") Tuesday
+							option(value="Wednesday") Wednesday
+							option(value="Thursday") Thursday
+							option(value="Friday") Friday
+							option(value="Saturday") Saturday
+					.form-group
+						span.mr-1 From
+						select#startHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#startMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm1
+								option(value="am") am
+								option(value="pm") pm
+						span.ml-2.mr-1 To
+						select#endHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#endMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm2
+								option(value="am") am
+								option(value="pm") pm
+
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button.office(type="button" class="btn btn-primary" data-dismiss="modal") Save
 
 
 

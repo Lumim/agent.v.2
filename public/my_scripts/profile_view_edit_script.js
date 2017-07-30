@@ -1,10 +1,28 @@
 $(document).ready(function(){
-
-    var final = $("ul.education");
-    final.off('click');
-    final.on('click', 'li a', function () {
-        var idx = final.children().index($(this).closest('li'));
+    // Initiate some actions
+    var educationList = $("ul.education");
+    //educationList.off('click');
+    educationList.on('click', 'li a', function () {
+        var idx = educationList.children().index($(this).closest('li'));
         deleteFunction('education', idx, $(this).closest('li'));
+    });
+
+    var experienceList = $("ul.experience");
+    experienceList.on('click', 'li a', function () {
+        var idx = experienceList.children().index($(this).closest('li'));
+        deleteFunction('experience', idx, $(this).closest('li'));
+    });
+
+    var aapList = $("ul.aap");
+    aapList.on('click', 'li a', function () {
+        var idx = aapList.children().index($(this).closest('li'));
+        deleteFunction('awardsAccomplishmentsAndPapers', idx, $(this).closest('li'));
+    });
+
+    var officeList = $("ul.office");
+    officeList.on('click', 'li a', function () {
+        var idx = officeList.children().index($(this).closest('li'));
+        deleteFunction('office', idx, $(this).closest('li'));
     });
 
     $('#uploadImage').submit(function() {
@@ -88,6 +106,8 @@ $(document).ready(function(){
                         i.classList.add('delete');
 
                         const a = document.createElement("a");
+                        a.classList.add('delete');
+                        a.setAttribute('href', 'javascript:;'); //attr() doesn't work
                         a.append(i);
 
                         const col10 = document.createElement('div');
@@ -129,12 +149,217 @@ $(document).ready(function(){
                         newItem.appendChild(row);
                         newItem.appendChild(hr);
                         
-                        $(final).append(newItem);
-                        /*
-                        $("ul.education").append(newItem).on('click', 'li a', function() {
-                             alert('Please reload the page to delete');
-                        });
-                        */
+                        $(educationList).append(newItem);
+                    }
+                }
+            });
+            $(this).html('Submit');      
+        }
+    });
+
+    $('button.experience').click(function() {
+        const title = $('#title').val();
+        const company = $('#company').val();
+        const fromYear = $('#experienceFromYear').val();
+        const toYear = $('#experienceToYear').val();
+        if(!(title === '' && company === '' && fromYear === '' && toYear === '')) {
+            $(this).html('Submitting..');
+            const data = {};
+            data.title = title;
+            data.company = company;
+            data.fromYear = fromYear;
+            data.toYear = toYear;
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/profile/experience',         
+                success: function(data, status) {
+                    if (status === 'success') {
+                        const i = document.createElement("i");
+                        i.classList.add("fa");
+                        i.classList.add("fa-times");
+                        i.classList.add('delete');
+
+                        const a = document.createElement("a");
+                        a.classList.add('delete');
+                        a.setAttribute('href', 'javascript:;'); //attr() doesn't work
+                        a.append(i);
+
+                        const col10 = document.createElement('div');
+                        col10.classList.add('col-10');
+                        
+                        if(title != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = "<b>" + title + "</b>" + "<br/>";
+                            col10.appendChild(span);
+                        }
+                        if(company != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = company + "<br/>";
+                            col10.appendChild(span);
+                        }
+                        if(fromYear != '' && toYear != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = fromYear + ' - ' + toYear + "<br/>";
+                            col10.appendChild(span);
+                        }
+
+                        const col2 = document.createElement('div');
+                        col2.classList.add('col-2');
+                        col2.appendChild(a);
+
+                        const row = document.createElement('div');
+                        row.classList.add('row');
+                        row.appendChild(col10);
+                        row.appendChild(col2);
+
+                        const hr = document.createElement('hr');
+
+                        const newItem = document.createElement("li");
+                        newItem.appendChild(row);
+                        newItem.appendChild(hr);
+                        
+                        $(experienceList).append(newItem);
+                    }
+                }
+            });
+            $(this).html('Submit');      
+        }
+    });
+
+    $('button.aap').click(function() {
+        const title = $('#aaptitle').val();
+        const description = $('#description').val();
+        const year = $('#year').val();
+        if(!(title === '' && description === '' && year === '')) {
+            $(this).html('Submitting..');
+            const data = {};
+            data.title = title;
+            data.description = description;
+            data.year = year;
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/profile/aap',         
+                success: function(data, status) {
+                    if (status === 'success') {
+                        const i = document.createElement("i");
+                        i.classList.add("fa");
+                        i.classList.add("fa-times");
+                        i.classList.add('delete');
+
+                        const a = document.createElement("a");
+                        a.classList.add('delete');
+                        a.setAttribute('href', 'javascript:;'); //attr() doesn't work
+                        a.append(i);
+
+                        const col10 = document.createElement('div');
+                        col10.classList.add('col-10');
+                        
+                        if(title != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = "<b>" + title + "</b>" + "<br/>";
+                            col10.appendChild(span);
+                        }
+                        if(description != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = description + "<br/>";
+                            col10.appendChild(span);
+                        }
+                        if(year != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = year + "<br/>";
+                            col10.appendChild(span);
+                        }
+
+                        const col2 = document.createElement('div');
+                        col2.classList.add('col-2');
+                        col2.appendChild(a);
+
+                        const row = document.createElement('div');
+                        row.classList.add('row');
+                        row.appendChild(col10);
+                        row.appendChild(col2);
+
+                        const hr = document.createElement('hr');
+
+                        const newItem = document.createElement("li");
+                        newItem.appendChild(row);
+                        newItem.appendChild(hr);
+                        
+                        $(aapList).append(newItem);
+                    }
+                }
+            });
+            $(this).html('Submit');      
+        }
+    });
+
+    $('button.office').click(function() {
+        const room = $('#room').val();
+        const day = $('#day').val();
+        const startHour = $('#startHour').val();
+        const startMin = $('#startMin').val();
+        const amOrPm1 = $('#amOrPm1').val();
+        const endHour = $('#endHour').val();
+        const endMin = $('#endMin').val();
+        const amOrPm2 = $('#amOrPm2').val();
+        const timePeriod = day+': '+startHour+':'+startMin+' '+amOrPm1+' - '+endHour+':'+endMin+' '+amOrPm2;
+
+        if(!(room === '')) {
+            $(this).html('Submitting..');
+            const data = {};
+            data.room = room;
+            data.timePeriod = timePeriod;
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/profile/office',         
+                success: function(data, status) {
+                    if (status === 'success') {
+                        const i = document.createElement("i");
+                        i.classList.add("fa");
+                        i.classList.add("fa-times");
+                        i.classList.add('delete');
+
+                        const a = document.createElement("a");
+                        a.classList.add('delete');
+                        a.setAttribute('href', 'javascript:;'); //attr() doesn't work
+                        a.append(i);
+
+                        const col10 = document.createElement('div');
+                        col10.classList.add('col-10');
+                        
+                        if(room != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = "<b>" + room + "</b>" + "<br/>";
+                            col10.appendChild(span);
+                        }
+                        if(timePeriod != '') {
+                            var span = document.createElement('span');
+                            span.innerHTML = timePeriod + "<br/>";
+                            col10.appendChild(span);
+                        }
+    
+                        const col2 = document.createElement('div');
+                        col2.classList.add('col-2');
+                        col2.appendChild(a);
+
+                        const row = document.createElement('div');
+                        row.classList.add('row');
+                        row.appendChild(col10);
+                        row.appendChild(col2);
+
+                        const hr = document.createElement('hr');
+
+                        const newItem = document.createElement("li");
+                        newItem.appendChild(row);
+                        newItem.appendChild(hr);
+                        
+                        $(officeList).append(newItem);
                     }
                 }
             });
@@ -143,7 +368,6 @@ $(document).ready(function(){
     });
 
     const deleteFunction = function(type, index, item) {
-        console.log(index);
         const data = {};
         data.index = index;
         data.type = type;
@@ -159,25 +383,4 @@ $(document).ready(function(){
             }
         });
     }
-
-    /*
-    $('a.delete.education').click(function() {
-        const item = $(this).closest('li');  //list item
-        const index = item.index();
-        const data = {};
-        data.index = index;
-        data.type = 'education';
-        $.ajax({
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            url: postPath+'/profile/delete',         
-            success: function(data, status) {
-                if (status === 'success') {
-                    $('ul.education li').eq(index).remove();
-                }
-            }
-        });
-    });
-    */
 });

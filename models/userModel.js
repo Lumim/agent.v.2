@@ -51,8 +51,16 @@ const userSchema = new mongoose.Schema({
 			type: String,
 		},
 	}],
-	awardsAndAccomplishment: [{
-		type: String,
+	awardsAccomplishmentsAndPapers: [{
+		title: {
+			type: String,
+		},
+		description: {
+			type: String,
+		},
+		year: {
+			type: String,
+		},
 	}],
 	office: [{  // Only for teacher
 		room: {
