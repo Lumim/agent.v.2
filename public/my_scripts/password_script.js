@@ -33,6 +33,6 @@ $(document).ready(function(){
                   }   
               }
           });
-          $("#signup-button").html('Submit');
+    $("#password-button").html('Submit');
   });
 });
