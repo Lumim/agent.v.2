@@ -9,12 +9,7 @@ const flash = require('middlewares/flash');
 
 router.get('/', function(req, res, next) {
   if (req.session && req.session.login) { // Already logged in
-    const { username, status } = req.session;
-    if (status.toString() === 'faculty') {
-      return res.redirect('/faculty/' + username);
-    } else {
-      return res.redirect('/student/' + username);
-    }
+    return res.redirect('/user/'+req.session.username);
   } else {
     return res.render('index');
   }
