@@ -159,6 +159,11 @@ router.post('/profile/delete', function(req, res, next) {
 	const type = req.body.type;
 	const index = req.body.index;
 
+	if(type!='education' && type!='experience' && type!='awardsAccomplishmentsAndPapers' && 
+		type!='office') {
+		return next();
+	}
+
 	User.findOne({
 		username,
 	})

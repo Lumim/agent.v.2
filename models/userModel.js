@@ -78,27 +78,6 @@ const userSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Course',
 	}],
-	// Expired
-	school: {
-		type: String,
-		maxlength: 100,
-	},
-	country: {
-		type: String,
-		maxlength: 100,
-	},
-	initial: {
-		type: String,
-	},
-    department: {
-		type: String,
-	},
-	officeRoom: {
-		type: String,
-	},
-	officeHours: [{
-		type: String,
-	}],
 });
 
 mongoose.model('User', userSchema); // set

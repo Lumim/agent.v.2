@@ -102,7 +102,7 @@ $(document).ready(function(){
                     if (status === 'success') {
                         const i = document.createElement("i");
                         i.classList.add("fa");
-                        i.classList.add("fa-times");
+                        i.classList.add("fa-trash");
                         i.classList.add('delete');
 
                         const a = document.createElement("a");
@@ -178,7 +178,7 @@ $(document).ready(function(){
                     if (status === 'success') {
                         const i = document.createElement("i");
                         i.classList.add("fa");
-                        i.classList.add("fa-times");
+                        i.classList.add("fa-trash");
                         i.classList.add('delete');
 
                         const a = document.createElement("a");
@@ -247,7 +247,7 @@ $(document).ready(function(){
                     if (status === 'success') {
                         const i = document.createElement("i");
                         i.classList.add("fa");
-                        i.classList.add("fa-times");
+                        i.classList.add("fa-trash");
                         i.classList.add('delete');
 
                         const a = document.createElement("a");
@@ -322,7 +322,7 @@ $(document).ready(function(){
                     if (status === 'success') {
                         const i = document.createElement("i");
                         i.classList.add("fa");
-                        i.classList.add("fa-times");
+                        i.classList.add("fa-trash");
                         i.classList.add('delete');
 
                         const a = document.createElement("a");

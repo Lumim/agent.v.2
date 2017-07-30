@@ -1,15 +1,104 @@
 extends flexLayout.pug
 
+block links
+	link(href="/public/my_styles/course_style.css", rel='stylesheet')
+
 block header
 	include layout.pug
 
 block content
-	button.btn.btn-primary.btn-lg(type="button") Large button
+	if user.status === 'faculty'
+		.row
+			.col-4.push-md-10
+				button.btn.btn-primary.btn-lg(type="button" data-toggle="modal" data-target="#courseModal" href='javascript:;') New Course
+		h3 Active Courses
+		each val, index in user.courses
+			if val.status === 'active'
+				.card
+					.card-block
+						.row
+							.col-11
+								a(href='/user/'+user.username+'/course/'+index)
+									h5 <b>!{val.nickName}</b>
+							if user.status === 'faculty'
+								.col-1
+									a.close(href='javascript:;' title="Close")
+										i.fa.fa-times(aria-hidden="true")
+						a.mr-3(href='/user/'+user.username+'/course/'+index+'/marksheet') Marksheet
+						a.mr-3(href='/user/'+user.username+'/course/'+index+'/group') Group
+						a.mr-3(href='/user/'+user.username+'/course/'+index+'/resource') Resource
+						a.mr-3(href='/user/'+user.username+'/course/'+index+'/submission') Submission
+						a.mr-3(href='/user/'+user.username+'/course/'+index+'/post') Post
+						if user.status === 'faculty'
+							a.delete(href='javascript:;' title="Delete")
+								i.fa.fa-trash(aria-hidden="true")
+		h3.mt-5 Archived Courses
+
+	.modal.fade#courseModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5 Create New Course
+				.modal-body
+					.form-group
+						input#nickName(type="text" placeholder="Course Nick Name").form-control
+						small.ml-2 Eg: CSE482-SEC2-SUMMER17
+					.form-group
+						input#code(type="text" placeholder="Course Code").form-control
+					.form-group
+						input#fullName(type="text" placeholder="Course Full Name").form-control
+					.form-group
+						input#section(type="text" placeholder="Section").form-control
+					.form-group
+						input#classRoom(type="text" placeholder="Class Room").form-control
+					.form-group
+						span Class Time <br>
+						ul#class-time-list
+						select#day.mr-2
+							option(value="Sunday") Sunday
+							option(value="Monday") Monday
+							option(value="Tuesday") Tuesday
+							option(value="Wednesday") Wednesday
+							option(value="Thursday") Thursday
+							option(value="Friday") Friday
+							option(value="Saturday") Saturday
+						span.mr-1 From
+						select#startHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#startMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm1
+								option(value="am") am
+								option(value="pm") pm
+						span.ml-2.mr-1 To
+						select#endHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#endMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm2
+								option(value="am") am
+								option(value="pm") pm
+						a.ml-3#time-add(href='javascript:;')
+							i.fa.fa-plus(aria-hidden="true")
+					.form-group
+						textarea#description(placeholder="Description").form-control
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#course-button(type="button" class="btn btn-primary" data-dismiss="modal") Save
 
 block scripts
 	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
-	script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
 	//To pass variable from jade template file to below script file
 	script.
 		var postPath = "http://localhost:3000/user/" + "#{user.username}";
-	script(src="/public/my_scripts/profile_view_edit_script.js")
+	script(src="/public/my_scripts/course_script.js")

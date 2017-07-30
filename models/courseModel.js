@@ -2,21 +2,30 @@ const mongoose = require("mongoose");
 const Marksheet = require("mongoose").model('Marksheet');
 
 const courseSchema = new mongoose.Schema({
-	name: {
+	status: {
 		type: String,
 		required: true,
-		maxlength: 100
-	}, 
+		enum: ['active', 'archive'],
+	},
+	nickName: {
+		type: String,
+	},
 	code: {
 		type: String,
-		required: true,
-		maxlength: 20
+	},
+	fullName: {
+		type: String,
 	},
 	section: {
 		type: String,
-		required: true,
 	},
 	classRoom: {
+		type: String,
+	},
+	classTime: [{
+		type: String,
+	}],
+	description: {
 		type: String,
 	},
 	marksheet: {

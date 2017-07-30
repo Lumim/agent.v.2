@@ -6,45 +6,36 @@ const Marksheet = require('mongoose').model('Marksheet');
 const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
 const deleteMarksheet = require('middlewares/deleteMarksheet');
+const matchUsername = require('middlewares/matchUsername');
+const flash = require('middlewares/flash');
+const onlyFaculty = require('middlewares/onlyFaculty');
 const fs = require('fs');
 const async = require('async');
 
-router.post('/faculty/:username/course/add', function(req, res ){
-	const username = req.params.username;
-	const name = req.body.name;
-	const code = req.body.code;
-	const section = req.body.section;
-	const classRoom = req.body.classRoom;
-
+router.post('/course/add', [onlyFaculty],function(req, res, next){
+	const username = req.session.username;
 	const marksheet = new Marksheet({});
 	marksheet.save(function(err){
-		if(err) return res.send('some error occured');
+		if(err) return next(err);
 		const course = new Course({
-			name,
-			code,
-			section,
-			classRoom,
+			status: 'active',
+			nickName: req.body.nickName,
+        	code: req.body.code,
+        	fullName: req.body.fullName,
+        	section: req.body.section,
+        	classRoom: req.body.classRoom,
+        	classTime: req.body.classTime,
+        	description: req.body.description,
 			marksheet: marksheet._id,
 			facultyName: req.session.name,
 			facultyEmail: req.session.email,
 			facultyUsername: req.session.username,
 		});
 		course.save(function(err){
-			if(err) return res.send('some error occured');
-			User.findOne({
-				username
-			})
-			.exec(function(err, user){
-				if(err) return res.send('some error occured');
-				if(!user) {
-					return res.send('Wrong user');
-				}
-				else{
-					User.update({_id: user._id}, {$addToSet: {courses: course._id}}, function(err){
-						if (err) return res.send('some error occured');
-						return res.redirect("/faculty/"+username);
-					});
-				}
+			if(err) return next(err);
+			User.update({username}, {$addToSet: {courses: course._id}}, function(err){
+				if (err) return next(err);
+				return res.redirect("/user/"+username);
 			});
 		});
 	});
@@ -169,6 +160,6 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 
 module.exports = {
 	addRouter(app){
-		app.use('/', [requireLoginMW], router);
+		app.use('/user/:username', [requireLoginMW, matchUsername, flash], router);
 	}
 }

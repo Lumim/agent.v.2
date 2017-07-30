@@ -28,3 +28,7 @@ footer {
 .border-1 {
   border: 1px solid black;
 }
+
+body {
+  font-family: "Times New Roman", Times, serif;
+}

@@ -41,11 +41,7 @@ router.post('/login', function(req, res, next) {
             req.session.name = user.name;
             req.session.username = username;
             req.session.status = user.status;
-            if (user.status.toString() === 'faculty') {
-              return res.redirect('/faculty/' + username);
-            } else {
-              return res.redirect('/student/' + username);
-            }
+            return res.redirect('/user/' + username);
           } else {
             req.flash('error', 'Wrong password or username');
             return res.redirect('/');
