@@ -86,4 +86,24 @@ $(document).ready(function(){
 	            });
     	}
     });
+
+    $('a.view').click(function() {
+    	const index = $(this).closest('.card').parent().children().index($(this).closest('.card'));
+    	const name = $(this).closest('.card').parent().attr('id');
+    	const type = $(this).attr('class');
+    	const data = {};
+    		data.index = index;
+    		data.name = name;
+    		$.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/course/index',         
+                success: function(data, status) {
+                    if (status === 'success') {
+                        window.location.href = postPath+'/course/'+data.index+'/'+type;
+                    }
+                }
+            });
+    });
 });

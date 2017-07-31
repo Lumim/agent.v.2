@@ -19,7 +19,7 @@ block content
 						.card-block
 							.row
 								.col-11
-									a(href='/user/'+user.username+'/course/'+index)
+									a.view(href='javascript:;')
 										h5 <b>!{val.nickName}</b>
 								if user.status === 'faculty'
 									.col-1
@@ -41,7 +41,7 @@ block content
 						.card-block
 							.row
 								.col-12
-									a(href='/user/'+user.username+'/course/'+index)
+									a.view(href='javascript:;')
 										h5 <b>!{val.nickName}</b>
 							a.mr-3(href='/user/'+user.username+'/course/'+index+'/marksheet') Marksheet
 							a.mr-3(href='/user/'+user.username+'/course/'+index+'/group') Group

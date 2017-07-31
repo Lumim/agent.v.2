@@ -134,120 +134,74 @@ router.post('/course/delete', [onlyFaculty],function(req, res, next){
 	});
 });
 
-router.get('/faculty/:username/course/:index', function(req, res ){
-	const username = req.params.username;
-	const index = req.params.index;
+router.post('/course/index',function(req, res, next){
+	const username = req.session.username;
+	const index = req.body.index;
+	const name = req.body.name;
 	User.findOne({
-		username
+		username,
 	})
 	.populate('courses')
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			return res.render("courseShow", {name: user.name, course: user.courses[index]});
-		}
-	});
-})
-
-router.get('/faculty/:username/course/:index/edit', function(req, res ){
-	const username = req.params.username;
-	const index = req.params.index;
-	User.findOne({
-		username
-	})
-	.populate('courses')
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			return res.render("courseEdit", {name: user.name, username: user.username, course: user.courses[index], index: index});
-		}
-	});
-})
-
-router.post('/faculty/:username/course/:index/edit/save', function(req, res){
-	const username = req.params.username;
-	const index = req.params.index;
-	User.findOne({
-		username
-	})
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			const _id = user.courses[index];
-			Course.findOne({
-				_id
-			})
-			.exec(function(err, course){
-				if(err) return res.send('some error occured');
-				if(!course) {
-					return res.send('Wrong course');
-				}
-				else{
-					course.name = req.body.name;
-					course.code = req.body.code;
-					course.section = req.body.section;
-					course.classRoom = req.body.classRoom;
-
-					course.save(function(err){
-						if (err) return res.send('some error occured');
-						return res.redirect("/faculty/"+username);
-					});
-
-				}
-			});
-		}
+	.exec(function(err, user) {
+		if (err) return next(err);
+		const i = getCourse(index, name, user.courses);
+		if (i === -1)
+			return res.send('In get course function some error occured');
+		const data = {};
+		data.index = i;
+		res.send(data);
+		const course = user.courses[i]; // Copy of the course
 	});
 });
 
-router.post('/faculty/:username/course/:index/delete', function(req, res){
-	const username = req.params.username;
+
+router.get('/course/:index/view', function(req, res, next) {
+	const username = req.session.username;
 	const index = req.params.index;
 	User.findOne({
-		username
+		username,
 	})
 	.populate('courses')
-	.exec(function(err, user){
-		if(err) return res.send('some error occured');
-		if(!user) {
-			return res.send('Wrong user');
-		}
-		else{
-			//Delete the marksheet and subdocuments
-			deleteMarksheet(user.courses[index].marksheet, user.courses[index], function(err){
-				if(err) return res.send(err);
-				//Delete resource
-				async.eachOf(user.courses[index].resources,function(value,i,callBack) {
-					fs.unlink(value.path, function(err) {
-						if(err) return callBack(err);
-						else return callBack(null);
-					});
-				}, function(err) {
-					if(err) return res.send(err);
-					//Delete course 
-					const _id = user.courses[index];
-					Course.findOne({
-						_id
-					})
-					.remove(function(err){
-						if (err) return res.send('some error occured');
-						user.courses.splice(index, 1);
-						user.save(function(err){
-							if (err) return res.send('some error occured');
-							return res.redirect("/faculty/"+username);
-						});
-					});
-				});
-			});
-		}
+	.exec(function(err, user) {
+		if (err) return next(err);
+		return res.render('courseView', {user: {name: user.name, username: username,
+			status: user.status, courseNo: index, course: user.courses[index]}});
+	});
+});
+
+router.post('/course/:index/view', function(req, res, next) {
+	const username = req.session.username;
+	const index = req.params.index;
+	User.findOne({
+		username,
+	})
+	.populate('courses')
+	.exec(function(err, user) {
+		if (err) return next(err);
+		const course = user.courses[index];
+		course.nickName = req.body.nickName;
+        course.code = req.body.code;
+        course.fullName = req.body.fullName;
+        course.section = req.body.section;
+        course.classRoom = req.body.classRoom;
+        //console.log(req.body.classTimeDelete);
+        //console.log(req.body.classTimeAdd);
+  		for(let i=0; i<req.body.classTimeDelete.length; i++) {
+  			for(let j=0; j<course.classTime.length; j++) {
+  				if (course.classTime[j] === req.body.classTimeDelete[i]) {
+  					course.classTime.splice(j, 1);
+  					break;
+  				}
+  			}
+  		}
+  		for(let i=0; i<req.body.classTimeAdd.length; i++) {
+  			course.classTime.push(req.body.classTimeAdd[i]);
+  		}
+        course.description = req.body.description;
+        course.save(function(err) {
+        	if (err) return next(err);
+        	return res.send(null);
+        });
 	});
 });
 
