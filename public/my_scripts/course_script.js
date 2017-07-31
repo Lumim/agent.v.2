@@ -44,4 +44,10 @@ $(document).ready(function(){
         $(this).html('Submit'); 
     });
 
+    $('a.close').click(function() {
+    	if (confirm('The action cannot be undone.\nAre you sure you want to archive this course?')) {
+    		console.log('yes');
+    	}
+    })
+
 });
