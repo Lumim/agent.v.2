@@ -45,9 +45,45 @@ $(document).ready(function(){
     });
 
     $('a.close').click(function() {
-    	if (confirm('The action cannot be undone.\nAre you sure you want to archive this course?')) {
-    		console.log('yes');
+    	if (confirm('	The action cannot be undone.\nAre you sure you want to archive this course?')) {
+    		const element = this; 
+    		const index = $('#activeCourses').children().index($(this).closest('.card'));
+    		const data = {};
+    		data.index = index;
+    		$.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/course/close',         
+                success: function(data, status) {
+                    if (status === 'success') {
+                        $(element).closest('.card').appendTo('#archivedCourses');
+    					$(element).closest('.card').find('a.close').remove();
+                    }
+                }
+            });
     	}
-    })
+    });
 
+    $('a.delete').click(function() {
+    	if (confirm('	The action cannot be undone.\nAre you sure you want to delete this course?')) {
+    		const element = this;
+	    	const index = $(this).closest('.card').parent().children().index($(this).closest('.card'));
+	    	const name = $(this).closest('.card').parent().attr('id');
+	    	const data = {};
+	    		data.index = index;
+	    		data.name = name;
+	    		$.ajax({
+	                type: 'POST',
+	                data: JSON.stringify(data),
+	                contentType: 'application/json',
+	                url: postPath+'/course/delete',         
+	                success: function(data, status) {
+	                    if (status === 'success') {
+	                        $(element).closest('.card').remove();
+	                    }
+	                }
+	            });
+    	}
+    });
 });
