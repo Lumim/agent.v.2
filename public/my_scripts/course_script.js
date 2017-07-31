@@ -87,10 +87,11 @@ $(document).ready(function(){
     	}
     });
 
-    $('a.view').click(function() {
+    $('a.view, a.marksheet').click(function() {
     	const index = $(this).closest('.card').parent().children().index($(this).closest('.card'));
     	const name = $(this).closest('.card').parent().attr('id');
-    	const type = $(this).attr('class');
+    	const classes = $(this).attr('class').split(' ');
+        const type = classes[0];
     	const data = {};
     		data.index = index;
     		data.name = name;
@@ -101,7 +102,7 @@ $(document).ready(function(){
                 url: postPath+'/course/index',         
                 success: function(data, status) {
                     if (status === 'success') {
-                        window.location.href = postPath+'/course/'+data.index+'/'+type;
+                       window.location.href = postPath+'/course/'+data.index+'/'+type;
                     }
                 }
             });

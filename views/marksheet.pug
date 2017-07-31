@@ -24,30 +24,31 @@ block content
 
 	block marksheetHead
 		.d-flex.align-items-center.justify-content-between
-			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
-				.custom-file
-					input.cutom-file-input(type="file" name="csvdata" accept="csv")
-					span.custom-file-control
-				input.ml-2.btn.btn-primary(type="submit" value="Upload")
+			if (user.status === 'faculty')
+				form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
+					.custom-file
+						input.cutom-file-input(type="file" name="csvdata" accept="csv")
+						span.custom-file-control
+					input.ml-2.btn.btn-primary(type="submit" value="Upload")
 
-			form.form-inline
-				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
+				form.form-inline
+					button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
 
-			form.form-inline
-				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+				form.form-inline
+					button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
 
-			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
-				.d-flex.justify-content-end.w-100
-					select.mr-2.form-control(name="exam")
-						option(value="assignment") Assignment
-						option(value="fieldWork") Field Work
-						option(value="final") Final
-						option(value="mid") Mid
-						option(value="quiz") Quiz
-						option(value="presentation") Presentation
-						option(value="project") Project
+				form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
+					.d-flex.justify-content-end.w-100
+						select.mr-2.form-control(name="exam")
+							option(value="assignment") Assignment
+							option(value="fieldWork") Field Work
+							option(value="final") Final
+							option(value="mid") Mid
+							option(value="quiz") Quiz
+							option(value="presentation") Presentation
+							option(value="project") Project
 
-					input.btn.btn-primary(type="submit", value="Add")
+						input.btn.btn-primary(type="submit", value="Add")
 
 	block marksheetBody
 		table.mt-3.table.table-striped.table-bordered.table-hover.table-condensed.table-responsive
@@ -58,49 +59,50 @@ block content
 					th ID
 					th Email
 					th status
-					- let x = marksheet.quiz
+					- let x = user.course.marksheet.quiz
 					- examTitle(x)
-					- x = marksheet.mid
+					- x = user.course.marksheet.mid
 					- examTitle(x)
-					- x = marksheet.assignment
+					- x = user.course.marksheet.assignment
 					- examTitle(x)
-					- x = marksheet.project
+					- x = user.course.marksheet.project
 					- examTitle(x)
-					- x = marksheet.presentation
+					- x = user.course.marksheet.presentation
 					- examTitle(x)
-					- x = marksheet.fieldWork
+					- x = user.course.marksheet.fieldWork
 					- examTitle(x)
-					- x = marksheet.final
+					- x = user.course.marksheet.final
 					- examTitle(x)
 					th Attendance(%)
 					th Total(%)
 					th Grade
 					th Delete
 			tbody
-				each value, no in marksheet.name
+				each value, no in user.course.marksheet.name
 					tr
 						td !{no+1}
-						td !{marksheet.name[no]}
-						td !{marksheet.ID[no]}
-						td !{marksheet.email[no]}
-						td !{marksheet.courseStatus[no]}
-						- x = marksheet.quiz
+						td !{user.course.marksheet.name[no]}
+						td !{user.course.marksheet.ID[no]}
+						td !{user.course.marksheet.email[no]}
+						td !{user.course.marksheet.courseStatus[no]}
+						- x = user.course.marksheet.quiz
 						- examBody(x, no)
-						- x = marksheet.mid
+						- x = user.course.marksheet.mid
 						- examBody(x, no)
-						- x = marksheet.assignment
+						- x = user.course.marksheet.assignment
 						- examBody(x, no)
-						- x = marksheet.project
+						- x = user.course.marksheet.project
 						- examBody(x, no)
-						- x = marksheet.presentation
+						- x = user.course.marksheet.presentation
 						- examBody(x, no)
-						- x = marksheet.fieldWork
+						- x = user.course.marksheet.fieldWork
 						- examBody(x, no)
-						- x = marksheet.final
+						- x = user.course.marksheet.final
 						- examBody(x, no)
-						td !{marksheet.attendance[no]}
-						td !{marksheet.total[no]}
-						td !{marksheet.grade[no]}
-						td
-							form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
-								input.btn.btn-danger(type="submit", value="Delete")
+						td !{user.course.marksheet.attendance[no]}
+						td !{user.course.marksheet.total[no]}
+						td !{user.course.marksheet.grade[no]}
+						if (user.status === 'faculty')
+							td
+								form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
+									input.btn.btn-danger(type="submit", value="Delete")

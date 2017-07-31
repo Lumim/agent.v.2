@@ -36,6 +36,7 @@ require('./controllers/general/attachment.js').addRouter(app);
 require('./controllers/general/discussion.js').addRouter(app);
 require('./controllers/general/user.js').addRouter(app);
 require('./controllers/general/course.js').addRouter(app);
+require('./controllers/general/marksheet.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/marksheet.js').addRouter(app);
