@@ -37,10 +37,9 @@ require('./controllers/general/discussion.js').addRouter(app);
 require('./controllers/general/user.js').addRouter(app);
 require('./controllers/general/course.js').addRouter(app);
 require('./controllers/general/marksheet.js').addRouter(app);
+require('./controllers/general/marksheetCSV.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
-require('./controllers/facultyPage/marksheet.js').addRouter(app);
-require('./controllers/facultyPage/marksheetCSV.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
 require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
 require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);

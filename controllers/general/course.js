@@ -1,16 +1,13 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const User = require('mongoose').model('User'); //get
 const Course = require('mongoose').model('Course'); //get
 const Marksheet = require('mongoose').model('Marksheet');
 const router = express.Router();
 const requireLoginMW = require("middlewares/requireLogin");
-const deleteMarksheet = require('middlewares/deleteMarksheet');
 const matchUsername = require('middlewares/matchUsername');
 const flash = require('middlewares/flash');
 const onlyFaculty = require('middlewares/onlyFaculty');
-const fs = require('fs');
-const async = require('async');
+const deleteMarksheet = require('middlewares/deleteMarksheet');
 
 router.post('/course/add', [onlyFaculty],function(req, res, next){
 	const username = req.session.username;
@@ -122,13 +119,18 @@ router.post('/course/delete', [onlyFaculty],function(req, res, next){
 		user.courses.splice(i, 1);
 		user.save(function(err) {
 			if (err) return next(err);
-			// Delete course from database
-			Course.findOne({
-				_id: course._id,
-			})
-			.remove(function(err) {
+			let _id = course.marksheet;
+			//decleared in middlewares section
+			deleteMarksheet(_id, course, function(err){
 				if (err) return next(err);
-				return res.send(null);
+				// Delete course from database
+				Course.findOne({
+					_id: course._id,
+				})
+				.remove(function(err) {
+					if (err) return next(err);
+					return res.send(null);
+				});
 			});
 		});
 	});
@@ -150,7 +152,6 @@ router.post('/course/index',function(req, res, next){
 		const data = {};
 		data.index = i;
 		res.send(data);
-		const course = user.courses[i]; // Copy of the course
 	});
 });
 

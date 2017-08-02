@@ -1,5 +1,8 @@
 extends flexLayout.pug
 
+block links
+	link(rel="stylesheet", href="/public/my_styles/marksheet_style.css", media="screen", title="no title", charset="utf-8")
+
 block header
 	include layout.pug
 
@@ -22,87 +25,136 @@ block content
 				td !{x[0].marks[no]}
 		- }
 
-	block marksheetHead
-		.d-flex.align-items-center.justify-content-between
-			if (user.status === 'faculty')
-				form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
-					.custom-file
-						input.cutom-file-input(type="file" name="csvdata" accept="csv")
-						span.custom-file-control
-					input.ml-2.btn.btn-primary(type="submit" value="Upload")
-
-				form.form-inline
-					button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
-
-				form.form-inline
-					button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
-
-				form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
-					.d-flex.justify-content-end.w-100
-						select.mr-2.form-control(name="exam")
-							option(value="assignment") Assignment
-							option(value="fieldWork") Field Work
-							option(value="final") Final
-							option(value="mid") Mid
-							option(value="quiz") Quiz
-							option(value="presentation") Presentation
-							option(value="project") Project
-
-						input.btn.btn-primary(type="submit", value="Add")
-
-	block marksheetBody
-		table.mt-3.table.table-striped.table-bordered.table-hover.table-condensed.table-responsive
-			thead
-				tr
-					th No.
-					th Name
-					th ID
-					th Email
-					th status
-					- let x = user.course.marksheet.quiz
-					- examTitle(x)
-					- x = user.course.marksheet.mid
-					- examTitle(x)
-					- x = user.course.marksheet.assignment
-					- examTitle(x)
-					- x = user.course.marksheet.project
-					- examTitle(x)
-					- x = user.course.marksheet.presentation
-					- examTitle(x)
-					- x = user.course.marksheet.fieldWork
-					- examTitle(x)
-					- x = user.course.marksheet.final
-					- examTitle(x)
-					th Attendance(%)
-					th Total(%)
-					th Grade
-					th Delete
-			tbody
-				each value, no in user.course.marksheet.name
-					tr
-						td !{no+1}
-						td !{user.course.marksheet.name[no]}
-						td !{user.course.marksheet.ID[no]}
-						td !{user.course.marksheet.email[no]}
-						td !{user.course.marksheet.courseStatus[no]}
-						- x = user.course.marksheet.quiz
-						- examBody(x, no)
-						- x = user.course.marksheet.mid
-						- examBody(x, no)
-						- x = user.course.marksheet.assignment
-						- examBody(x, no)
-						- x = user.course.marksheet.project
-						- examBody(x, no)
-						- x = user.course.marksheet.presentation
-						- examBody(x, no)
-						- x = user.course.marksheet.fieldWork
-						- examBody(x, no)
-						- x = user.course.marksheet.final
-						- examBody(x, no)
-						td !{user.course.marksheet.attendance[no]}
-						td !{user.course.marksheet.total[no]}
-						td !{user.course.marksheet.grade[no]}
+	.card.text-center
+		.card-block
+			.card-title.mb-3
+				block marksheetHead
+					.d-flex.align-items-center.justify-content-between
 						if (user.status === 'faculty')
-							td
-								form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
-									input.btn.btn-danger(type="submit", value="Delete")
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#csvModal" href='javascript:;') Upload Students
+								i#csvQ.ml-1.fa.fa-question-circle(aria-hidden="true")
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#studentModal" href='javascript:;') Add Student
+								i#studentQ.ml-1.fa.fa-question-circle(aria-hidden="true")
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#assessmentModal" href='javascript:;') Add Assessment
+							a.btn.btn-secondary(href="/user/"+user.username+"/course/"+user.courseNo+"/marksheet/edit" role="button") Edit
+			block marksheetBody
+				table.mt-3.table.table-bordered.table-hover.table-condensed.table-responsive
+					thead
+						tr
+							th No.
+							th Name
+							th ID
+							th Email
+							th status
+							- let x = user.course.marksheet.quiz
+							- examTitle(x)
+							- x = user.course.marksheet.mid
+							- examTitle(x)
+							- x = user.course.marksheet.assignment
+							- examTitle(x)
+							- x = user.course.marksheet.project
+							- examTitle(x)
+							- x = user.course.marksheet.presentation
+							- examTitle(x)
+							- x = user.course.marksheet.fieldWork
+							- examTitle(x)
+							- x = user.course.marksheet.final
+							- examTitle(x)
+							th Attendance(%)
+							th Total(%)
+							th Grade
+							th Delete
+					tbody
+						each value, no in user.course.marksheet.name
+							tr
+								td !{no+1}
+								td !{user.course.marksheet.name[no]}
+								td !{user.course.marksheet.ID[no]}
+								td !{user.course.marksheet.email[no]}
+								td !{user.course.marksheet.courseStatus[no]}
+								- x = user.course.marksheet.quiz
+								- examBody(x, no)
+								- x = user.course.marksheet.mid
+								- examBody(x, no)
+								- x = user.course.marksheet.assignment
+								- examBody(x, no)
+								- x = user.course.marksheet.project
+								- examBody(x, no)
+								- x = user.course.marksheet.presentation
+								- examBody(x, no)
+								- x = user.course.marksheet.fieldWork
+								- examBody(x, no)
+								- x = user.course.marksheet.final
+								- examBody(x, no)
+								td !{user.course.marksheet.attendance[no]}
+								td !{user.course.marksheet.total[no]}
+								td !{user.course.marksheet.grade[no]}
+								if (user.status === 'faculty')
+									td
+										form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
+											input.btn.btn-danger(type="submit", value="Delete")
+	a.mt-2(href='/user/'+user.username title="Back")
+		i.fa.fa-arrow-left(aria-hidden="true")
+
+	.modal.fade#csvModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Upload CSV file
+				.modal-body
+					form.form-inline#uploadCSV(enctype="multipart/form-data" action="/user/"+user.username+"/course/"+user.courseNo+'/csv' method="post")
+						.custom-file
+							input.cutom-file-input(type="file" name="file")
+							input.cutom-file-input(type="submit" value="Upload")
+							span#status
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+
+	.modal.fade#studentModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Add student
+				.modal-body
+					.form-group
+						input#name(type="text" placeholder="Name").form-control
+						small#name-error
+					.form-group
+						input#ID(type="text" placeholder="ID").form-control
+						small#ID-error
+					.form-group
+						input#email(type="text" placeholder="Email").form-control
+						small#email-error
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#studentButton(type="button" class="btn btn-primary") Save
+
+	.modal.fade#assessmentModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Add Assessment
+				.modal-body
+					select#assessment.form-control
+						option(value="assignment") Assignment
+						option(value="fieldWork") Field Work
+						option(value="final") Final
+						option(value="mid") Mid
+						option(value="quiz") Quiz
+						option(value="presentation") Presentation
+						option(value="project") Project
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#assessmentButton(type="button" class="btn btn-primary") Save
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+	//To pass variable from jade template file to below script file
+	script.
+		var postPath = "http://localhost:3000/user/" + "#{user.username}" + "/course/" + "#{user.courseNo}";
+	script(src="/public/my_scripts/marksheet_script.js")
+
