@@ -22,5 +22,4 @@ router.get('/', function(req, res, next) {
 module.exports = {
 	addRouter(app) {
 	app.use('/user/:username', [requireLogin, matchUsername, flash], router);
-},
-};
+}};

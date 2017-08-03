@@ -30,6 +30,7 @@ require('./models/fileModel.js');
 /* Route */
 require('./controllers/landingPage/index.js').addRouter(app);
 require('./controllers/general/profile.js').addRouter(app);
+require('./controllers/general/profileEdit.js').addRouter(app);
 require('./controllers/general/post.js').addRouter(app);
 require('./controllers/general/group.js').addRouter(app);
 require('./controllers/general/attachment.js').addRouter(app);
@@ -38,11 +39,10 @@ require('./controllers/general/user.js').addRouter(app);
 require('./controllers/general/course.js').addRouter(app);
 require('./controllers/general/marksheet.js').addRouter(app);
 require('./controllers/general/marksheetCSV.js').addRouter(app);
+require('./controllers/general/marksheetAssessment.js').addRouter(app);
+require('./controllers/general/marksheetStudent.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
-require('./controllers/facultyPage/marksheetExam.js').addRouter(app);
-require('./controllers/facultyPage/marksheetExamEdit.js').addRouter(app);
-require('./controllers/facultyPage/marksheetStudent.js').addRouter(app);
 require('./controllers/facultyPage/resource.js').addRouter(app);
 require('./controllers/facultyPage/group.js').addRouter(app);
 require('./controllers/facultyPage/submission.js').addRouter(app);

@@ -1,0 +1,73 @@
+extends flexLayout.pug
+
+block links
+	link(href="/public/my_styles/profile_style.css", rel='stylesheet')
+
+block header
+
+block content
+	.card
+		.card-block
+			img.d-flex.mr-3.image-fluid(src='/'+user.image.path style="max-width: 100%; height: auto;" width="100" height="100")
+	.card
+		.card-block
+			p <b>Name:</b> !{user.name}
+			p <b>Email:</b>		!{user.email}
+			p <b>Username:</b>	!{user.username}
+			if user.status === 'student'
+				p <b>ID:</b> !{user.ID}
+			p <b>Status:</b>	!{user.status}
+	.card
+		.card-block
+			h4 Education
+			ul
+				each val, index in user.education
+					li
+						if val.school != ''
+							span <b>!{val.school}</b> <br>
+						if val.degree != ''
+							span !{val.degree} <br>
+						if val.grade != ''
+							span !{val.grade} <br>
+						if val.timePeriod != ''
+							span !{val.timePeriod} <br>
+						hr
+	if user.status === 'faculty'
+		.card
+			.card-block
+				h4 Experience
+				ul
+					each val, index in user.experience
+						li
+							if val.title != ''
+								span <b>!{val.title}</b> <br>
+							if val.company != ''
+								span !{val.company} <br>
+							if val.timePeriod != ''
+								span !{val.timePeriod} <br>
+							hr
+	.card
+		.card-block
+			h4 Awards, Accomplishments and Papers
+			ul
+				each val, index in user.awardsAccomplishmentsAndPapers
+					li
+						if val.title != ''
+							span <b>!{val.title}</b> <br>
+						if val.description != ''
+							span !{val.description} <br>
+						if val.year != ''
+							span !{val.year} <br>
+						hr
+	if user.status === 'faculty'
+		.card
+			.card-block
+				h4 Office
+				ul
+					each val, index in user.office
+						li
+							if val.room != ''
+								span <b>!{val.room}</b> <br>
+							if val.timePeriod != ''
+								span !{val.timePeriod} <br>
+							hr

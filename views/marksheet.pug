@@ -14,7 +14,7 @@ block content
 					a.assesmentHeadAnchor(data-toggle="modal" data-exam=exam href='#assessmentHeadModal') !{exam.name}
 		if x.length > 0
 			th
-				a.assesmentHeadTotalAnchor(data-toggle="modal" data-target=".assessmentHeadTotalModal" href='javascript:;') !{x[0].name}
+				a.assesmentTotalHeadAnchor(data-toggle="modal" data-exam=x[0] href="#assessmentTotalHeadModal") !{x[0].name}
 
 	block function
 		- var examBody = function(x, no){
@@ -66,12 +66,13 @@ block content
 							th Attendance(%)
 							th Total(%)
 							th Grade
-							th Delete
+							th 
 					tbody
 						each value, no in user.course.marksheet.name
 							tr
 								td !{no+1}
-								td !{user.course.marksheet.name[no]}
+								td
+									a.view(href='javascript:;' data-email=user.course.marksheet.email[no]) !{user.course.marksheet.name[no]}
 								td !{user.course.marksheet.ID[no]}
 								td !{user.course.marksheet.email[no]}
 								td !{user.course.marksheet.courseStatus[no]}
@@ -94,8 +95,8 @@ block content
 								td !{user.course.marksheet.grade[no]}
 								if (user.status === 'faculty')
 									td
-										form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
-											input.btn.btn-danger(type="submit", value="Delete")
+										a.delete(href="javascript:;" title='Delete' data-no=no)
+											i.fa.fa-trash(aria-hidden="true")
 	a.mt-2(href='/user/'+user.username title="Back")
 		i.fa.fa-arrow-left(aria-hidden="true")
 
@@ -154,7 +155,7 @@ block content
 		.modal-dialog.modal-lg(role="document")
 			.modal-content(style='height: 95vh')
 				.modal-header
-					h5.assessmentName
+					h5.assessmentName(data-url)
 				.modal-body
 					.row
 						.col-4
@@ -177,8 +178,38 @@ block content
 						.col-8
 							#chartContainer1(style="height: 50vh; width: 100%;")
 				.modal-footer
-					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
-					button#assessmentHeadButton(type="button" class="btn btn-primary") Save
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+					button#assessmentHeadButton(type="button" class="btn btn-primary") Save Changes
+
+	.modal.fade#assessmentTotalHeadModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content(style='height: 95vh')
+				.modal-header
+					h5.assessmentName(data-url)
+				.modal-body
+					.row
+						.col-4
+							if (user.status === 'faculty')
+								label Best:
+								input.assessmentBest(type="text").form-control
+								br
+								label Parcentage Count:
+								input.assessmentParcentage(type="text").form-control
+								br
+							else
+								label Best:
+								p.assessmentBest
+								br
+								label Parcentage Count:
+								p.assessmentParcentage
+								br
+							label Highest Mark:
+							p.assessmentHighestMark
+						.col-8
+							#chartContainer2(style="height: 50vh; width: 100%;")
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+					button#assessmentTotalHeadButton(type="button" class="btn btn-primary") Save Changes
 
 block scripts
 	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
