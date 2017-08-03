@@ -1,5 +1,8 @@
 extend marksheet.pug
 
+block links
+	link(rel="stylesheet", href="/public/my_styles/marksheet_edit_style.css", media="screen", title="no title", charset="utf-8")
+
 block function
 	- var examBody = function(x, no){
 		each exam, no2 in x

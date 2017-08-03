@@ -28,7 +28,7 @@ const examSchema = new mongoose.Schema({
 		type: String,
     },
     pieChart: [{
-		type: String,
+		type: Number,
     }],
     marks: [{
 		type: String,

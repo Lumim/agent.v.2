@@ -39,18 +39,23 @@ block content
 					h5 Edit Course
 				.modal-body
 					.form-group
+						label Nick Name:
 						input#nickName(type="text" placeholder="Course Nick Name" value=user.course.nickName).form-control
 						small.ml-2 Eg: CSE482-SEC2-SUMMER17
 					.form-group
+						label Code:
 						input#code(type="text" placeholder="Course Code" value=user.course.code).form-control
 					.form-group
+						label Full Name:
 						input#fullName(type="text" placeholder="Course Full Name" value=user.course.fullName).form-control
 					.form-group
+						label Section:
 						input#section(type="text" placeholder="Section" value=user.course.section).form-control
 					.form-group
+						label Class Room:
 						input#classRoom(type="text" placeholder="Class Room" value=user.course.classRoom).form-control
 					.form-group
-						span Class Time <br>
+						span Class Time: <br>
 						ul#class-time-list
 							each val, index in user.course.classTime
 								li !{val}
@@ -93,6 +98,7 @@ block content
 						a.ml-3#time-add(href='javascript:;')
 							i.fa.fa-plus(aria-hidden="true")
 					.form-group
+						label Description:
 						textarea#description(placeholder="Description").form-control
 				.modal-footer
 					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close

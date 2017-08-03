@@ -11,10 +11,10 @@ block content
 		each exam, no2 in x
 			if no2 > 0
 				th
-					a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url) !{exam.name}
+					a.assesmentHeadAnchor(data-toggle="modal" data-exam=exam href='#assessmentHeadModal') !{exam.name}
 		if x.length > 0
 			th
-				a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+x[0].url) !{x[0].name}(%)
+				a.assesmentHeadTotalAnchor(data-toggle="modal" data-target=".assessmentHeadTotalModal" href='javascript:;') !{x[0].name}
 
 	block function
 		- var examBody = function(x, no){
@@ -150,9 +150,40 @@ block content
 					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 					button#assessmentButton(type="button" class="btn btn-primary") Save
 
+	.modal.fade#assessmentHeadModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content(style='height: 95vh')
+				.modal-header
+					h5.assessmentName
+				.modal-body
+					.row
+						.col-4
+							if (user.status === 'faculty')
+								label Date:
+								input.assessmentDate(type="text").form-control
+								br
+								label Total Mark:
+								input.assessmentTotalMark(type="text").form-control
+								br
+							else
+								label Date:
+								p.assessmentDate
+								br
+								label Total Mark:
+								p.assessmentTotalMark
+								br
+							label Highest Mark:
+							p.assessmentHighestMark
+						.col-8
+							#chartContainer1(style="height: 50vh; width: 100%;")
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#assessmentHeadButton(type="button" class="btn btn-primary") Save
+
 block scripts
 	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
 	script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+	script(type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js")
 	//To pass variable from jade template file to below script file
 	script.
 		var postPath = "http://localhost:3000/user/" + "#{user.username}" + "/course/" + "#{user.courseNo}";

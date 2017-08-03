@@ -63,6 +63,9 @@ const calculationEx = function(xx, studentNo, req, asyncCB ){
 
 		if(index < len){
 			let p, temp = [], parcentage = [], fieldName, mark, highestMark = 0, chart = new Array(12);
+			for (let i=0; i<12; i++) {
+				chart[i] = 0;
+			}
 
         	for(let j=0; j<studentNo; j++){
 				fieldName = value.name+'_'+j;
@@ -97,6 +100,9 @@ const calculationEx = function(xx, studentNo, req, asyncCB ){
         //Calculating total column of the exam
 		else{
 			let p, temp = [], highestMark = 0, chart = new Array(12);
+			for (let i=0; i<12; i++) {
+				chart[i] = 0;
+			}
 
 			if(value.best == '' || isNaN(value.best) || value.best > len)
 				best = x.length-1;
