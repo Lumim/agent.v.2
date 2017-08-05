@@ -153,6 +153,31 @@ router.post('/course/:index/group/add', onlyFaculty, function(req, res, next) {
 	});
 });
 
+router.post('/course/:index/group/name', onlyFaculty, function(req, res, next) {
+	const username = req.session.username;
+	const index = req.params.index;
+	const type = req.body.type;
+	const groupNo = req.body.groupNo;
+	const txt = req.body.txt;
+	User.findOne({
+		username,
+	})
+	.populate({path: 'courses', 
+		populate:{path: 'groups',}})
+	.exec(function(err, user) {
+		if (err) next(err);
+		const group = user.courses[index].groups[groupNo];
+		if (type === 'groupNameEdit')
+			group.groupName = txt;
+		else
+			group.taskTitle = txt;
+		group.save(function(err) {
+    			if (err) return next(err);
+    			return res.send(null);
+    	});
+	});
+});
+
 function validUser (email, id, callBack) {
 	Group.findOne({
 		_id: id,

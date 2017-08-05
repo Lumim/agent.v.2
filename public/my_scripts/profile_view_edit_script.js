@@ -42,7 +42,7 @@ $(document).ready(function(){
     });   
     
     $('a.name').click(function(){
-        const txt = prompt('');
+        const txt = prompt('Name', '');
         if (!(txt == null || txt == '')) {
             const data = {};
             data.name = txt;
@@ -61,7 +61,7 @@ $(document).ready(function(){
     });
 
     $('a.ID').click(function(){
-        const txt = prompt('');
+        const txt = prompt('ID','');
         if (!(txt == null || txt == '')) {
             const data = {};
             data.ID = txt;

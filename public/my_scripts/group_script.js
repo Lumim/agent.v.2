@@ -113,7 +113,6 @@ $(document).ready(function(){
 			data.members.push({name: nominies[selectedMembers[i]].name, 
 							   email: nominies[selectedMembers[i]].email});
 		}
-
 		$.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
@@ -126,5 +125,36 @@ $(document).ready(function(){
                 }
         	});
 	});
+
+	$('.groupNameEdit, a.taskTitleEdit').click(function(){
+		const classList = $(this).attr('class').split(' ');
+		const type = classList[1];
+		let txt;
+		if (type === 'groupNameEdit')
+        	txt = prompt('Group Name', '');
+        else
+        	txt = prompt('Task Title', '');
+        
+        if (!(txt == null || txt == '')) {
+            const data = {};
+            data.type = type;
+            data.txt = txt;
+            data.groupNo = $(this).data('index');
+            $.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/group/name',                      
+                success: function(data, status) {
+                    if (status === 'success') {
+                        if (type === 'groupNameEdit')
+                        	$('.name').text(txt);
+                        else
+                        	$('.title').text(txt);
+                    }
+                }
+            });
+        } 
+    });
     
 });

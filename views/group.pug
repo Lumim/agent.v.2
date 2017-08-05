@@ -11,30 +11,39 @@ block content
 		.row.mb-3
 			.col-4.push-md-10
 				button.btn.btn-primary.btn-lg#newGroup(type="button" data-toggle="modal" data-target="#groupModal" href='javascript:;') New Group
-	each value, i in user.groups
-		.card
-			.card-block
-				.row#groupList
-					.col-11
-						.card-title 
-							h5 Group Name: !{value.groupName}
-						p Task Title: !{value.taskTitle}
-						each value2, j in value.members
-							span.member.mr-3 !{value2.name}
-								if user.status === 'faculty'
-									a.remove.ml-2(href='javascript:;' title="Remove" data-index1=i data-index2=j)
-										i.fa.fa-times(aria-hidden="true")
+	#groupList
+		each value, i in user.groups
+			.card
+				.card-block
+					.row
+						.col-11
+							.card-title 
+								h5 Group Name:
+									b
+										span.name !{value.groupName}
+									a.ml-4.groupNameEdit(href='javascript:;' data-index=i)
+										i.fa.fa-pencil-square-o(aria-hidden="true")
+							p Task Title:
+								b
+									span.title !{value.taskTitle}
+								a.ml-4.taskTitleEdit(href='javascript:;' data-index=i)
+									i.fa.fa-pencil-square-o(aria-hidden="true")
+							each value2, j in value.members
+								span.member.mr-3 !{value2.name}
+									if user.status === 'faculty'
+										a.remove.ml-2(href='javascript:;' title="Remove" data-index1=i data-index2=j)
+											i.fa.fa-times(aria-hidden="true")
+							if user.status === 'faculty'
+								a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add" data-index=i)
+									i.fa.fa-plus(aria-hidden="true")
+							br
+							div.mt-3
+								a(href='') Discussion
+								a.ml-3(href='') Documnets
 						if user.status === 'faculty'
-							a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add" data-index=i)
-								i.fa.fa-plus(aria-hidden="true")
-						br
-						div.mt-3
-							a(href='') Discussion
-							a.ml-3(href='') Documnets
-					if user.status === 'faculty'
-						.col-1
-							a.delete(href='javascript:;' title="Delete" data-index=i)
-								i.fa.fa-trash(aria-hidden="true")
+							.col-1
+								a.delete(href='javascript:;' title="Delete" data-index=i)
+									i.fa.fa-trash(aria-hidden="true")
 
 	.modal.fade#groupModal(role="dialog" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")
