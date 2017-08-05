@@ -11,7 +11,7 @@ block content
 		.row.mb-3
 			.col-4.push-md-10
 				button.btn.btn-primary.btn-lg#newGroup(type="button" data-toggle="modal" data-target="#groupModal" href='javascript:;') New Group
-	#groupList
+	#group-list
 		each value, i in user.groups
 			.card
 				.card-block
@@ -28,15 +28,15 @@ block content
 									span.title !{value.taskTitle}
 								a.ml-4.taskTitleEdit(href='javascript:;' data-index=i)
 									i.fa.fa-pencil-square-o(aria-hidden="true")
-							each value2, j in value.members
-								span.member.mr-3 !{value2.name}
-									if user.status === 'faculty'
-										a.remove.ml-2(href='javascript:;' title="Remove" data-index1=i data-index2=j)
-											i.fa.fa-times(aria-hidden="true")
-							if user.status === 'faculty'
-								a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add" data-index=i)
-									i.fa.fa-plus(aria-hidden="true")
-							br
+							.member-list
+								each value2, j in value.members
+									span.member.mr-3 !{value2.name}
+										if user.status === 'faculty'
+											a.remove.ml-2(href='javascript:;' title="Remove")
+												i.fa.fa-times(aria-hidden="true")
+								if user.status === 'faculty'
+									a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add" data-index=i)
+										i.fa.fa-plus(aria-hidden="true")
 							div.mt-3
 								a(href='') Discussion
 								a.ml-3(href='') Documnets

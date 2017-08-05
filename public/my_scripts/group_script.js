@@ -17,8 +17,9 @@ $(document).ready(function(){
     });
 
     $('.remove').on('click', function () {
-        var index1 = $(this).data('index1');
-        var index2 = $(this).data('index2');
+        const index1 = $(this).closest('#group-list').children().index($(this).closest('.card'));
+        const index2 = $(this).closest('.member-list').children().index($(this).closest('span'));
+        const element = $(this);
         const data = {};
         data.groupNo = index1;
         data.memberNo = index2;
@@ -29,7 +30,7 @@ $(document).ready(function(){
                 url: postPath+'/group/remove',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+                        element.closest('span').remove();
                     }
                 }
         	});
