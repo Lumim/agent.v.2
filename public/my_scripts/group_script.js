@@ -49,37 +49,40 @@ $(document).ready(function(){
 			$('.nominies').append(input);
 			$('.nominies').append(span);
 		}
-
-		$('#group-button').click(function() {
-			var checkedValues = $('input[name="members"]:checked').map(function() {
-			    return $(this).val();
-			}).get();
-			selectedMembers = checkedValues;
-
-			const data = {};
-			data.groupName = $('#groupName').val();
-			data.taskTitle = $('#taskTitle').val();
-			data.members = new Array(); 
-			for(let i=0; i<selectedMembers.length; i++) {
-				data.members.push({name: nominies[selectedMembers[i]].name, 
-								   email: nominies[selectedMembers[i]].email});
-			}
-
-			$.ajax({
-	                type: 'POST',
-	                data: JSON.stringify(data),
-	                contentType: 'application/json',
-	                url: postPath+'/group',                      
-	                success: function(data, status) {
-	                    if (status === 'success') {
-	                        location.reload();
-	                    }
-	                }
-	        	});
-		});
     });
+
+    $('#group-button').click(function() {
+		var checkedValues = $('input[name="members"]:checked').map(function() {
+		    return $(this).val();
+		}).get();
+		selectedMembers = checkedValues;
+
+		const data = {};
+		data.groupName = $('#groupName').val();
+		data.taskTitle = $('#taskTitle').val();
+		data.members = new Array(); 
+		for(let i=0; i<selectedMembers.length; i++) {
+			data.members.push({name: nominies[selectedMembers[i]].name, 
+							   email: nominies[selectedMembers[i]].email});
+		}
+
+		$.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/group',                      
+                success: function(data, status) {
+                    if (status === 'success') {
+                        location.reload();
+                    }
+                }
+        	});
+	});
     
+    var elemet;
     $('.newMember').click(function() {
+    	element = $(this);
+
     	$('.nominies').empty();
     	for(let i=0; i<nominies.length; i++) {
 			const input = document.createElement("input");
@@ -93,34 +96,35 @@ $(document).ready(function(){
 			$('.nominies').append(input);
 			$('.nominies').append(span);
 		}
+		
+    });
 
+    $('#member-button').click(function() {
 		const data = {};
-		data.groupNo = $(this).data('index');
+		data.groupNo = element.data('index');
 		data.members = new Array(); 
 
-		$('#member-button').click(function() {
-			var checkedValues = $('input[name="members"]:checked').map(function() {
-			    return $(this).val();
-			}).get();
-			selectedMembers = checkedValues;
+		var checkedValues = $('input[name="members"]:checked').map(function() {
+		    return $(this).val();
+		}).get();
+		selectedMembers = checkedValues;
 
-			for(let i=0; i<selectedMembers.length; i++) {
-				data.members.push({name: nominies[selectedMembers[i]].name, 
-								   email: nominies[selectedMembers[i]].email});
-			}
+		for(let i=0; i<selectedMembers.length; i++) {
+			data.members.push({name: nominies[selectedMembers[i]].name, 
+							   email: nominies[selectedMembers[i]].email});
+		}
 
-			$.ajax({
-	                type: 'POST',
-	                data: JSON.stringify(data),
-	                contentType: 'application/json',
-	                url: postPath+'/group/add',                      
-	                success: function(data, status) {
-	                    if (status === 'success') {
-	                        location.reload();
-	                    }
-	                }
-	        	});
-		});
-    });
+		$.ajax({
+                type: 'POST',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                url: postPath+'/group/add',                      
+                success: function(data, status) {
+                    if (status === 'success') {
+                        location.reload();
+                    }
+                }
+        	});
+	});
     
 });

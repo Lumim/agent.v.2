@@ -7,7 +7,6 @@ const groupSchema = new mongoose.Schema({
 	},
 	groupName: {
 		type: String,
-		required: true,
 	},
 	taskTitle: {
 		type: String,

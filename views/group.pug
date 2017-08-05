@@ -17,8 +17,8 @@ block content
 				.row#groupList
 					.col-11
 						.card-title 
-							h5 !{value.groupName}
-						p !{value.taskTitle}
+							h5 Group Name: !{value.groupName}
+						p Task Title: !{value.taskTitle}
 						each value2, j in value.members
 							span.member.mr-3 !{value2.name}
 								if user.status === 'faculty'
