@@ -1,6 +1,7 @@
 $(document).ready(function(){
     $('.delete').on('click', function () {
-        var index = $(this).data('index');
+        const index = $(this).closest('#group-list').children().index($(this).closest('.card'));
+       	const element = $(this);
         const data = {};
         data.groupNo = index;
         $.ajax({
@@ -10,7 +11,10 @@ $(document).ready(function(){
                 url: postPath+'/group/delete',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+                        element.closest('.card').remove();
+                        for(let i=0; i<data.members.length; i++) {
+                        	nominies.push({name: data.members[i].name, email: data.members[i].email});
+                        }
                     }
                 }
         	});
@@ -31,6 +35,7 @@ $(document).ready(function(){
                 success: function(data, status) {
                     if (status === 'success') {
                         element.closest('span').remove();
+                        nominies.push({name: data.name, email: data.email});
                     }
                 }
         	});
@@ -80,10 +85,9 @@ $(document).ready(function(){
         	});
 	});
     
-    var elemet;
+    var element;
     $('.newMember').click(function() {
     	element = $(this);
-
     	$('.nominies').empty();
     	for(let i=0; i<nominies.length; i++) {
 			const input = document.createElement("input");
@@ -102,13 +106,13 @@ $(document).ready(function(){
 
     $('#member-button').click(function() {
 		const data = {};
-		data.groupNo = element.data('index');
+		data.groupNo = $(element).closest('#group-list').children().index($(element).closest('.card'));
 		data.members = new Array(); 
 
 		var checkedValues = $('input[name="members"]:checked').map(function() {
 		    return $(this).val();
 		}).get();
-		selectedMembers = checkedValues;
+		const selectedMembers = checkedValues;
 
 		for(let i=0; i<selectedMembers.length; i++) {
 			data.members.push({name: nominies[selectedMembers[i]].name, 
@@ -122,6 +126,32 @@ $(document).ready(function(){
                 success: function(data, status) {
                     if (status === 'success') {
                         location.reload();
+                        /*
+                        for(let j=0; j<selectedMembers.length; j++) {
+                        	const name = nominies[selectedMembers[j]].name;
+                        	const email = nominies[selectedMembers[j]].email;
+
+							const i = document.createElement("i");
+	                        i.classList.add("fa");
+	                        i.classList.add("fa-times");
+	                        i.classList.add('remove');
+
+	                        const a = document.createElement("a");
+	                        a.classList.add('remove');
+	                        a.classList.add('ml-2')
+	                        a.setAttribute('href', 'javascript:;'); //attr() doesn't work
+	                        a.setAttribute('title', 'Remove');
+	                        a.append(i);
+
+	                        var span = document.createElement('span');
+	                        span.classList.add('member');
+	                        span.classList.add('mr-3');
+                            span.innerHTML = name;
+                            span.append(a);
+
+                            $('.member-list').append(span);
+						}
+						*/
                     }
                 }
         	});
@@ -140,7 +170,8 @@ $(document).ready(function(){
             const data = {};
             data.type = type;
             data.txt = txt;
-            data.groupNo = $(this).data('index');
+            data.groupNo = $(this).closest('#group-list').children().index($(this).closest('.card'));
+            const element = $(this);
             $.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
@@ -149,9 +180,9 @@ $(document).ready(function(){
                 success: function(data, status) {
                     if (status === 'success') {
                         if (type === 'groupNameEdit')
-                        	$('.name').text(txt);
+                        	element.closest('h5').find('span').text(txt);
                         else
-                        	$('.title').text(txt);
+                        	element.closest('p').find('span').text(txt);
                     }
                 }
             });

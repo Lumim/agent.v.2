@@ -20,13 +20,13 @@ block content
 							.card-title 
 								h5 Group Name:
 									b
-										span.name !{value.groupName}
-									a.ml-4.groupNameEdit(href='javascript:;' data-index=i)
+										span.ml-2 !{value.groupName}
+									a.ml-4.groupNameEdit(href='javascript:;')
 										i.fa.fa-pencil-square-o(aria-hidden="true")
 							p Task Title:
 								b
-									span.title !{value.taskTitle}
-								a.ml-4.taskTitleEdit(href='javascript:;' data-index=i)
+									span.ml-2 !{value.taskTitle}
+								a.ml-4.taskTitleEdit(href='javascript:;')
 									i.fa.fa-pencil-square-o(aria-hidden="true")
 							.member-list
 								each value2, j in value.members
@@ -35,14 +35,14 @@ block content
 											a.remove.ml-2(href='javascript:;' title="Remove")
 												i.fa.fa-times(aria-hidden="true")
 								if user.status === 'faculty'
-									a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add" data-index=i)
+									a.newMember(type="button" data-toggle="modal" data-target="#memberModal" href='javascript:;' title="Add")
 										i.fa.fa-plus(aria-hidden="true")
 							div.mt-3
 								a(href='') Discussion
 								a.ml-3(href='') Documnets
 						if user.status === 'faculty'
 							.col-1
-								a.delete(href='javascript:;' title="Delete" data-index=i)
+								a.delete(href='javascript:;' title="Delete")
 									i.fa.fa-trash(aria-hidden="true")
 
 	.modal.fade#groupModal(role="dialog" aria-hidden="true")

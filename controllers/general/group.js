@@ -94,17 +94,20 @@ router.post('/course/:index/group/delete', onlyFaculty, function(req, res, next)
 	const username = req.session.username;
 	const index = req.params.index;
 	const groupNo = req.body.groupNo;
+	const data = {};
 	User.findOne({
 		username,
 	})
-	.populate('courses')
+	.populate({path: 'courses', 
+		populate:{path: 'groups',}})
 	.exec(function(err, user) {
 		if (err) next(err);
 		const course = user.courses[index];
+		data.members = user.courses[index].groups[groupNo].members; 
 		course.groups.splice(groupNo, 1);
 		course.save(function(err) {
     			if (err) return next(err);
-    			return res.send(null);
+    			return res.send(data);
     	});
 	});
 });
@@ -114,6 +117,7 @@ router.post('/course/:index/group/remove', onlyFaculty, function(req, res, next)
 	const index = req.params.index;
 	const groupNo = req.body.groupNo;
 	const memberNo = req.body.memberNo;
+	const data = {};
 	User.findOne({
 		username,
 	})
@@ -122,10 +126,12 @@ router.post('/course/:index/group/remove', onlyFaculty, function(req, res, next)
 	.exec(function(err, user) {
 		if (err) next(err);
 		const group = user.courses[index].groups[groupNo];
+		data.name = user.courses[index].groups[groupNo].members[memberNo].name;
+		data.email = user.courses[index].groups[groupNo].members[memberNo].email;
 		group.members.splice(memberNo, 1);
 		group.save(function(err) {
     			if (err) return next(err);
-    			return res.send(null);
+    			return res.send(data);
     	});
 	});
 });
