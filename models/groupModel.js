@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const groupSchema = new mongoose.Schema({
-	facultyEmail: {
+	facultyUsername: {
 		type: String,
 		required: true,
 	},
@@ -12,11 +12,9 @@ const groupSchema = new mongoose.Schema({
 	taskTitle: {
 		type: String,
 	},
-	membersName: [{
-		type: String,
-	}],
-	membersEmail: [{
-		type: String,
+	members: [{
+		name: {type: String,},
+		email: {type: String,},
 	}],
 	attachments: [{
 		path: {

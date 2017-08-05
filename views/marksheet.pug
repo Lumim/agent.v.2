@@ -49,50 +49,50 @@ block content
 							th ID
 							th Email
 							th status
-							- let x = user.course.marksheet.quiz
+							- let x = user.marksheet.quiz
 							- examTitle(x)
-							- x = user.course.marksheet.mid
+							- x = user.marksheet.mid
 							- examTitle(x)
-							- x = user.course.marksheet.assignment
+							- x = user.marksheet.assignment
 							- examTitle(x)
-							- x = user.course.marksheet.project
+							- x = user.marksheet.project
 							- examTitle(x)
-							- x = user.course.marksheet.presentation
+							- x = user.marksheet.presentation
 							- examTitle(x)
-							- x = user.course.marksheet.fieldWork
+							- x = user.marksheet.fieldWork
 							- examTitle(x)
-							- x = user.course.marksheet.final
+							- x = user.marksheet.final
 							- examTitle(x)
 							th Attendance(%)
 							th Total(%)
 							th Grade
 							th 
 					tbody
-						each value, no in user.course.marksheet.name
+						each value, no in user.marksheet.name
 							tr
 								td !{no+1}
 								td
-									a.view(href='javascript:;' data-email=user.course.marksheet.email[no]) !{user.course.marksheet.name[no]}
-								td !{user.course.marksheet.ID[no]}
-								td !{user.course.marksheet.email[no]}
-								td !{user.course.marksheet.courseStatus[no]}
-								- x = user.course.marksheet.quiz
+									a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
+								td !{user.marksheet.ID[no]}
+								td !{user.marksheet.email[no]}
+								td !{user.marksheet.courseStatus[no]}
+								- x = user.marksheet.quiz
 								- examBody(x, no)
-								- x = user.course.marksheet.mid
+								- x = user.marksheet.mid
 								- examBody(x, no)
-								- x = user.course.marksheet.assignment
+								- x = user.marksheet.assignment
 								- examBody(x, no)
-								- x = user.course.marksheet.project
+								- x = user.marksheet.project
 								- examBody(x, no)
-								- x = user.course.marksheet.presentation
+								- x = user.marksheet.presentation
 								- examBody(x, no)
-								- x = user.course.marksheet.fieldWork
+								- x = user.marksheet.fieldWork
 								- examBody(x, no)
-								- x = user.course.marksheet.final
+								- x = user.marksheet.final
 								- examBody(x, no)
-								td !{user.course.marksheet.attendance[no]}
-								td !{user.course.marksheet.total[no]}
-								td !{user.course.marksheet.grade[no]}
+								td !{user.marksheet.attendance[no]}
+								td !{user.marksheet.total[no]}
+								td !{user.marksheet.grade[no]}
 								if (user.status === 'faculty')
 									td
 										a.delete(href="javascript:;" title='Delete' data-no=no)

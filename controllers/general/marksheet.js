@@ -21,7 +21,7 @@ router.get('/course/:index/marksheet', function(req, res, next) {
 	.exec(function(err, user) {
 		if (err) return next(err);
 		return res.render('marksheet', {user: {name: user.name, username: username,
-			status: user.status, courseNo: index, course: user.courses[index]}});
+			status: user.status, courseNo: index, marksheet: user.courses[index].marksheet}});
 	});
 });
 
