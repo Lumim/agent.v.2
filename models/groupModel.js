@@ -19,38 +19,9 @@ const groupSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'File'
 	}],
-	discussion: [{
-		date: {
-			type: Date,
-			default: Date.now,
-		},
-		title: {
-			type: String,
-		},
-		body: {
-			type: String,
-		},
-		creatorName: {
-			type: String,
-		},
-		creatorEmail: {
-			type: String,
-		},
-		comment: [{
-			date: {
-				type: Date,
-				default: Date.now,
-			},
-			body: {
-				type: String,
-			},
-			creatorName: {
-				type: String,
-			},
-			creatorEmail: {
-				type: String,
-			},
-		}],
+	discussions: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
 	}],
 });
 mongoose.model('Group', groupSchema); //set

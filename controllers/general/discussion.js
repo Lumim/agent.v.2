@@ -4,112 +4,163 @@ const User = require('mongoose').model('User');
 const Course = require('mongoose').model('Course');
 const Group = require('mongoose').model('Group');
 const Exam = require('mongoose').model('Exam');
+const Message = require('mongoose').model('Message');
 const requireLogin = require('middlewares/requireLogin');
 const matchUsername = require('middlewares/matchUsername');
 const flash = require('middlewares/flash');
+const async = require('async');
 
-router.get('/course/:index/group/:groupNo/discussion', function(req, res ){
+router.get('/course/:index/group/:groupNo/discussion', function(req, res, next){
 	const username = req.session.username;
-	const index = req.params.index;
+	const courseNo = req.params.index;
 	const groupNo = req.params.groupNo;
 
-	validUser(email, id, function(err) {
-		if(err) {
-			return res.send(err);
-		}
-		else {
-			Group.findOne({
-				_id: id,
-			})
-			.exec(function(err, grp) {
-				if(!grp || err) return res.send('Some error occured');
-				else
-					return res.render("discussion.pug", {name: name, username: username, email: email, id: id, discussion: grp.discussion});
+	User.findOne({
+		username,
+	})
+	.populate({path: 'courses', 
+		populate:{path: 'groups',
+			populate:{path: 'discussions',
+				populate:{path: 'posterImage comments',
+					populate:{path: 'posterImage'}}}}})
+	.exec(function(err, user) {
+		if (err) return next(err);
+		const discussions = user.courses[courseNo].groups[groupNo].discussions;
+		discussions.reverse();
+		return res.render('discussion', {user: {name: user.name, username: username, 
+			courseNo: courseNo, groupNo: groupNo, discussions: discussions}});
+	});
+});
+
+router.post('/course/:index/group/:groupNo/discussion', function(req, res, next){
+	const username = req.session.username;
+	const courseNo = req.params.index;
+	const groupNo = req.params.groupNo;
+	const text = req.body.text;
+
+	User.findOne({
+		username,
+	})
+	.populate({path: 'courses', 
+		populate:{path: 'groups',}})
+	.exec(function(err, user) {
+		if(err) return next(err);
+		const message = new Message({
+			text,
+			username,
+			posterName: user.name,
+			posterImage: user.image,
+		});
+		message.save(function(err) {
+			if(err) return next(err);
+			const group = user.courses[courseNo].groups[groupNo];
+			group.discussions.push(message._id);
+			group.save(function(err) {
+				if(err) return next(err);
+				return res.send(null);
 			});
-		}
+		});
 	});
 });
 
-router.post('/:username/group/:id/discussion/add', function(req, res){
-	const id = req.params.id;
-	const title = req.body.title;
-	const body = req.body.body;
+router.post('/course/:index/group/:groupNo/discussion/comment', function(req, res, next){
 	const username = req.session.username;
-	const name = req.session.name;
-	const email = req.session.email;
+	const text = req.body.text;
+	const postID = req.body.postID;
 
-	Group.update({_id: id},
-		{$push: {discussion: {
-			title: title,
-			body: body,
-			creatorName: name,
-			creatorEmail: email,
-		}}}, function(err) {
-			if(err) return res.send(err);
-			else return res.redirect('/'+username+'/group/'+id+'/discussion');
-	});
-});
-
-router.post('/:username/group/:id/discussion/:no/delete', function(req, res){
-	const username = req.session.username;
-	const id = req.params.id;
-	const no = req.params.no;
-
-	Group.findOne({
-		_id: id,
+	User.findOne({
+		username,
 	})
-	.exec(function(err, grp) {
-		if (err) return res.send(err);
-		grp.discussion.splice(no, 1);
-		grp.save(function(err) {
-			if (err) return res.send(err);
-			else return res.redirect('/'+username+'/group/'+id+'/discussion');
+	.exec(function(err, user) {
+		if(err) return next(err);
+		const message = new Message({
+			text,
+			username,
+			posterName: user.name,
+			posterImage: user.image,
+		});
+		message.save(function(err) {
+			if(err) return next(err);
+			Message.update({_id: postID},
+				{$push: {comments: message._id}}, function(err) {
+					if (err) return next(err);
+					return res.send(null);
+				});
 		});
 	});
 });
 
-router.post('/:username/group/:id/discussion/:no/comment/add', function(req, res){
+router.post('/course/:index/group/:groupNo/discussion/edit', function(req, res, next){
 	const username = req.session.username;
-	const name = req.session.name;
-	const email = req.session.email;
-	const id = req.params.id;
-	const no = req.params.no;
-	const body = req.body.body;
+	const text = req.body.text;
+	const postID = req.body.postID;
 
-	Group.findOne({
-		_id: id,
-	})
-	.exec(function(err, grp) {
-		if (err) return res.send(err);
-		grp.discussion[no].comment.push({
-			body: body,
-			creatorName: name,
-			creatorEmail: email,
+	Message.update({_id: postID},
+		{$set: {text: text}}, function(err) {
+			if (err) return next(err);
+			return res.send(null);
 		});
-		grp.save(function(err) {
-			if (err) return res.send(err);
-			else return res.redirect('/'+username+'/group/'+id+'/discussion');
-		});
-	});
 });
 
-router.post('/:username/group/:id/discussion/:no/comment/:no2/delete', function(req, res){
+router.post('/course/:index/group/:groupNo/discussion/delete', function(req, res, next){
 	const username = req.session.username;
-	const id = req.params.id;
-	const no = req.params.no;
-	const no2 = req.params.no2;
+	const courseNo = req.params.index;
+	const groupNo = req.params.groupNo;
+	const text = req.body.text;
+	const postID = req.body.postID;
 
-	Group.findOne({
-		_id: id,
-	})
-	.exec(function(err, grp) {
-		if (err) return res.send(err);
-		grp.discussion[no].comment.splice(no2, 1);
-		grp.save(function(err) {
-			if (err) return res.send(err);
-			else return res.redirect('/'+username+'/group/'+id+'/discussion');
-		});
-	});
+    User.findOne({
+    	username,
+    })
+    .populate({path: 'courses', 
+		populate:{path: 'groups',
+			populate:{path: 'discussions',}}})
+    .exec(function(err, user) {
+    	if (err) return next(err);
+    	const group = user.courses[courseNo].groups[groupNo];
+    	for(let i=0; i<group.discussions.length; i++) {
+    		if (group.discussions[i]._id.toString() === postID.toString()) {
+    			async.each(group.discussions[i].comments, function(commentID, cb) {
+    				Message.findOne({
+    					_id: commentID,
+    				})
+    				.remove(function(err) {
+    					if (err) cb(err);
+    					return cb(null);
+    				});
+    			}, function(err) {
+    				if (err) return next(err);
+    				group.discussions.splice(i, 1);
+	    			group.save(function(err) {
+	    				if (err) return next(err);
+	    				Message.findOne({
+	    					_id: postID,
+	    				})
+	    				.remove(function(err) {
+	    					if (err) return next(err);
+	    					return res.send(null);
+	    				});
+	    			});
+    			});
+    		}
+    		for(let j=0; j<group.discussions[i].comments.length; j++) {
+    			if(group.discussions[i].comments[j].toString() === postID.toString()) {
+    				group.discussions[i].comments.splice(j, 1);
+    				group.discussions[i].save(function(err) {
+    					if (err) return next(err);
+	    				Message.findOne({
+	    					_id: postID,
+	    				})
+	    				.remove(function(err) {
+	    					if (err) return next(err);
+	    					return res.send(null);
+	    				});
+    				});
+    			}
+    		}
+    	}
+    	//return res.send(null); // if can't find
+    });
 });
 
 module.exports = {

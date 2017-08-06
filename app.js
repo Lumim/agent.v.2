@@ -25,7 +25,7 @@ require('./models/userModel.js');
 require('./models/groupModel.js');
 require('./models/submissionModel.js');
 require('./models/fileModel.js');
-
+require('./models/messageModel.js');
 
 /* Route */
 require('./controllers/landingPage/index.js').addRouter(app);

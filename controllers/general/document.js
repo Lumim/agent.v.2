@@ -1,18 +1,16 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const User = require('mongoose').model('User'); //get
-const Course = require('mongoose').model('Course'); //get
+const express = require('express');
+const User = require('mongoose').model('User'); // get
 const Group = require('mongoose').model('Group');
 const File = require('mongoose').model('File');
 const router = express.Router();
-const requireLogin = require("middlewares/requireLogin");
+const requireLogin = require('middlewares/requireLogin');
 const matchUsername = require('middlewares/matchUsername');
 const flash = require('middlewares/flash');
 const async = require('async');
 const multer = require('multer');
 const fs = require('fs');
 
-router.get('/course/:index/group/:groupNo/document', function(req, res, next){
+router.get('/course/:index/group/:groupNo/document', function(req, res, next) {
 	const username = req.session.username;
 	const index = req.params.index;
 	const groupNo = req.params.groupNo;
