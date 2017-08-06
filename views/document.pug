@@ -24,6 +24,8 @@ block content
           small
             a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
           small !{value.date}
+  a.mt-2(href='/user/'+user.username+'/course/'+user.courseNo+'/group' title="Back")
+    i.fa.fa-arrow-left(aria-hidden="true")
 
   .modal.fade#documentModal(role="dialog" aria-hidden="true")
     .modal-dialog(role="document")
