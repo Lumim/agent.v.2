@@ -19,7 +19,7 @@ block content
                 a.ml-2.addComment(href='javascript:;' data-toggle="modal" data-target="#commentModal") Add comment
                 if user.username === value.username
                   a.ml-2(href='javascript:;' data-toggle="modal" data-target="#editModal").edit Edit
-                  a.delete.ml-2(href='') Delete
+                  a.delete.ml-2(href='javascript:;') Delete
               .toggle
                 each value1, index1 in value.comments
                   .media.mt-3
@@ -29,7 +29,7 @@ block content
                       small !{value1.date}
                         if user.username === value1.username
                           a.ml-2(href='javascript:;' data-toggle="modal" data-target="#editModal").edit Edit
-                          a.delete.ml-2(href='') Delete
+                          a.delete.ml-2(href='javascript:;') Delete
 
   a.mt-2(href='/user/'+user.username+'/course/'+user.courseNo+'/group' title="Back")
     i.fa.fa-arrow-left(aria-hidden="true")

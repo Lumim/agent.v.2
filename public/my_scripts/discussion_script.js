@@ -11,15 +11,84 @@ $(document).ready(function(){
                 url: postPath+'/discussion',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+
+                        const card = $('<div>', {
+                            class: 'card',
+                        }).prependTo('#discussions-list');
+
+                        const cardBlock = $('<div>', {
+                            class: 'card-block',
+                        }).appendTo(card);
+
+                        const media = $('<div>', {
+                            class: 'media',
+                        }).appendTo(cardBlock);
+
+                        const image = $('<img>', {
+                            class: 'd-flex mr-3',
+                            src: '/'+data.message.posterImage.path,
+                            width: '50',
+                            height: '50',
+                           
+                        }).appendTo(media);
+
+                        const mediaBody = $('<div>', {
+                            class: 'media-body',
+                            "data-id": data.message._id,
+                        }).appendTo(media);
+
+                        const span = $('<span>', {
+                            text: data.message.text,
+                        }).appendTo(mediaBody);
+
+                        const br = $('<br>', {
+                        }).appendTo(mediaBody);
+                        
+                        const small = $('<small>', {
+                            text: data.message.date,
+                        }).appendTo(mediaBody);
+
+                        const a1 = $('<a>', {
+                            class: 'ml-2 comments',
+                            href: 'javascript:;',
+                            text: 'Comments',
+                        }).appendTo(small);
+                        
+                        const a2 = $('<a>', {
+                            class: 'ml-2 addComment',
+                            href: 'javascript:;',
+                            "data-toggle": 'modal',
+                            "data-target": '#commentModal',
+                            text: 'Add comments',
+                        }).appendTo(small);
+
+                        const a3 = $('<a>', {
+                            class: 'ml-2 edit',
+                            href: 'javascript:;',
+                            "data-toggle": 'modal',
+                            "data-target": '#editModal',
+                            text: 'Edit',
+                        }).appendTo(small);
+
+                        const a4 = $('<a>', {
+                            class: 'ml-2 delete',
+                            href: 'javascript:;',
+                            text: 'Delete',
+                        }).appendTo(small);
+
+                        const toggle = $('<div>', {
+                            class: 'toggle',
+                        }).appendTo(mediaBody);
                     }
                 }
             });
     });
 
-    var postID;
-    $('.addComment').click(function() {
+    var postID, toggle;
+
+    $('#discussions-list').on('click', ' .addComment', function () {
         postID = $(this).closest('.media-body').data('id');
+        toggle = $(this).closest('.media-body').find('.toggle');
     });
 
     $('#commentButton').click(function() {
@@ -33,13 +102,53 @@ $(document).ready(function(){
                 url: postPath+'/discussion/comment',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+                        const media = $('<div>', {
+                            class: 'media mt-3',
+                        }).appendTo(toggle);
+
+                        const image = $('<img>', {
+                            class: 'd-flex mr-3',
+                            src: '/'+data.message.posterImage.path,
+                            width: '30',
+                            height: '30',
+                           
+                        }).appendTo(media);
+
+                        const mediaBody = $('<div>', {
+                            class: 'media-body',
+                            "data-id": data.message._id,
+                        }).appendTo(media);
+
+                        const span = $('<span>', {
+                            text: data.message.text,
+                        }).appendTo(mediaBody);
+
+                        const br = $('<br>', {
+                        }).appendTo(mediaBody);
+                        
+                        const small = $('<small>', {
+                            text: data.message.date,
+                        }).appendTo(mediaBody);
+
+                        const a1 = $('<a>', {
+                            class: 'ml-2 edit',
+                            href: 'javascript:;',
+                            "data-toggle": 'modal',
+                            "data-target": '#editModal',
+                            text: 'Edit',
+                        }).appendTo(small);
+
+                        const a2 = $('<a>', {
+                            class: 'ml-2 delete',
+                            href: 'javascript:;',
+                            text: 'Delete',
+                        }).appendTo(small);
                     }
                 }
             });
     });
 
-    $('.comments').click(function() {
+    $('#discussions-list').on('click', ' .comments', function () {
         const element = $(this).closest('.media-body').find('.toggle');
         if (element.css('display') === 'none') {
             element.css('display', 'block');
@@ -48,15 +157,18 @@ $(document).ready(function(){
         }
     });
 
-    $('.edit').click(function() {
+    var element;
+    $('#discussions-list').on('click', ' .edit', function () {
+        element = $(this).closest('.media-body').children('span');
         const text = $(this).closest('.media-body').children('span').text();
         $('#editMessage').val(text);
         postID = $(this).closest('.media-body').data('id');
-    })
+    });
 
     $('#editButton').click(function() {
+        const text = $('#editMessage').val();
         const data = {};
-        data.text = $('#editMessage').val();
+        data.text = text;
         data.postID = postID;
         $.ajax({
                 type: 'POST',
@@ -65,14 +177,16 @@ $(document).ready(function(){
                 url: postPath+'/discussion/edit',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+                        element.html(text + '<br>');
                     }
                 }
             });
     });
 
-    $('.delete').click(function() {
+    $('#discussions-list').on('click', ' .delete', function () {
         postID = $(this).closest('.media-body').data('id');
+        const mediaElement = $(this).closest('.media');
+        const cardElement = $(this).closest('.card');
         const data = {};
         data.postID = postID;
         $.ajax({
@@ -82,7 +196,10 @@ $(document).ready(function(){
                 url: postPath+'/discussion/delete',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        location.reload();
+                        if (data.type == 1)
+                            cardElement.remove();
+                        else
+                            mediaElement.remove();
                     }
                 }
             });

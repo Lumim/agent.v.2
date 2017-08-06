@@ -54,7 +54,12 @@ router.post('/course/:index/group/:groupNo/discussion', function(req, res, next)
 			group.discussions.push(message._id);
 			group.save(function(err) {
 				if(err) return next(err);
-				return res.send(null);
+				Message.populate(message, {path: 'posterImage'},
+					function(err, message) {
+						const data = {};
+						data.message = message;
+						return res.send(data);
+					});
 			});
 		});
 	});
@@ -81,7 +86,12 @@ router.post('/course/:index/group/:groupNo/discussion/comment', function(req, re
 			Message.update({_id: postID},
 				{$push: {comments: message._id}}, function(err) {
 					if (err) return next(err);
-					return res.send(null);
+					Message.populate(message, {path: 'posterImage'},
+					function(err, message) {
+						const data = {};
+						data.message = message;
+						return res.send(data);
+					});
 				});
 		});
 	});
@@ -135,10 +145,13 @@ router.post('/course/:index/group/:groupNo/discussion/delete', function(req, res
 	    				})
 	    				.remove(function(err) {
 	    					if (err) return next(err);
-	    					return res.send(null);
+	    					const data = {};
+	    					data.type = 1;
+	    					return res.send(data);
 	    				});
 	    			});
     			});
+    			break;
     		}
     		for(let j=0; j<group.discussions[i].comments.length; j++) {
     			if(group.discussions[i].comments[j].toString() === postID.toString()) {
@@ -150,7 +163,9 @@ router.post('/course/:index/group/:groupNo/discussion/delete', function(req, res
 	    				})
 	    				.remove(function(err) {
 	    					if (err) return next(err);
-	    					return res.send(null);
+	    					const data = {};
+	    					data.type = 2;
+	    					return res.send(data);
 	    				});
     				});
     			}
