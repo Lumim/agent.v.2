@@ -33,7 +33,7 @@ require('./controllers/general/profile.js').addRouter(app);
 require('./controllers/general/profileEdit.js').addRouter(app);
 require('./controllers/general/post.js').addRouter(app);
 require('./controllers/general/group.js').addRouter(app);
-require('./controllers/general/attachment.js').addRouter(app);
+require('./controllers/general/document.js').addRouter(app);
 require('./controllers/general/discussion.js').addRouter(app);
 require('./controllers/general/user.js').addRouter(app);
 require('./controllers/general/course.js').addRouter(app);
@@ -41,10 +41,10 @@ require('./controllers/general/marksheet.js').addRouter(app);
 require('./controllers/general/marksheetCSV.js').addRouter(app);
 require('./controllers/general/marksheetAssessment.js').addRouter(app);
 require('./controllers/general/marksheetStudent.js').addRouter(app);
+require('./controllers/general/download.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 require('./controllers/facultyPage/resource.js').addRouter(app);
-require('./controllers/facultyPage/group.js').addRouter(app);
 require('./controllers/facultyPage/submission.js').addRouter(app);
 
 require('./controllers/studentPage/student.js').addRouter(app);

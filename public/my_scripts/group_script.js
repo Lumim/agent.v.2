@@ -188,5 +188,15 @@ $(document).ready(function(){
             });
         } 
     });
+
+    $('.discussion').click(function() {
+    	const groupNo = $(this).closest('#group-list').children().index($(this).closest('.card'));
+       	window.location.href = postPath+'/group/'+groupNo+'/discussion';
+    });
+
+    $('.document').click(function() {
+    	const groupNo = $(this).closest('#group-list').children().index($(this).closest('.card'));
+       	window.location.href = postPath+'/group/'+groupNo+'/document';
+    });
     
 });

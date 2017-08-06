@@ -15,13 +15,9 @@ const groupSchema = new mongoose.Schema({
 		name: {type: String,},
 		email: {type: String,},
 	}],
-	attachments: [{
-		path: {
-			type: String,
-		},
-		fileName: {
-			type: String,
-		},
+	documents: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'File'
 	}],
 	discussion: [{
 		date: {

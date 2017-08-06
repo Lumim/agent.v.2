@@ -1,0 +1,47 @@
+extends flexLayout.pug
+block header
+  include layout.pug
+
+block links
+  link(href="/public/my_styles/document_style.css", rel='stylesheet')
+
+block content
+  .row.mb-3
+    .col-4.push-md-10
+        button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#documentModal" href='javascript:;') New Document
+  #documents-list.mt-3
+    each value, index in user.documents
+      .card
+        .card-block
+          .row
+            .col-11
+              .card-title
+                a(href = '/download/'+value.path) !{value.name}
+            .col-1
+              a.delete(href='javascript:;' title="Delete" data-path=value.path)
+                i.fa.fa-trash(aria-hidden="true")
+          small
+            a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
+          small !{value.date}
+
+  .modal.fade#documentModal(role="dialog" aria-hidden="true")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          h5 Upload New file
+        .modal-body
+          form.form-inline#upload(enctype="multipart/form-data" action="/user/"+user.username+"/course/"+user.courseNo+'/group/'+user.groupNo+'/document/upload' method="post")
+            .custom-file
+              input.cutom-file-input(type="file" name="file")
+              input.cutom-file-input(type="submit" value="Upload")
+              span#status
+        .modal-footer
+          button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+
+block scripts
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+  script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+  //To pass variable from jade template file to below script file
+  script.
+    var postPath = "http://localhost:3000/user/"+"#{user.username}"+"/course/"+"#{user.courseNo}"+"/group/"+"#{user.groupNo}";
+  script(src="/public/my_scripts/document_script.js")

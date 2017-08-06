@@ -4,8 +4,31 @@ const User = require('mongoose').model('User');
 const Course = require('mongoose').model('Course');
 const Group = require('mongoose').model('Group');
 const Exam = require('mongoose').model('Exam');
-const requireLoginMW = require('middlewares/requireLogin');
-const deleteMarksheet = require('middlewares/deleteMarksheet');
+const requireLogin = require('middlewares/requireLogin');
+const matchUsername = require('middlewares/matchUsername');
+const flash = require('middlewares/flash');
+
+router.get('/course/:index/group/:groupNo/discussion', function(req, res ){
+	const username = req.session.username;
+	const index = req.params.index;
+	const groupNo = req.params.groupNo;
+
+	validUser(email, id, function(err) {
+		if(err) {
+			return res.send(err);
+		}
+		else {
+			Group.findOne({
+				_id: id,
+			})
+			.exec(function(err, grp) {
+				if(!grp || err) return res.send('Some error occured');
+				else
+					return res.render("discussion.pug", {name: name, username: username, email: email, id: id, discussion: grp.discussion});
+			});
+		}
+	});
+});
 
 router.post('/:username/group/:id/discussion/add', function(req, res){
 	const id = req.params.id;
@@ -91,6 +114,6 @@ router.post('/:username/group/:id/discussion/:no/comment/:no2/delete', function(
 
 module.exports = {
 	addRouter(app){
-		app.use('/', [requireLoginMW], router);
+		app.use('/user/:username', [requireLogin, matchUsername, flash], router);
 	}
 }
