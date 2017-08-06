@@ -14,6 +14,9 @@ const fileSchema = new mongoose.Schema({
 	username: {
 		type: String,
 	},
+	posterName: {
+		type: String,
+	}
 });
 
 mongoose.model('File', fileSchema);

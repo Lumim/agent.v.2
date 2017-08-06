@@ -103,11 +103,18 @@ router.post('/course/:index/group/delete', onlyFaculty, function(req, res, next)
 	.exec(function(err, user) {
 		if (err) next(err);
 		const course = user.courses[index];
-		data.members = user.courses[index].groups[groupNo].members; 
+		data.members = user.courses[index].groups[groupNo].members;
+		const groupID = user.courses[index].groups[groupNo]._id;
 		course.groups.splice(groupNo, 1);
 		course.save(function(err) {
     			if (err) return next(err);
-    			return res.send(data);
+    			Group.findOne({
+    				_id: groupID,
+    			})
+    			.remove(function(err) {
+    				if (err) return next(err);
+    				return res.send(data);
+    			});
     	});
 	});
 });
@@ -159,7 +166,7 @@ router.post('/course/:index/group/add', onlyFaculty, function(req, res, next) {
 	});
 });
 
-router.post('/course/:index/group/name', onlyFaculty, function(req, res, next) {
+router.post('/course/:index/group/name', function(req, res, next) {
 	const username = req.session.username;
 	const index = req.params.index;
 	const type = req.body.type;
