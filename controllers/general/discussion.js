@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
-const Course = require('mongoose').model('Course');
-const Group = require('mongoose').model('Group');
-const Exam = require('mongoose').model('Exam');
 const Message = require('mongoose').model('Message');
 const requireLogin = require('middlewares/requireLogin');
 const matchUsername = require('middlewares/matchUsername');
@@ -159,7 +156,6 @@ router.post('/course/:index/group/:groupNo/discussion/delete', function(req, res
     			}
     		}
     	}
-    	//return res.send(null); // if can't find
     });
 });
 

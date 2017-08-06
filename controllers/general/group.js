@@ -1,7 +1,5 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const User = require('mongoose').model('User'); //get
-const Course = require('mongoose').model('Course'); //get
+const express = require('express');
+const User = require('mongoose').model('User'); // get
 const Group = require('mongoose').model('Group');
 const router = express.Router();
 const requireLogin = require("middlewares/requireLogin");
