@@ -17,9 +17,10 @@ block content
             .col-11
               .card-title
                 a(href = '/download/'+value.path) !{value.name}
-            .col-1
-              a.delete(href='javascript:;' title="Delete" data-path=value.path)
-                i.fa.fa-trash(aria-hidden="true")
+            if user.username === value.username
+              .col-1
+                a.delete(href='javascript:;' title="Delete" data-path=value.path)
+                  i.fa.fa-trash(aria-hidden="true")
           small
             a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
           small !{value.date}
