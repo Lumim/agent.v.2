@@ -65,36 +65,62 @@ block content
 							th Attendance(%)
 							th Total(%)
 							th Grade
-							th 
+							if (user.status === 'faculty')
+								th 
 					tbody
-						each value, no in user.marksheet.name
-							tr
-								td !{no+1}
-								td
-									a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
-								td !{user.marksheet.ID[no]}
-								td !{user.marksheet.email[no]}
-								- x = user.marksheet.quiz
-								- examBody(x, no)
-								- x = user.marksheet.mid
-								- examBody(x, no)
-								- x = user.marksheet.assignment
-								- examBody(x, no)
-								- x = user.marksheet.project
-								- examBody(x, no)
-								- x = user.marksheet.presentation
-								- examBody(x, no)
-								- x = user.marksheet.fieldWork
-								- examBody(x, no)
-								- x = user.marksheet.final
-								- examBody(x, no)
-								td !{user.marksheet.attendance[no]}
-								td !{user.marksheet.total[no]}
-								td !{user.marksheet.grade[no]}
-								if (user.status === 'faculty')
+						if user.status === 'faculty'
+							each value, no in user.marksheet.name
+								tr
+									td !{no+1}
+									td
+										a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
+									td !{user.marksheet.ID[no]}
+									td !{user.marksheet.email[no]}
+									- x = user.marksheet.quiz
+									- examBody(x, no)
+									- x = user.marksheet.mid
+									- examBody(x, no)
+									- x = user.marksheet.assignment
+									- examBody(x, no)
+									- x = user.marksheet.project
+									- examBody(x, no)
+									- x = user.marksheet.presentation
+									- examBody(x, no)
+									- x = user.marksheet.fieldWork
+									- examBody(x, no)
+									- x = user.marksheet.final
+									- examBody(x, no)
+									td !{user.marksheet.attendance[no]}
+									td !{user.marksheet.total[no]}
+									td !{user.marksheet.grade[no]}
 									td
 										a.delete(href="javascript:;" title='Delete' data-no=no)
 											i.fa.fa-trash(aria-hidden="true")
+						else
+							- var no = user.studentNo
+								tr
+									td !{no+1}
+									td
+										a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
+									td !{user.marksheet.ID[no]}
+									td !{user.marksheet.email[no]}
+									- x = user.marksheet.quiz
+									- examBody(x, no)
+									- x = user.marksheet.mid
+									- examBody(x, no)
+									- x = user.marksheet.assignment
+									- examBody(x, no)
+									- x = user.marksheet.project
+									- examBody(x, no)
+									- x = user.marksheet.presentation
+									- examBody(x, no)
+									- x = user.marksheet.fieldWork
+									- examBody(x, no)
+									- x = user.marksheet.final
+									- examBody(x, no)
+									td !{user.marksheet.attendance[no]}
+									td !{user.marksheet.total[no]}
+									td !{user.marksheet.grade[no]}
 	a.mt-2(href='/user/'+user.username title="Back")
 		i.fa.fa-arrow-left(aria-hidden="true")
 
@@ -176,8 +202,11 @@ block content
 						.col-8
 							#chartContainer1(style="height: 50vh; width: 100%;")
 				.modal-footer
-					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
-					button#assessmentHeadButton(type="button" class="btn btn-primary") Save Changes
+					if (user.status === 'faculty')
+						button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+						button#assessmentHeadButton(type="button" class="btn btn-primary") Save Changes
+					else
+						button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 
 	.modal.fade#assessmentTotalHeadModal(role="dialog" aria-hidden="true")
 		.modal-dialog.modal-lg(role="document")

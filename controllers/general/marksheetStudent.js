@@ -189,7 +189,7 @@ router.post('/course/:index/marksheet/student/delete', onlyFaculty, function(req
 	});
 });
 
-router.post('/course/:index/marksheet/student/view', onlyFaculty, function(req, res, next){
+router.post('/course/:index/marksheet/student/view', function(req, res, next){
 	const email = req.body.email;
 	const data = {};
 	User.findOne({

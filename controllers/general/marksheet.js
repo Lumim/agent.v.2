@@ -20,8 +20,22 @@ router.get('/course/:index/marksheet', function(req, res, next) {
 			populate: {path: 'quiz mid assignment project presentation fieldWork final'}}})
 	.exec(function(err, user) {
 		if (err) return next(err);
-		return res.render('marksheet', {user: {name: user.name, username: username,
+		if (user.status === 'faculty') {
+			return res.render('marksheet', {user: {name: user.name, username: username,
 			status: user.status, courseNo: index, marksheet: user.courses[index].marksheet}});
+		}
+		else {
+			let row;
+			for (let i=0; i<user.courses[index].marksheet.email.length; i++) {
+		        if (user.courses[index].marksheet.email[i] === user.email) {
+		        	row = i;
+		        	break;
+		        }
+		    }
+			return res.render('marksheet', {user: {name: user.name, username: username,
+			status: user.status, courseNo: index, marksheet: user.courses[index].marksheet, 
+			studentNo: row}});
+		}
 	});
 });
 
