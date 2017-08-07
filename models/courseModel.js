@@ -53,6 +53,10 @@ const courseSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Group',
 	}],
+	submissions: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Submission'
+	}],
 });
 
 mongoose.model('Course', courseSchema); //set
