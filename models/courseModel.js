@@ -42,45 +42,12 @@ const courseSchema = new mongoose.Schema({
 		type: String,
 	},
 	resources: [{
-		path: {
-			type: String,
-		},
-		fileName: {
-			type: String,
-		},
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'File'
 	}],
 	post: [{
-		date: {
-			type: Date,
-			default: Date.now,
-		},
-		title: {
-			type: String,
-		},
-		body: {
-			type: String,
-		},
-		creatorName: {
-			type: String,
-		},
-		creatorEmail: {
-			type: String,
-		},
-		comment: [{
-			date: {
-				type: Date,
-				default: Date.now,
-			},
-			body: {
-				type: String,
-			},
-			creatorName: {
-				type: String,
-			},
-			creatorEmail: {
-				type: String,
-			},
-		}],
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
 	}],
 	groups: [{
 		type: mongoose.Schema.Types.ObjectId,

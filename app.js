@@ -42,9 +42,10 @@ require('./controllers/general/marksheetCSV.js').addRouter(app);
 require('./controllers/general/marksheetAssessment.js').addRouter(app);
 require('./controllers/general/marksheetStudent.js').addRouter(app);
 require('./controllers/general/download.js').addRouter(app);
+require('./controllers/general/resource.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
-require('./controllers/facultyPage/resource.js').addRouter(app);
+
 require('./controllers/facultyPage/submission.js').addRouter(app);
 
 require('./controllers/studentPage/student.js').addRouter(app);

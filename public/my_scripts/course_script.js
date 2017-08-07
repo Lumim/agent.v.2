@@ -87,7 +87,7 @@ $(document).ready(function(){
     	}
     });
 
-    $('a.view, a.marksheet, a.group').click(function() {
+    $('a.view, a.marksheet, a.group, a.resource').click(function() {
     	const index = $(this).closest('.card').parent().children().index($(this).closest('.card'));
     	const name = $(this).closest('.card').parent().attr('id');
     	const classes = $(this).attr('class').split(' ');
