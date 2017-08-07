@@ -34,8 +34,9 @@ router.get('/course/:index/group', function(req, res, next){
 						}
 					}
 				}
+				const nominies = new Array(); // Empty array
 				return res.render("group.pug", {user: {name: user.name, username: username, 
-				status: user.status, courseNo: index, groups: groupList}});
+				status: user.status, courseNo: index, groups: groupList, nominies: nominies}});
 			}
 			else {
 				const nominies = new Array();
