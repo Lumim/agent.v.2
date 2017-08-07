@@ -52,9 +52,9 @@ router.post('/course/:index/marksheet/student', onlyFaculty, function(req, res, 
 					if(!student) {
 						const to = [email];
 						const from = 'no-reply@agent-v2.com';
-		   				const subject = 'New Course Request';
-					    const text = 'Please login to your Agent account and response to the request';
-					    const html = '';
+		   				const subject = 'New Course';
+						const text = 'You are enrolled in a new course by your respected faculty member. Please login to your Agent account for more details';
+						const html = '';
 					    return sendEmail({ to, from, subject, text, html }, function(err) {
 						   if (err) {
 						     return next(err);

@@ -110,8 +110,8 @@ router.post('/course/:index/csv', multer({dest: 'uploads/csv/'}).single('file'),
 				   				}, function(err){
 				   					if(err) return next(err);
 				   					const from = 'no-reply@agent-v2.com';
-					   				const subject = 'New Course Request';
-								    const text = 'Please login to your Agent account and response to the course request';
+					   				const subject = 'New Course';
+								    const text = 'You are enrolled in a new course by your respected faculty member. Please login to your Agent account for more details';
 								    const html = '';
 								    return sendEmail({ to, from, subject, text, html }, function(err) {
 									    if (err) {

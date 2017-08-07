@@ -48,7 +48,6 @@ block content
 							th Name
 							th ID
 							th Email
-							th status
 							- let x = user.marksheet.quiz
 							- examTitle(x)
 							- x = user.marksheet.mid
@@ -75,7 +74,6 @@ block content
 									a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
 								td !{user.marksheet.ID[no]}
 								td !{user.marksheet.email[no]}
-								td !{user.marksheet.courseStatus[no]}
 								- x = user.marksheet.quiz
 								- examBody(x, no)
 								- x = user.marksheet.mid

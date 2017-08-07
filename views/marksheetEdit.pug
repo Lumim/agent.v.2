@@ -22,7 +22,6 @@ block marksheetBody
 					th Name
 					th ID
 					th Email
-					th Status
 					- let x = user.marksheet.quiz
 					- examTitle(x)
 					- x = user.marksheet.mid
@@ -47,7 +46,6 @@ block marksheetBody
 						td !{user.marksheet.name[no]}
 						td !{user.marksheet.ID[no]}
 						td !{user.marksheet.email[no]}
-						td !{user.marksheet.courseStatus[no]}
 						- x = user.marksheet.quiz
 						- examBody(x, no)
 						- x = user.marksheet.mid
