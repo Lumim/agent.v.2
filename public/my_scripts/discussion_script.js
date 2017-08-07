@@ -48,6 +48,12 @@ $(document).ready(function(){
                             text: data.message.date,
                         }).appendTo(mediaBody);
 
+                        const a0 = $('<a>', {
+                            class: 'ml-2',
+                            href: '/user/'+data.message.username+'/profile',
+                            text: data.message.posterName,
+                        }).appendTo(small);
+
                         const a1 = $('<a>', {
                             class: 'ml-2 comments',
                             href: 'javascript:;',
@@ -129,6 +135,12 @@ $(document).ready(function(){
                         const small = $('<small>', {
                             text: data.message.date,
                         }).appendTo(mediaBody);
+
+                        const a0 = $('<a>', {
+                            class: 'ml-2',
+                            href: '/user/'+data.message.username+'/profile',
+                            text: data.message.posterName,
+                        }).appendTo(small);
 
                         const a1 = $('<a>', {
                             class: 'ml-2 edit',
