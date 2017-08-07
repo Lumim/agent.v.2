@@ -6,7 +6,6 @@ const router = express.Router();
 const requireLogin = require('middlewares/requireLogin');
 const matchUsername = require('middlewares/matchUsername');
 const flash = require('middlewares/flash');
-const onlyFaculty = require('middlewares/onlyFaculty');
 const multer = require('multer');
 const fs = require('fs');
 
@@ -29,7 +28,7 @@ router.get('/course/:index/resource', function(req, res, next) {
 });
 
 
-router.post('/course/:index/resource/upload', onlyFaculty, multer({dest: 'uploads/resource/', keepExtensions: true}).single('file'), function(req, res, next) {
+router.post('/course/:index/resource/upload', multer({dest: 'uploads/resource/', keepExtensions: true}).single('file'), function(req, res, next) {
 	const username = req.session.username;
 	const courseNo = req.params.index;
 	const tempPath = req.file.path;
@@ -67,7 +66,7 @@ router.post('/course/:index/resource/upload', onlyFaculty, multer({dest: 'upload
 	});
 });
 
-router.post('/course/:index/resource/delete', onlyFaculty, function(req, res, next) {
+router.post('/course/:index/resource/delete', function(req, res, next) {
 	const username = req.session.username
 	const courseNo = req.params.index;
 	const path = req.body.path;
