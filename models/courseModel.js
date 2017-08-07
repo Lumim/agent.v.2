@@ -45,7 +45,7 @@ const courseSchema = new mongoose.Schema({
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'File'
 	}],
-	post: [{
+	posts: [{
 		type: mongoose.Schema.Types.ObjectId,
         ref: 'Message'
 	}],
