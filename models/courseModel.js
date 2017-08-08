@@ -2,21 +2,30 @@ const mongoose = require("mongoose");
 const Marksheet = require("mongoose").model('Marksheet');
 
 const courseSchema = new mongoose.Schema({
-	name: {
+	status: {
 		type: String,
 		required: true,
-		maxlength: 100
-	}, 
+		enum: ['active', 'archive'],
+	},
+	nickName: {
+		type: String,
+	},
 	code: {
 		type: String,
-		required: true,
-		maxlength: 20
+	},
+	fullName: {
+		type: String,
 	},
 	section: {
 		type: String,
-		required: true,
 	},
 	classRoom: {
+		type: String,
+	},
+	classTime: [{
+		type: String,
+	}],
+	description: {
 		type: String,
 	},
 	marksheet: {
@@ -33,49 +42,20 @@ const courseSchema = new mongoose.Schema({
 		type: String,
 	},
 	resources: [{
-		path: {
-			type: String,
-		},
-		fileName: {
-			type: String,
-		},
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'File'
 	}],
-	post: [{
-		date: {
-			type: Date,
-			default: Date.now,
-		},
-		title: {
-			type: String,
-		},
-		body: {
-			type: String,
-		},
-		creatorName: {
-			type: String,
-		},
-		creatorEmail: {
-			type: String,
-		},
-		comment: [{
-			date: {
-				type: Date,
-				default: Date.now,
-			},
-			body: {
-				type: String,
-			},
-			creatorName: {
-				type: String,
-			},
-			creatorEmail: {
-				type: String,
-			},
-		}],
+	posts: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
 	}],
 	groups: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Group',
+	}],
+	submissions: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Submission'
 	}],
 });
 

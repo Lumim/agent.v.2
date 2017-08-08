@@ -1,5 +1,8 @@
 extends flexLayout.pug
 
+block links
+	link(rel="stylesheet", href="/public/my_styles/marksheet_style.css", media="screen", title="no title", charset="utf-8")
+
 block header
 	include layout.pug
 
@@ -8,10 +11,10 @@ block content
 		each exam, no2 in x
 			if no2 > 0
 				th
-					a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+exam.url) !{exam.name}
+					a.assesmentHeadAnchor(data-toggle="modal" data-exam=exam href='#assessmentHeadModal') !{exam.name}
 		if x.length > 0
 			th
-				a(href="/faculty/"+username+"/course/"+index+"/marksheet/"+x[0].url) !{x[0].name}(%)
+				a.assesmentTotalHeadAnchor(data-toggle="modal" data-exam=x[0] href="#assessmentTotalHeadModal") !{x[0].name}
 
 	block function
 		- var examBody = function(x, no){
@@ -22,23 +25,145 @@ block content
 				td !{x[0].marks[no]}
 		- }
 
-	block marksheetHead
-		.d-flex.align-items-center.justify-content-between
-			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/csv/upload" method="post" enctype="multipart/form-data")
-				.custom-file
-					input.cutom-file-input(type="file" name="csvdata" accept="csv")
-					span.custom-file-control
-				input.ml-2.btn.btn-primary(type="submit" value="Upload")
+	.card.text-center
+		.card-block
+			.card-title.mb-3
+				block marksheetHead
+					.d-flex.align-items-center.justify-content-between
+						if (user.status === 'faculty')
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#csvModal" href='javascript:;') Upload Students
+								i#csvQ.ml-1.fa.fa-question-circle(aria-hidden="true")
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#studentModal" href='javascript:;') Add Student
+								i#studentQ.ml-1.fa.fa-question-circle(aria-hidden="true")
+							span
+								button.btn.btn-secondary(type="button" data-toggle="modal" data-target="#assessmentModal" href='javascript:;') Add Assessment
+							a.btn.btn-secondary(href="/user/"+user.username+"/course/"+user.courseNo+"/marksheet/edit" role="button") Edit
+			block marksheetBody
+				table.mt-3.table.table-bordered.table-hover.table-condensed.table-responsive
+					thead
+						tr
+							th No.
+							th Name
+							th ID
+							th Email
+							- let x = user.marksheet.quiz
+							- examTitle(x)
+							- x = user.marksheet.mid
+							- examTitle(x)
+							- x = user.marksheet.assignment
+							- examTitle(x)
+							- x = user.marksheet.project
+							- examTitle(x)
+							- x = user.marksheet.presentation
+							- examTitle(x)
+							- x = user.marksheet.fieldWork
+							- examTitle(x)
+							- x = user.marksheet.final
+							- examTitle(x)
+							th Attendance(%)
+							th Total(%)
+							th Grade
+							if (user.status === 'faculty')
+								th 
+					tbody
+						if user.status === 'faculty'
+							each value, no in user.marksheet.name
+								tr
+									td !{no+1}
+									td
+										a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
+									td !{user.marksheet.ID[no]}
+									td !{user.marksheet.email[no]}
+									- x = user.marksheet.quiz
+									- examBody(x, no)
+									- x = user.marksheet.mid
+									- examBody(x, no)
+									- x = user.marksheet.assignment
+									- examBody(x, no)
+									- x = user.marksheet.project
+									- examBody(x, no)
+									- x = user.marksheet.presentation
+									- examBody(x, no)
+									- x = user.marksheet.fieldWork
+									- examBody(x, no)
+									- x = user.marksheet.final
+									- examBody(x, no)
+									td !{user.marksheet.attendance[no]}
+									td !{user.marksheet.total[no]}
+									td !{user.marksheet.grade[no]}
+									td
+										a.delete(href="javascript:;" title='Delete' data-no=no)
+											i.fa.fa-trash(aria-hidden="true")
+						else
+							- var no = user.studentNo
+								tr
+									td !{no+1}
+									td
+										a.view(href='javascript:;' data-email=user.marksheet.email[no]) !{user.marksheet.name[no]}
+									td !{user.marksheet.ID[no]}
+									td !{user.marksheet.email[no]}
+									- x = user.marksheet.quiz
+									- examBody(x, no)
+									- x = user.marksheet.mid
+									- examBody(x, no)
+									- x = user.marksheet.assignment
+									- examBody(x, no)
+									- x = user.marksheet.project
+									- examBody(x, no)
+									- x = user.marksheet.presentation
+									- examBody(x, no)
+									- x = user.marksheet.fieldWork
+									- examBody(x, no)
+									- x = user.marksheet.final
+									- examBody(x, no)
+									td !{user.marksheet.attendance[no]}
+									td !{user.marksheet.total[no]}
+									td !{user.marksheet.grade[no]}
+	a.mt-2(href='/user/'+user.username title="Back")
+		i.fa.fa-arrow-left(aria-hidden="true")
 
-			form.form-inline
-				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/student/add") Add Student
+	.modal.fade#csvModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Upload CSV file
+				.modal-body
+					form.form-inline#uploadCSV(enctype="multipart/form-data" action="/user/"+user.username+"/course/"+user.courseNo+'/csv' method="post")
+						.custom-file
+							input.cutom-file-input(type="file" name="file")
+							input.cutom-file-input(type="submit" value="Upload")
+							span#status
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 
-			form.form-inline
-				button.btn.btn-primary(type="submit", formmethod="get", formaction="/faculty/"+username+"/course/"+index+"/marksheet/edit") Edit
+	.modal.fade#studentModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Add student
+				.modal-body
+					.form-group
+						input#name(type="text" placeholder="Name").form-control
+						small#name-error
+					.form-group
+						input#ID(type="text" placeholder="ID").form-control
+						small#ID-error
+					.form-group
+						input#email(type="text" placeholder="Email").form-control
+						small#email-error
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#studentButton(type="button" class="btn btn-primary") Save
 
-			form.form-inline(action="/faculty/"+username+"/course/"+index+"/marksheet/add" method="post")
-				.d-flex.justify-content-end.w-100
-					select.mr-2.form-control(name="exam")
+	.modal.fade#assessmentModal(role="dialog" aria-hidden="true")
+		.modal-dialog(role="document")
+			.modal-content
+				.modal-header
+					h5 Add Assessment
+				.modal-body
+					select#assessment.form-control
 						option(value="assignment") Assignment
 						option(value="fieldWork") Field Work
 						option(value="final") Final
@@ -46,61 +171,79 @@ block content
 						option(value="quiz") Quiz
 						option(value="presentation") Presentation
 						option(value="project") Project
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#assessmentButton(type="button" class="btn btn-primary") Save
 
-					input.btn.btn-primary(type="submit", value="Add")
+	.modal.fade#assessmentHeadModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content(style='height: 95vh')
+				.modal-header
+					h5.assessmentName(data-url)
+				.modal-body
+					.row
+						.col-4
+							if (user.status === 'faculty')
+								label Date:
+								input.assessmentDate(type="text").form-control
+								br
+								label Total Mark:
+								input.assessmentTotalMark(type="text").form-control
+								br
+							else
+								label Date:
+								p.assessmentDate
+								br
+								label Total Mark:
+								p.assessmentTotalMark
+								br
+							label Highest Mark:
+							p.assessmentHighestMark
+						.col-8
+							#chartContainer1(style="height: 50vh; width: 100%;")
+				.modal-footer
+					if (user.status === 'faculty')
+						button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+						button#assessmentHeadButton(type="button" class="btn btn-primary") Save Changes
+					else
+						button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
 
-	block marksheetBody
-		table.mt-3.table.table-striped.table-bordered.table-hover.table-condensed.table-responsive
-			thead
-				tr
-					th No.
-					th Name
-					th ID
-					th Email
-					th status
-					- let x = marksheet.quiz
-					- examTitle(x)
-					- x = marksheet.mid
-					- examTitle(x)
-					- x = marksheet.assignment
-					- examTitle(x)
-					- x = marksheet.project
-					- examTitle(x)
-					- x = marksheet.presentation
-					- examTitle(x)
-					- x = marksheet.fieldWork
-					- examTitle(x)
-					- x = marksheet.final
-					- examTitle(x)
-					th Attendance(%)
-					th Total(%)
-					th Grade
-					th Delete
-			tbody
-				each value, no in marksheet.name
-					tr
-						td !{no+1}
-						td !{marksheet.name[no]}
-						td !{marksheet.ID[no]}
-						td !{marksheet.email[no]}
-						td !{marksheet.courseStatus[no]}
-						- x = marksheet.quiz
-						- examBody(x, no)
-						- x = marksheet.mid
-						- examBody(x, no)
-						- x = marksheet.assignment
-						- examBody(x, no)
-						- x = marksheet.project
-						- examBody(x, no)
-						- x = marksheet.presentation
-						- examBody(x, no)
-						- x = marksheet.fieldWork
-						- examBody(x, no)
-						- x = marksheet.final
-						- examBody(x, no)
-						td !{marksheet.attendance[no]}
-						td !{marksheet.total[no]}
-						td !{marksheet.grade[no]}
-						td
-							form(action="/faculty/"+username+"/course/"+index+"/marksheet/student/"+no+"/delete", method="post")
-								input.btn.btn-danger(type="submit", value="Delete")
+	.modal.fade#assessmentTotalHeadModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content(style='height: 95vh')
+				.modal-header
+					h5.assessmentName(data-url)
+				.modal-body
+					.row
+						.col-4
+							if (user.status === 'faculty')
+								label Best:
+								input.assessmentBest(type="text").form-control
+								br
+								label Parcentage Count:
+								input.assessmentParcentage(type="text").form-control
+								br
+							else
+								label Best:
+								p.assessmentBest
+								br
+								label Parcentage Count:
+								p.assessmentParcentage
+								br
+							label Highest Mark:
+							p.assessmentHighestMark
+						.col-8
+							#chartContainer2(style="height: 50vh; width: 100%;")
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
+					button#assessmentTotalHeadButton(type="button" class="btn btn-primary") Save Changes
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+	script(type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js")
+	//To pass variable from jade template file to below script file
+	script.
+		var postPath = "http://localhost:3000/user/" + "#{user.username}" + "/course/" + "#{user.courseNo}";
+	script(src="/public/my_scripts/marksheet_script.js")
+

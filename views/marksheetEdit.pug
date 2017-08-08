@@ -1,5 +1,8 @@
 extend marksheet.pug
 
+block links
+	link(rel="stylesheet", href="/public/my_styles/marksheet_edit_style.css", media="screen", title="no title", charset="utf-8")
+
 block function
 	- var examBody = function(x, no){
 		each exam, no2 in x
@@ -11,58 +14,56 @@ block function
 	- }
 
 block marksheetBody
-	form(action="/faculty/"+username+"/course/"+index+"/marksheet/edit/save" method="post")
-		table(class="table table-striped table-bordered table-hover table-condensed table-responsive")
+	form(action="/user/"+user.username+"/course/"+user.courseNo+"/marksheet/edit" method="post")
+		table(class="table table-bordered table-hover table-condensed table-responsive")
 			thead
 				tr
 					th No.
 					th Name
 					th ID
 					th Email
-					th Status
-					- let x = marksheet.quiz
+					- let x = user.marksheet.quiz
 					- examTitle(x)
-					- x = marksheet.mid
+					- x = user.marksheet.mid
 					- examTitle(x)
-					- x = marksheet.assignment
+					- x = user.marksheet.assignment
 					- examTitle(x)
-					- x = marksheet.project
+					- x = user.marksheet.project
 					- examTitle(x)
-					- x = marksheet.presentation
+					- x = user.marksheet.presentation
 					- examTitle(x)
-					- x = marksheet.fieldWork
+					- x = user.marksheet.fieldWork
 					- examTitle(x)
-					- x = marksheet.final
+					- x = user.marksheet.final
 					- examTitle(x)
 					th Attendance(%)
 					th Total(%)
 					th Grade
 			tbody
-				each value, no in marksheet.name
+				each value, no in user.marksheet.name
 					tr
 						td !{no+1}
-						td !{marksheet.name[no]}
-						td !{marksheet.ID[no]}
-						td !{marksheet.email[no]}
-						td !{marksheet.courseStatus[no]}
-						- x = marksheet.quiz
+						td !{user.marksheet.name[no]}
+						td !{user.marksheet.ID[no]}
+						td !{user.marksheet.email[no]}
+						- x = user.marksheet.quiz
 						- examBody(x, no)
-						- x = marksheet.mid
+						- x = user.marksheet.mid
 						- examBody(x, no)
-						- x = marksheet.assignment
+						- x = user.marksheet.assignment
 						- examBody(x, no)
-						- x = marksheet.project
+						- x = user.marksheet.project
 						- examBody(x, no)
-						- x = marksheet.presentation
+						- x = user.marksheet.presentation
 						- examBody(x, no)
-						- x = marksheet.fieldWork
+						- x = user.marksheet.fieldWork
 						- examBody(x, no)
-						- x = marksheet.final
+						- x = user.marksheet.final
 						- examBody(x, no)
 						td
-							input.w-100(type="text", name='attendance_'+no, value=marksheet.attendance[no])
-						td !{marksheet.total[no]}
+							input.w-100(type="text", name='attendance_'+no, value=user.marksheet.attendance[no])
+						td !{user.marksheet.total[no]}
 						td
-							input.w-100(type="text", name='grade_'+no, value=marksheet.grade[no])
-		input.btn.btn-primary(type="submit" value="Save")
-		a.ml-2.btn.btn-secondary(href="/faculty/"+username+"/course/"+index+"/marksheet" role="button") Cancel
+							input.w-100(type="text", name='grade_'+no, value=user.marksheet.grade[no])
+		a.btn.btn-secondary(href="/user/"+user.username+"/course/"+user.courseNo+"/marksheet" role="button") Cancel
+		input.ml-2.btn.btn-primary(type="submit" value="Save")

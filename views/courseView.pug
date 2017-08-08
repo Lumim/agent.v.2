@@ -1,0 +1,114 @@
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	.container(style="margin-top:3rem;")
+		.row
+			.col-4
+				.card(style="width: 60rem;")
+					.card-block
+						.row
+							.col-11
+								p <b>Nick Name: </b> !{user.course.nickName}
+							.col-1
+								if (user.status === 'faculty')
+									a(href='javascript:;' title="Edit" data-toggle="modal" data-target="#courseEditModal")
+										i.fa.fa-pencil-square-o(aria-hidden="true")
+						p <b>Code: </b> !{user.course.code}
+						p <b>Full Name: </b> !{user.course.fullName}
+						p <b>Section: </b> !{user.course.section}
+						p <b>Class Room: </b> !{user.course.classRoom}
+						span <b>Class Time:</b>
+						ul
+							each val, index in user.course.classTime
+								li !{val}
+						p <b>Description: </b> !{user.course.description}
+						p <b>Faculty Name: </b>
+							a(href='/user/'+user.course.facultyUsername+'/profile') !{user.course.facultyName}
+						p <b>Faculty Email: </b> !{user.course.facultyEmail}
+						a(href='/user/'+user.username title="Back")
+									i.fa.fa-arrow-left(aria-hidden="true")
+	
+
+	.modal.fade#courseEditModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5 Edit Course
+				.modal-body
+					.form-group
+						label Nick Name:
+						input#nickName(type="text" placeholder="Course Nick Name" value=user.course.nickName).form-control
+						small.ml-2 Eg: CSE482-SEC2-SUMMER17
+					.form-group
+						label Code:
+						input#code(type="text" placeholder="Course Code" value=user.course.code).form-control
+					.form-group
+						label Full Name:
+						input#fullName(type="text" placeholder="Course Full Name" value=user.course.fullName).form-control
+					.form-group
+						label Section:
+						input#section(type="text" placeholder="Section" value=user.course.section).form-control
+					.form-group
+						label Class Room:
+						input#classRoom(type="text" placeholder="Class Room" value=user.course.classRoom).form-control
+					.form-group
+						span Class Time: <br>
+						ul#class-time-list
+							each val, index in user.course.classTime
+								li !{val}
+									a.ml-3.delete(href='javascript:;' title="Delete")
+										i.fa.fa-trash(aria-hidden="true")
+						select#day.mr-2
+							option(value="Sunday") Sunday
+							option(value="Monday") Monday
+							option(value="Tuesday") Tuesday
+							option(value="Wednesday") Wednesday
+							option(value="Thursday") Thursday
+							option(value="Friday") Friday
+							option(value="Saturday") Saturday
+						span.mr-1 From
+						select#startHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#startMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm1
+								option(value="am") am
+								option(value="pm") pm
+						span.ml-2.mr-1 To
+						select#endHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#endMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm2
+								option(value="am") am
+								option(value="pm") pm
+						a.ml-3#time-add(href='javascript:;')
+							i.fa.fa-plus(aria-hidden="true")
+					.form-group
+						label Description:
+						textarea#description(placeholder="Description").form-control
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#courseEditButton(type="button" class="btn btn-primary" data-dismiss="modal") Save
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	//To pass variable from jade template file to below script file
+	script.
+		var description = "#{user.course.description}"
+		var courseNo = "#{user.courseNo}"
+		var postPath = "http://localhost:3000/user/" + "#{user.username}";
+	script(src="/public/my_scripts/course_view_script.js")

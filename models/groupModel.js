@@ -1,63 +1,27 @@
 const mongoose = require("mongoose");
 
 const groupSchema = new mongoose.Schema({
-	facultyEmail: {
+	facultyUsername: {
 		type: String,
 		required: true,
 	},
 	groupName: {
 		type: String,
-		required: true,
 	},
 	taskTitle: {
 		type: String,
 	},
-	membersName: [{
-		type: String,
+	members: [{
+		name: {type: String,},
+		email: {type: String,},
 	}],
-	membersEmail: [{
-		type: String,
+	documents: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'File'
 	}],
-	attachments: [{
-		path: {
-			type: String,
-		},
-		fileName: {
-			type: String,
-		},
-	}],
-	discussion: [{
-		date: {
-			type: Date,
-			default: Date.now,
-		},
-		title: {
-			type: String,
-		},
-		body: {
-			type: String,
-		},
-		creatorName: {
-			type: String,
-		},
-		creatorEmail: {
-			type: String,
-		},
-		comment: [{
-			date: {
-				type: Date,
-				default: Date.now,
-			},
-			body: {
-				type: String,
-			},
-			creatorName: {
-				type: String,
-			},
-			creatorEmail: {
-				type: String,
-			},
-		}],
+	discussions: [{
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
 	}],
 });
 mongoose.model('Group', groupSchema); //set

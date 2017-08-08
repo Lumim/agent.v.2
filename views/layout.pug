@@ -1,7 +1,11 @@
 nav.navbar.navbar-default.mb-2
 	.d-flex.align-items-center.justify-content-between
-		a.navbar-brand(href="/")
+		a.ml-3.navbar-brand(href="/")
 			h3 Agent
-		div.d-flex
-			h3 !{name}
-			a.ml-2.btn.btn-primary(href="/logout") Logout
+		div.mr-3.d-flex
+			.nav-item.dropdown
+				h5.nav-link.dropdown-toggle#navbarDropdownMenuLink(data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") !{user.name}
+				.dropdown-menu(aria-labelledby='navbarDropdownMenuLink')
+					a.dropdown-item(href='/user/'+user.username+'/profile') Profile
+					a.dropdown-item(href='/user/'+user.username) Courses
+					a.dropdown-item(href='/logout') Logout

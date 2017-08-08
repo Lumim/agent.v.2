@@ -1,11 +1,20 @@
 extends flexLayout.pug
 
+block links
+	link(rel="stylesheet", href="/public/my_styles/index_style.css", media="screen", title="no title", charset="utf-8")
+
 block header
 	include login.pug
 
 block content
+	div#success-message.alert.alert-success.text-center(role="alert") Successfully created your account now you can log in.
+		
 	.row.align-items-center
-		.col
-			h2 Agent is a class room management system with many new features.
-		.col
+		.col-6
+			h2 Agent is an online class room management system with many new features.
+		.col-6
 			include signup.pug
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	script(src="/public/my_scripts/index_script.js")

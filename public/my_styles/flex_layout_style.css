@@ -1,0 +1,47 @@
+.navbar-default {
+    background-color: lightblue;
+}
+.theme{
+	 background-color: lightblue;
+}
+.logo{
+  text-decoration: none;
+  color: black;
+}
+
+footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:50px;
+   width:100%;
+   background:#999;
+   text-align:center;
+   padding-top: 20px;
+}
+
+/*This is so that footer does not cover page elements*/
+.container {
+  margin-bottom: 55px;
+}
+
+.border-1 {
+  border: 1px solid black;
+}
+
+body {
+  font-family: Helvetica, Times, serif;
+}
+
+ul {
+  list-style: none;
+}
+
+.delete {
+  color: red;
+}
+
+img {
+  max-width: 100%; 
+  height: auto;
+}

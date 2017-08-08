@@ -1,0 +1,9 @@
+.remove {
+	color: red;
+}
+
+.member {
+	border: 1px solid black;
+	border-radius: 0.5rem;
+	padding: 3px; 
+}

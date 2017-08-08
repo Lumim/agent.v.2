@@ -2,17 +2,49 @@ extends flexLayout.pug
 block header
   include layout.pug
 
-block content
+block links
+  link(href="/public/my_styles/document_style.css", rel='stylesheet')
 
-  each value, i in course.resources
-    form
-      a(href = '/download/'+value.path) !{value.fileName}
-      if status == 'faculty'
-        button(type="submit", formmethod="post" formaction="/faculty/"+username+"/course/"+index+"/resource/"+value.path+'/delete') Delete
-      br
-  if status == 'faculty'
-    form.form-inline(action="/faculty/"+username+"/course/"+index+"/resource/upload" method="post" enctype="multipart/form-data")
-        .custom-file
-          input.cutom-file-input(type="file" name="file")
-          span.custom-file-control
-        input.ml-2.btn.btn-primary(type="submit" value="Upload")
+block content
+  .row.mb-3
+    .col-4.push-md-10
+        button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#resourceModal" href='javascript:;') New Resource
+  #resources-list.mt-3
+    each value, index in user.resources
+      .card
+        .card-block
+          .row
+            .col-11
+              .card-title
+                a(href = '/download/'+value.path) !{value.name}
+            if user.username === value.username
+              .col-1
+                a.delete(href='javascript:;' title="Delete" data-path=value.path)
+                  i.fa.fa-trash(aria-hidden="true")
+          small
+            a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
+          small !{value.date}
+  a.mt-2(href='/user/'+user.username title="Back")
+    i.fa.fa-arrow-left(aria-hidden="true")
+
+  .modal.fade#resourceModal(role="dialog" aria-hidden="true")
+    .modal-dialog(role="resource")
+      .modal-content
+        .modal-header
+          h5 Upload New file
+        .modal-body
+          form.form-inline#upload(enctype="multipart/form-data" action="/user/"+user.username+"/course/"+user.courseNo+'/resource/upload' method="post")
+            .custom-file
+              input.cutom-file-input(type="file" name="file")
+              input.cutom-file-input(type="submit" value="Upload")
+              span#status
+        .modal-footer
+          button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+
+block scripts
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+  script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+  //To pass variable from jade template file to below script file
+  script.
+    var postPath = "http://localhost:3000/user/"+"#{user.username}"+"/course/"+"#{user.courseNo}";
+  script(src="/public/my_scripts/resource_script.js")

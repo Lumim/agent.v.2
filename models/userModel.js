@@ -1,38 +1,25 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+	image: {
+		type: mongoose.Schema.Types.ObjectId,
+        ref: 'File'
+	},
 	name: {
 		type: String,
 		required: true,
-		maxlength: 100,
 	},
 	email: {
 		type: String,
 		required: true,
 		unique: true,
-		maxlength: 100,
-	},
-	ID: {
-		type: String,
 	},
 	username: {
 		type: String,
 		required: true,
-		maxlength: 100,
 	},
-	school: {
+	ID: {  // Only for student
 		type: String,
-		required: true,
-		maxlength: 100,
-	},
-	country: {
-		type: String,
-		required: true,
-		maxlength: 100,
-	},
-	password: {
-		type: String,
-		required: true,
 	},
 	status: {
 		type: String,
@@ -49,11 +36,54 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
   },
 	officeRoom: {
-		type: String,
-	},
-	officeHours: [{
-		type: String,
+	education: [{
+		school: {
+			type: String,
+		},
+		degree: {
+			type: String,
+		},
+		grade: {
+
+		},
+		timePeriod: {
+			type: String,
+		},
 	}],
+	experience: [{  //Only for teacher
+		title: {
+			type: String,
+		},
+		company: {
+			type: String,
+		},
+		timePeriod: {
+			type: String,
+		},
+	}],
+	awardsAccomplishmentsAndPapers: [{
+		title: {
+			type: String,
+		},
+		description: {
+			type: String,
+		},
+		year: {
+			type: String,
+		},
+	}],
+	office: [{  // Only for teacher
+		room: {
+			type: String,
+		},
+		timePeriod: {
+			type: String,
+		},
+	}],
+	password: {
+		type: String,
+		required: true,
+	},
 	courses: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Course',

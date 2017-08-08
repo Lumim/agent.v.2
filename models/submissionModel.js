@@ -1,25 +1,21 @@
 const mongoose = require('mongoose');
 
 const submissionSchema = new mongoose.Schema({
-	file: {
-		path: {
-			type: String,
-		},
-		fileName: {
-			type: String,
-		},
+	title: {
+		type: String,
 	},
-	submittedBy: {
+	files: [{
 		type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'File'
+	}],
+	endTime: {
+		type: String,
 	},
-	course: {
-		type: mongoose.Schema.Types.ObjectId,
-        ref: 'Course'
+	milliseconds: {
+		type: String,
 	},
-	date: {
-			type: Date,
-			default: Date.now,
+	owner: {
+		type: String,
 	},
 });
 

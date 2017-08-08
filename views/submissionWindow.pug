@@ -1,0 +1,28 @@
+extends flexLayout.pug
+
+block header
+  include layout.pug
+
+block content
+  p#remain
+  if user.status === 'student'
+    form.form-inline#upload(enctype="multipart/form-data" action="/user/"+user.username+"/submission/"+user.submissionID method="post")
+      .custom-file
+        input.cutom-file-input(type="file" name="file")
+        input.cutom-file-input(type="submit" value="Upload")
+  #files-list.mt-3
+    each value, index in user.files
+      .card
+        .card-block
+            a(href = '/download/'+value.path) !{value.name}
+            <br>
+            small
+              a.name.mr-2(href='/user/'+value.username+'/profile') !{value.posterName}
+              span !{value.date}
+
+block scripts
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+  script(src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js")
+  script.
+    var endTime = "#{user.endTime}"
+  script(src="/public/my_scripts/submission_window_script.js")

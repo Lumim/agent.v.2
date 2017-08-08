@@ -1,33 +1,122 @@
-.border-1.p-3
-	.row
-		.col
-			h3 Courses:
-			each value, index in faculty.courses
-				form.mt-1.d-flex.justify-content-between
-					div
-						button.mr-1.btn.btn-link(type="submit", formmethod="get", formaction="/faculty/"+faculty.username+"/course/"+index)= value.code + '.' + value.section
-					div
-						button.mr-1.btn.btn-secondary(type="submit", formmethod="get", formaction="/faculty/"+faculty.username+"/course/"+index+"/edit") Edit
-						button.mr-1.btn.btn-danger(type="submit", formmethod="post" formaction="/faculty/"+faculty.username+"/course/"+index+"/delete") Delete
-						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+faculty.username+"/course/"+index+"/marksheet") Marksheet
-						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+faculty.username+"/course/"+index+"/resource") Resource
-						button.btn.btn-info(type="submit", formmethod="get" formaction='/'+faculty.username+"/course/"+index+"/post") Post
-						button.mr-1.btn.btn-info(type="submit", formmethod="get" formaction="/faculty/"+faculty.username+"/course/"+index+"/submission") Submission
-						button.btn.btn-info(type="submit", formmethod="get" formaction='/'+faculty.username+"/course/"+index+"/group") Group
-		.col-5
-			h3 Add Course
-			form(action="/faculty/"+faculty.username+"/course/add" method="post")
-				.form-group
-					label Course Name
-					input.form-control(type="text", name="name", required)
-				.form-group
-					label Course Code
-					input.form-control(type="text", name="code" required)
-				.form-group
-					label Section
-					input.form-control(type="text", name="section" required)
-				.form-group
-					label Class Room
-					input.form-control(type="text", name="classRoom")
-				.form-group
-					input.btn.btn-primary(type="submit", value="Add")
+extends flexLayout.pug
+
+block links
+	link(href="/public/my_styles/course_style.css", rel='stylesheet')
+
+block header
+	include layout.pug
+
+block content
+	if user.status === 'faculty'
+		.row
+			.col-4.push-md-10
+				button.btn.btn-primary.btn-lg(type="button" data-toggle="modal" data-target="#courseModal" href='javascript:;') New Course
+	h3 Active Courses
+	#activeCourses
+		each val, index in user.courses
+			if val.status === 'active'
+				.card
+					.card-block
+						.row
+							.col-11
+								a.view(href='javascript:;')
+									h5 <b>!{val.nickName}</b>
+							if user.status === 'faculty'
+								.col-1
+									a.close(href='javascript:;' title="Close")
+										i.fa.fa-times(aria-hidden="true")
+						a.marksheet.mr-3(href='javascript:;') Marksheet
+						a.group.mr-3(href='javascript:;') Group
+						a.resource.mr-3(href='javascript:;') Resource
+						a.post.mr-3(href='javascript:;') Post
+						a.submission.mr-3(href='javascript:;') Submission
+						if user.status === 'faculty'
+							a.delete(href='javascript:;' title="Delete")
+								i.fa.fa-trash(aria-hidden="true")
+	h3.mt-5 Archived Courses
+	#archivedCourses
+		each val, index in user.courses
+			if val.status === 'archive'
+				.card
+					.card-block
+						.row
+							.col-12
+								a.view(href='javascript:;')
+									h5 <b>!{val.nickName}</b>
+						a.marksheet.mr-3(href='javascript:;') Marksheet
+						a.group.mr-3(href='javascript:;') Group
+						a.resource.mr-3(href='javascript:;') Resource
+						a.post.mr-3(href='javascript:;') Post
+						a.submission.mr-3(href='javascript:;') Submission
+						if user.status === 'faculty'
+							a.delete(href='javascript:;' title="Delete")
+								i.fa.fa-trash(aria-hidden="true")
+
+	.modal.fade#courseModal(role="dialog" aria-hidden="true")
+		.modal-dialog.modal-lg(role="document")
+			.modal-content
+				.modal-header
+					h5 Create New Course
+				.modal-body
+					.form-group
+						input#nickName(type="text" placeholder="Course Nick Name").form-control
+						small.ml-2 Eg: CSE482-SEC2-SUMMER17
+					.form-group
+						input#code(type="text" placeholder="Course Code").form-control
+					.form-group
+						input#fullName(type="text" placeholder="Course Full Name").form-control
+					.form-group
+						input#section(type="text" placeholder="Section").form-control
+					.form-group
+						input#classRoom(type="text" placeholder="Class Room").form-control
+					.form-group
+						span Class Time <br>
+						ul#class-time-list
+						select#day.mr-2
+							option(value="Sunday") Sunday
+							option(value="Monday") Monday
+							option(value="Tuesday") Tuesday
+							option(value="Wednesday") Wednesday
+							option(value="Thursday") Thursday
+							option(value="Friday") Friday
+							option(value="Saturday") Saturday
+						span.mr-1 From
+						select#startHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#startMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm1
+								option(value="am") am
+								option(value="pm") pm
+						span.ml-2.mr-1 To
+						select#endHour
+							- var n = 0
+							while n < 13
+								option(value=n)= n++
+						span :
+						select#endMin
+							- var n = 0
+							while n < 60
+								option(value=n)= n++
+						select#amOrPm2
+								option(value="am") am
+								option(value="pm") pm
+						a.ml-3#time-add(href='javascript:;')
+							i.fa.fa-plus(aria-hidden="true")
+					.form-group
+						textarea#description(placeholder="Description").form-control
+				.modal-footer
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button#course-button(type="button" class="btn btn-primary" data-dismiss="modal") Save
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	//To pass variable from jade template file to below script file
+	script.
+		var postPath = "http://localhost:3000/user/" + "#{user.username}";
+	script(src="/public/my_scripts/course_script.js")
