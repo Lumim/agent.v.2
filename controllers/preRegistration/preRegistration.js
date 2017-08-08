@@ -144,9 +144,7 @@ router.post('/preregistrations/details/:code', (req, res) => {
 			for(var i = 0; i < courses.length; i++) {
 				const grades = courses[i].marksheet.grade;
 				for(var j = 0; j < grades.length; j++) {
-					if (grades[j] === 'A') {
-						Grades[]
-					}
+					
 				}
 			}
 		});
