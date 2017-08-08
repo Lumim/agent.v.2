@@ -1,0 +1,57 @@
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	div.container
+		div.row
+			div.col-3
+			div.col-6
+				table.table
+					thead
+						tr
+							th Grades
+							th Count
+
+						tbody
+
+							tr
+								td A
+								td       !{gradeA}
+
+							tr
+								td A-
+								td       !{gradeAm}
+
+							tr
+								td B+
+								td       !{gradeBp}
+
+							tr
+								td B
+								td       !{gradeB}
+
+							tr
+								td B-
+								td       !{gradeBm}
+
+							tr
+								td C+
+								td       !{gradeCp}
+
+							tr
+								td C
+								td       !{gradeC}
+
+							tr
+								td C-
+								td       !{gradeCm}
+
+							tr
+								td D
+								td       !{gradeD}
+
+							tr
+								td F
+								td       !{gradeF}
