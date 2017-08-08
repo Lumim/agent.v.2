@@ -7,6 +7,7 @@ const Course = mongoose.model('Course');
 const CHAIRMAN_INITIAL = 'imr';
 
 router.get('/preregistrations', (req, res) => {
+	username = req.session.username;
 	if (!(req.session && req.session.login)) {
 		return res.send("404 NOT FOUND");
 	}
@@ -15,7 +16,7 @@ router.get('/preregistrations', (req, res) => {
   .exec((err, courses) => {
     if(err || courses === null) return res.send("404 NOT FOUND");
     else{
-      return res.render("preRegistration", {courses: courses});
+      return res.render("preRegistration", {courses: courses, user:{name:username}});
     }
   })
 })
@@ -101,7 +102,7 @@ router.post('/preregistrations/:id', (req, res) => {
 router.post('/preregistrations/details/:code', (req, res) => {
 	const code = req.params.code;
 	const username = req.session.username;
-	var Grades = [
+	let Grades = [
 		{
 			Grade: 'A',
 			Count: 0
