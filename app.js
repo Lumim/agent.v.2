@@ -25,6 +25,8 @@ require('./models/userModel.js');
 require('./models/groupModel.js');
 require('./models/submissionModel.js');
 require('./models/preRegistration.js');
+require('./models/fileModel.js')
+require('./models/messageModel.js')
 
 
 /* Route */
@@ -50,10 +52,10 @@ require('./controllers/facultyPage/submission.js').addRouter(app);
 
 require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 
-require('./controllers/studentPage/student.js').addRouter(app);
-require('./controllers/studentPage/course.js').addRouter(app);
-require('./controllers/studentPage/marksheet.js').addRouter(app);
-require('./controllers/studentPage/profile.js').addRouter(app);
+// require('./controllers/studentPage/student.js').addRouter(app);
+// require('./controllers/studentPage/course.js').addRouter(app);
+// require('./controllers/studentPage/marksheet.js').addRouter(app);
+// require('./controllers/studentPage/profile.js').addRouter(app);
 require('./controllers/studentPage/resource.js').addRouter(app);
 require('./controllers/studentPage/submission.js').addRouter(app);
 

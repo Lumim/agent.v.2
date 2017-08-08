@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
   isChair: {
 		type: Boolean,
   },
-	officeRoom: {
 	education: [{
 		school: {
 			type: String,
@@ -87,7 +86,7 @@ const userSchema = new mongoose.Schema({
 	courses: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Course',
-	}],
+	}]
 });
 
 mongoose.model('User', userSchema); // set
