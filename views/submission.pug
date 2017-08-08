@@ -10,21 +10,35 @@ block header
 block content
   .row
     .col-8
-      each value, index in user.submissions
+      .submission-list
+        each value, index in user.submissions
+          .card(data-id=value._id)
+            .card-block
+              .card-title
+                p !{value.title}
+              a(href='/user/'+user.username+'/submission/'+value._id target="_blank")
+                img(src='/public/image/folder_image.png' width='50' height='50')
+              <br>
+              small.mr-3 !{value.endTime}
+              small.status.mr-3(data-ms=value.milliseconds)
+              if (user.status === 'faculty')
+                small
+                  a.mr-3.change(href='javascript:;') Change Time
+                  a.delete.mr-3(href='javascript:;') Delete
+    if (user.status === 'faculty')
+      .col-4
         .card
-          .card-block
-            a(href='')
-              img(src='/public/image/folder_image.png' width='50' height='50')
-            small.status(data-end=value.endTime) Status
-    .col-4
-      .card
-          .card-block
-            .card-title Create a New Submission Window
-            p Date: 
-             input#datepicker(type="text")
-            p Time:
-              input#timepicker(type="text")
-            button#create(type="button" class="btn btn-primary" data-dismiss="modal") Create
+            .card-block
+              .card-title#fac Create a New Submission Window
+              p Title:
+                input#title(type:"text")
+              p Date: 
+               input#datepicker(type="text")
+              p Time:
+                input#timepicker(type="text")
+              button#create(type="button" class="btn btn-primary" data-dismiss="modal") Create
+  a.mt-2(href='/user/'+user.username title="Back")
+    i.fa.fa-arrow-left(aria-hidden="true")
   
 
 block scripts

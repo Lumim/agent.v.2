@@ -43,11 +43,11 @@ block content
 							.col-12
 								a.view(href='javascript:;')
 									h5 <b>!{val.nickName}</b>
-						a.mr-3(href='/user/'+user.username+'/course/'+index+'/marksheet') Marksheet
-						a.mr-3(href='/user/'+user.username+'/course/'+index+'/group') Group
-						a.mr-3(href='/user/'+user.username+'/course/'+index+'/resource') Resource
-						a.mr-3(href='/user/'+user.username+'/course/'+index+'/submission') Submission
-						a.mr-3(href='/user/'+user.username+'/course/'+index+'/post') Post
+						a.marksheet.mr-3(href='javascript:;') Marksheet
+						a.group.mr-3(href='javascript:;') Group
+						a.resource.mr-3(href='javascript:;') Resource
+						a.post.mr-3(href='javascript:;') Post
+						a.submission.mr-3(href='javascript:;') Submission
 						if user.status === 'faculty'
 							a.delete(href='javascript:;' title="Delete")
 								i.fa.fa-trash(aria-hidden="true")
