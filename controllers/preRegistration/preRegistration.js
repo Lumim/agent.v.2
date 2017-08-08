@@ -4,6 +4,7 @@ const router = express.Router();
 const PreRegistration = mongoose.model('PreRegistration');
 const User = mongoose.model('User');
 const Course = mongoose.model('Course');
+const CHAIRMAN_INITIAL = 'imr';
 
 router.get('/preregistrations', (req, res) => {
 	if (!(req.session && req.session.login)) {
@@ -23,15 +24,37 @@ router.get('/preregistrations/chair', (req, res) => {
 	if(!(req.session && req.session.login)) {
 		return res.send("404 NOT FOUND");
 	}
+
+	const username = req.session.username;
+	if(username !== CHAIRMAN_INITIAL){
+		User.findOne({
+			username,
+		})
+		.exec((err, user) => {
+			user.isChair = false;
+			user.save(function(err){
+				if (err) return res.send('some error occured');
+			});
+			return res.send("404 NOT FOUND");
+		});
+	}
+
 	User.findOne({
+		username: username,
 		isChair : true
 	})
 	.exec((err, user) => {
+		const username = user.name;
 		PreRegistration.find({})
 		.exec((err, courses) => {
 			if(err) return res.send("404 NOT FOUND");
 			else {
-				return res.render('preRegistrationChair', {courses: courses});
+				return res.render('preRegistrationChair', {
+					courses: courses,
+					user: {
+						name: username
+					}
+				});
 			}
 	  })
 	});
@@ -144,9 +167,42 @@ router.post('/preregistrations/details/:code', (req, res) => {
 			for(var i = 0; i < courses.length; i++) {
 				const grades = courses[i].marksheet.grade;
 				for(var j = 0; j < grades.length; j++) {
-
+					if(grades[j] === 'A') {
+						Grades[0].Count = Grades[0].Count + 1;
+					} else if(grades[j] === 'A-') {
+						Grades[1].Count = Grades[1].Count + 1;
+					} else if(grades[j] === 'B+') {
+						Grades[2].Count = Grades[2].Count + 1;
+					} else if(grades[j] === 'B') {
+						Grades[3].Count = Grades[3].Count + 1;
+					} else if(grades[j] === 'B-') {
+						Grades[4].Count = Grades[4].Count + 1;
+					} else if(grades[j] === 'C+') {
+						Grades[5].Count = Grades[5].Count + 1;
+					} else if(grades[j] === 'C') {
+						Grades[6].Count = Grades[6].Count + 1;
+					} else if(grades[j] === 'C-') {
+						Grades[7].Count = Grades[7].Count + 1;
+					} else if(grades[j] === 'D') {
+						Grades[8].Count = Grades[8].Count + 1;
+					} else if(grades[j] === 'F') {
+						Grades[9].Count = Grades[9].Count + 1;
+					}
 				}
 			}
+			return res.render('courseDetails', {
+				user: { name: username},
+				gradeA: Grades[0].Count,
+				gradeAm: Grades[1].Count,
+				gradeBp: Grades[2].Count,
+				gradeB: Grades[3].Count,
+				gradeBm: Grades[4].Count,
+				gradeCp: Grades[5].Count,
+				gradeC: Grades[6].Count,
+				gradeCm: Grades[7].Count,
+				gradeD: Grades[8].Count,
+				gradeF: Grades[9].Count
+			});
 		});
 	});
 
