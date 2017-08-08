@@ -148,7 +148,7 @@ router.post('/faculty/:username/course/:index/delete', function(req, res){
 					});
 				}, function(err) {
 					if(err) return res.send(err);
-					//Delete course 
+					//Delete course
 					const _id = user.courses[index];
 					Course.findOne({
 						_id

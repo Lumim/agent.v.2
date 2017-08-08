@@ -6,7 +6,7 @@ const courseSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		maxlength: 100
-	}, 
+	},
 	code: {
 		type: String,
 		required: true,
@@ -21,7 +21,7 @@ const courseSchema = new mongoose.Schema({
 	},
 	marksheet: {
 		type: mongoose.Schema.Types.ObjectId,
-        ref: 'Marksheet'
+    ref: 'Marksheet'
 	},
 	facultyName: {
 		type: String,

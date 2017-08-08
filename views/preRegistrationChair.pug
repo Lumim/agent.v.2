@@ -1,0 +1,43 @@
+extends flexLayout.pug
+
+block header
+	include layout.pug
+
+block content
+	div.container
+		div.row
+
+			div.col-3
+				h5 Add Preregistration Course
+				form(action="/preregistrations/add", method="post")
+					.form-group
+						label Course Name
+						input.form-control(type="text", name="name", required)
+					.form-group
+						label Course Code
+						input.form-control(type="text", name="code" required)
+					.form-group
+						input(class="btn btn-primary", type="submit", value="Add")
+
+			div.col-6
+				table.table
+					thead
+						tr
+							th #
+							th Course ID
+							th Registared
+							th Register
+
+
+					tbody
+						- for (var i = 1; i < courses.length; ++i) {
+								tr
+									td !{i}
+									td !{courses[i].courseID}
+									td !{courses[i].seats}
+									td
+										- var id = courses[i].courseID
+										form(action="/preregistrations/details/"+id, method="post")
+											input(class="btn btn-primary",type="submit", name="register", value="Deatils")
+									br
+						- }
