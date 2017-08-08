@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const User = require('mongoose').model('User');
-//const requireLoginMW = require('middlewares/requireLogin');
-//const matchUsername = require('middlewares/matchUsername');
+const requireLoginMW = require('middlewares/requireLogin');
+const matchUsername = require('middlewares/matchUsername');
 
 router.get('/faculty/:username', function(req, res) {
   const username = req.params.username; // session username is same as login username
@@ -14,8 +14,13 @@ router.get('/faculty/:username', function(req, res) {
     if (err || !faculty) {
       return res.render('error', { title: '500', message: 'ReferenceError: error is not defined' });
     } else {
-      if ( req.session && req.session.login && req.session.username === req.params.username) {
-				faculty.isChair = true;
+      if (req.session && req.session.login && req.session.username === req.params.username) {
+        if(faculty.username === 'atc' && !faculty.isChair) {
+          faculty.isChair = true;
+          faculty.save(function(err){
+    				if (err) return res.send('some error occured');
+    			});
+        }
         return res.render('faculty', {faculty: faculty, whoIsLooking: 'faculty'}); // sending the whole faculty document
       } else {
         return res.render('faculty', {faculty: faculty, whoIsLooking: 'other'});
@@ -26,7 +31,7 @@ router.get('/faculty/:username', function(req, res) {
 
 module.exports = {
   addRouter(app) {
-    //app.use('/faculty/:username', [requireLoginMW, matchUsername], router);
+    // app.use('/faculty/:username', [requireLoginMW, matchUsername], router);
     app.use('/', router);
   },
 };

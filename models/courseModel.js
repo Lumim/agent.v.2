@@ -9,6 +9,7 @@ const courseSchema = new mongoose.Schema({
 	},
 	nickName: {
 		type: String,
+		maxlength: 100
 	},
 	code: {
 		type: String,
@@ -30,7 +31,7 @@ const courseSchema = new mongoose.Schema({
 	},
 	marksheet: {
 		type: mongoose.Schema.Types.ObjectId,
-        ref: 'Marksheet'
+    ref: 'Marksheet'
 	},
 	facultyName: {
 		type: String,

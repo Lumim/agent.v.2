@@ -4,7 +4,12 @@ const preRegistrationSchema = new mongoose.Schema({
   courseID: {
     type: String,
     required: true,
-    maxlength: 10
+    maxlength: 50
+  },
+  courseName: {
+    type: String,
+    required: true,
+    maxlength: 50
   },
   seats: {
     type: Number,
