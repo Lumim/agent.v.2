@@ -54,7 +54,9 @@ router.post('/course/:index/submission', onlyFaculty, function(req, res, next){
 			course.submissions.push(submission._id);
 			course.save(function(err) {
 				if (err) return next(err);
-				return res.send(null);
+				const data = {};
+				data.submission = submission;
+				return res.send(data);
 			});
 		});
 	});

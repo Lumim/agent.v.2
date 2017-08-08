@@ -20,7 +20,7 @@ block content
                 img(src='/public/image/folder_image.png' width='50' height='50')
               <br>
               small.mr-3 !{value.endTime}
-              small.status.mr-3(data-ms=value.milliseconds)
+              small.status.mr-3(data-ms=value.milliseconds) Status
               if (user.status === 'faculty')
                 small
                   a.mr-3.change(href='javascript:;') Change Time

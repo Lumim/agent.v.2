@@ -2,8 +2,8 @@ $(document).ready(function(){
   	$( "#datepicker" ).datepicker({ dateFormat: 'mm/dd/yy'});
   	$('#timepicker').timepicker({ timeFormat: 'HH:mm:ss' });
 
-	$('.card').hover(function() {
-		const element = $(this).find('.status');
+	$('.status').hover(function() {
+		const element = $(this);
 		const endTime = element.data('ms');
 		const currentTime = new Date();
 		if (Number(endTime) > Number(currentTime)) {
@@ -12,7 +12,7 @@ $(document).ready(function(){
 		else {
 			element.html('Closed');
 		}
-	}); 
+	});
 
   	$('#create').click(function() {
   		const title = $('#title').val();
@@ -22,7 +22,6 @@ $(document).ready(function(){
   			const dateTime = date+' '+time;
 	  		const myDate = new Date(dateTime);
 			const milliseconds = myDate.getTime();
-			//alert(milliseconds);
 			const data = {};
 			data.title = title;
 			data.endTime = dateTime;
@@ -34,9 +33,9 @@ $(document).ready(function(){
 	                url: postPath+'/submission',                      
 	                success: function(data, status) {
 	                    if (status === 'success') {
-	                    	/*
 	                        const card = $('<div>', {
 	                            class: 'card',
+	                            "data-id": data.submission._id, 
 	                        }).prependTo('#submission-list');
 
 	                        const cardBlock = $('<div>', {
@@ -50,8 +49,48 @@ $(document).ready(function(){
 	                        $('<p>', {
 	                        	text: data.submission.title,
 	                        }).appendTo(cardTitle);
-							*/
-							location.reload();
+
+	                        const a = $('<a>', {
+	                        	href: '/user/'+username+'/submission/'+data.submission._id,
+	                        	target: '_blank',
+	                        }).appendTo(cardBlock);
+
+	                        const img = $('<img>', {
+	                        	src: '/public/image/folder_image.png',
+	                        	width: '50',
+	                        	height: '50',
+	                        }).appendTo(a);
+
+	                        $('<br>', {
+	                        }).appendTo(cardBlock);
+
+	                        $('<small>', {
+	                        	class: 'mr-3',
+	                        	text: data.submission.endTime,
+	                        }).appendTo(cardBlock);
+
+	                        $('<small>', {
+	                        	class: 'mr-3 status',
+	                        	text: Status,
+	                        	"data-ms": data.submission.milliseconds,
+	                        }).appendTo(cardBlock);
+
+	                        const small = $('<small>', {
+	                        }).appendTo(cardBlock);
+
+	                        $('<a>', {
+	                            class: 'mr-3 change',
+	                            href: 'javascript:;',
+	                            text: Change Time,
+	                        }).appendTo(small);
+
+	                        $('<a>', {
+	                            class: 'mr-3 delete',
+	                            href: 'javascript:;',
+	                            text: Deltete,
+	                        }).appendTo(small);
+
+							//location.reload();
 	                    }
 	                }
 	            });
