@@ -7,6 +7,7 @@ block header
 	include layout.pug
 
 block content
+	h3 Marksheet
 	- var examTitle = function(x, no)
 		each exam, no2 in x
 			if no2 > 0
@@ -121,8 +122,6 @@ block content
 									td !{user.marksheet.attendance[no]}
 									td !{user.marksheet.total[no]}
 									td !{user.marksheet.grade[no]}
-	a.mt-2(href='/user/'+user.username title="Back")
-		i.fa.fa-arrow-left(aria-hidden="true")
 
 	.modal.fade#csvModal(role="dialog" aria-hidden="true")
 		.modal-dialog(role="document")

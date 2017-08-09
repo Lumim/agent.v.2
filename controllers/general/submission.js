@@ -27,8 +27,10 @@ router.get('/course/:index/submission', function(req, res, next){
 		if (err) return next(err);
 		const submissions = user.courses[index].submissions;
 		submissions.reverse();
+		const currentTime = new Date();
 		return res.render('submission', {user: {name: user.name, username: username, 
-			status: user.status, courseNo: index, submissions: submissions}});
+			status: user.status, courseNo: index, submissions: submissions, 
+			currentTime: currentTime}});
 	});
 });
 

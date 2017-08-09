@@ -45,3 +45,7 @@ img {
   max-width: 100%; 
   height: auto;
 }
+
+.card {
+  margin-top: 1rem;
+}

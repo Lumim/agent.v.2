@@ -45,10 +45,9 @@ require('./controllers/general/marksheetAssessment.js').addRouter(app);
 require('./controllers/general/marksheetStudent.js').addRouter(app);
 require('./controllers/general/download.js').addRouter(app);
 require('./controllers/general/resource.js').addRouter(app);
+require('./controllers/general/submission.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
-
-require('./controllers/facultyPage/submission.js').addRouter(app);
 
 require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 

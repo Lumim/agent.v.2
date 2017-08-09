@@ -29,6 +29,9 @@ $(document).ready(function(){
 	}
 
 	$('#upload').submit(function() {
+		if(Number(currentTime) >= Number(endTime)) {
+			location.reload();
+		}
         $('#status').empty().text('File is uploading...');
          $(this).ajaxSubmit({
             error: function(xhr) {

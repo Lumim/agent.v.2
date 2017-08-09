@@ -79,7 +79,7 @@ router.post('/course/close', [onlyFaculty],function(req, res, next){
 function getCourse(index, name, courseList) {
 	let cnt = -1, i;
 	if (name === 'activeCourses') {
-		for (i=0; i<courseList.length; i++) {
+		for (i=courseList.length-1; i>=0; i--) {
 			if (courseList[i].status === 'active') {
 				cnt++;
 			}
@@ -89,7 +89,7 @@ function getCourse(index, name, courseList) {
 		}
 	}
 	else if (name === 'archivedCourses') {
-		for (i=0; i<courseList.length; i++) {
+		for (i=courseList.length-1; i>=0; i--) {
 			if (courseList[i].status === 'archive') {
 				cnt++;
 			}

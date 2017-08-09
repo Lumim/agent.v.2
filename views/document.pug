@@ -6,6 +6,7 @@ block links
   link(href="/public/my_styles/document_style.css", rel='stylesheet')
 
 block content
+  h3 Document
   .row.mb-3
     .col-4.push-md-10
         button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#documentModal" href='javascript:;') New Document
@@ -24,8 +25,6 @@ block content
           small
             a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
           small !{value.date}
-  a.mt-2(href='/user/'+user.username+'/course/'+user.courseNo+'/group' title="Back")
-    i.fa.fa-arrow-left(aria-hidden="true")
 
   .modal.fade#documentModal(role="dialog" aria-hidden="true")
     .modal-dialog(role="document")

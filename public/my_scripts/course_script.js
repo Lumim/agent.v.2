@@ -57,7 +57,7 @@ $(document).ready(function(){
                 url: postPath+'/course/close',         
                 success: function(data, status) {
                     if (status === 'success') {
-                        $(element).closest('.card').appendTo('#archivedCourses');
+                        $(element).closest('.card').prependTo('#archivedCourses');
     					$(element).closest('.card').find('a.close').remove();
                     }
                 }

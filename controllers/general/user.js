@@ -15,7 +15,7 @@ router.get('/', function(req, res, next) {
 	.exec(function(err, user) {
 		if (err) return next(err);
 		return res.render('course', {user: {name: user.name, username: username,
-			status: user.status, courses: user.courses}});
+			status: user.status, courses: user.courses.reverse()}});
 	});
 });
 
