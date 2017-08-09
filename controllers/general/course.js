@@ -49,7 +49,7 @@ router.post('/course/close', [onlyFaculty],function(req, res, next){
 		if (err) return next(err);
 		let course;
 		let cnt = -1, i;
-		for (i=0 ; i<user.courses.length; i++) {
+		for (i=user.courses.length-1 ; i>=0; i--) {
 			if (user.courses[i].status === 'active') {
 				cnt++;
 			}
