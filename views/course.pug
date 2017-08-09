@@ -10,7 +10,14 @@ block content
 	if user.status === 'faculty'
 		.row
 			.col-4.push-md-10
-				button.btn.btn-primary.btn-lg(type="button" data-toggle="modal" data-target="#courseModal" href='javascript:;') New Course
+				button.btn.btn-primary.btn-lg.mr-2(type="button" data-toggle="modal" data-target="#courseModal" href='javascript:;') New Course
+				if user.isChair === true
+					a.btn.btn-secondary.mr-2(href="/preregistrations/chair", role="button") Pre Reg.
+	if user.status === 'student'
+		.row
+			.col-4.push-md-10
+				a.btn.btn-secondary.mr-2(href="/preregistrations", role="button") Pre Reg.
+
 	h3 Active Courses
 	#activeCourses
 		each val, index in user.courses

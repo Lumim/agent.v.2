@@ -28,25 +28,25 @@ $(document).ready(function(){
         data.classRoom = $('#classRoom').val();
         data.classTime = classTime;
         data.description = $('#description').val();
-        
+
         $(this).html('Submitting..');
         $.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: postPath+'/course/add',         
+                url: postPath+'/course/add',
                 success: function(data, status) {
                     if (status === 'success') {
                     	window.location.href = postPath;
                     }
                 }
             });
-        $(this).html('Submit'); 
+        $(this).html('Submit');
     });
 
     $('a.close').click(function() {
     	if (confirm('	The action cannot be undone.\nAre you sure you want to archive this course?')) {
-    		const element = this; 
+    		const element = this;
     		const index = $('#activeCourses').children().index($(this).closest('.card'));
     		const data = {};
     		data.index = index;
@@ -54,7 +54,7 @@ $(document).ready(function(){
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: postPath+'/course/close',         
+                url: postPath+'/course/close',
                 success: function(data, status) {
                     if (status === 'success') {
                         $(element).closest('.card').prependTo('#archivedCourses');
@@ -77,7 +77,7 @@ $(document).ready(function(){
 	                type: 'POST',
 	                data: JSON.stringify(data),
 	                contentType: 'application/json',
-	                url: postPath+'/course/delete',         
+	                url: postPath+'/course/delete',
 	                success: function(data, status) {
 	                    if (status === 'success') {
 	                        $(element).closest('.card').remove();
@@ -99,7 +99,7 @@ $(document).ready(function(){
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: postPath+'/course/index',         
+                url: postPath+'/course/index',
                 success: function(data, status) {
                     if (status === 'success') {
                        window.location.href = postPath+'/course/'+data.index+'/'+type;

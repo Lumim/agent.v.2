@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     $('#description').val(description);
 
-	const classTimeAdd = [];
+    const classTimeAdd = [];
     const classTimeDelete = [];
 
 	$('#time-add').click(function() {
@@ -38,20 +38,20 @@ $(document).ready(function(){
         data.classTimeAdd = classTimeAdd;
         data.classTimeDelete = classTimeDelete;
         data.description = $('#description').val();
-        
+
         $(this).html('Submitting..');
         $.ajax({
                 type: 'POST',
                 data: JSON.stringify(data),
                 contentType: 'application/json',
-                url: postPath+'/course/'+courseNo+'/view',         
+                url: postPath+'/course/'+courseNo+'/view',
                 success: function(data, status) {
                     if (status === 'success') {
                         window.location.href = postPath+'/course/'+courseNo+'/view';
                     }
                 }
             });
-        $(this).html('Submit'); 
+        $(this).html('Submit');
     });
 
 
