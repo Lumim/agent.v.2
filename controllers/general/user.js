@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 				name: user.name,
 				username: username,
 				status: user.status,
-				courses: user.courses,
+				courses: user.courses.reverse(),
 				isChair: user.isChair
 			}
 		});

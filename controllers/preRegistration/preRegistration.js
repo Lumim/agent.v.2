@@ -44,16 +44,20 @@ router.get('/preregistrations/chair', (req, res) => {
 		username: username,
 		isChair : true
 	})
+	.populate('image')
 	.exec((err, user) => {
-		const username = user.name;
+		const username = user.username;
 		PreRegistration.find({})
 		.exec((err, courses) => {
 			if(err) return res.send("404 NOT FOUND");
 			else {
+
 				return res.render('preRegistrationChair', {
 					courses: courses,
 					user: {
-						name: username
+						name: req.session.name,
+						username: username,
+						image: user.image
 					}
 				});
 			}

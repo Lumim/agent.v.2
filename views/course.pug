@@ -9,7 +9,7 @@ block header
 block content
 	if user.status === 'faculty'
 		.row
-			.col-4.push-md-10
+			.col-4.push-md-9
 				button.btn.btn-primary.btn-lg.mr-2(type="button" data-toggle="modal" data-target="#courseModal" href='javascript:;') New Course
 				if user.isChair === true
 					a.btn.btn-secondary.mr-2(href="/preregistrations/chair", role="button") Pre Reg.
