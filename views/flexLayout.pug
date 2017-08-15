@@ -12,21 +12,23 @@ html(lang='en')
     block links
 
   body
-    block header
+    #wrapper
+      #header
+        block header
 
-    block flash
-      if flash.success
-        div.alert.alert-success.text-center(role="alert") !{flash.success}
-          button.close(type="button" data-dismiss="alert" aria-label="Close")
-            span(aria-hidden="true") &times;
-      else if flash.error
-        div.alert.alert-danger.text-center(role="alert") !{flash.error}
-          button.close(type="button" data-dismiss="alert" aria-label="Close")
-            span(aria-hidden="true") &times;
+        block flash
+          if flash.success
+            div.alert.alert-success.text-center(role="alert") !{flash.success}
+              button.close(type="button" data-dismiss="alert" aria-label="Close")
+                span(aria-hidden="true") &times;
+          else if flash.error
+            div.alert.alert-danger.text-center(role="alert") !{flash.error}
+              button.close(type="button" data-dismiss="alert" aria-label="Close")
+                span(aria-hidden="true") &times;
 
-    .container
-      .mx-3.px-2
-        block content
+      .container
+        .mx-3.px-2
+          block content
 
       include footer.pug
 
