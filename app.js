@@ -51,13 +51,6 @@ require('./controllers/facultyPage/faculty.js').addRouter(app);
 
 require('./controllers/preRegistration/preRegistration.js').addRouter(app);
 
-// require('./controllers/studentPage/student.js').addRouter(app);
-// require('./controllers/studentPage/course.js').addRouter(app);
-// require('./controllers/studentPage/marksheet.js').addRouter(app);
-// require('./controllers/studentPage/profile.js').addRouter(app);
-require('./controllers/studentPage/resource.js').addRouter(app);
-require('./controllers/studentPage/submission.js').addRouter(app);
-
 //Express error handling middleware
 app.use(function(err, req, res, next) {
   console.error(err.stack);
