@@ -141,8 +141,9 @@ $(document).ready(function(){
 		$('#one').show();
 	});
 
-	$('.delete').click(function() {
+	$('#submission-list').on('click', 'a.delete', function() {
 		const ID = $(this).closest('.card').data('id');
+		const element = $(this);
 		const data = {};
         data.submissionID = ID;
         $.ajax({
@@ -152,7 +153,7 @@ $(document).ready(function(){
                 url: postPath+'/submission/delete',                      
                 success: function(data, status) {
                     if (status === 'success') {
-						location.reload();
+						element.closest('.card').remove();
                     }
                 }
             });
