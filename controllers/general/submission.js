@@ -151,12 +151,14 @@ router.get('/submission/:ID', function(req, res, next) {
 			}
 
 			return res.render('submissionWindow', {user: {name: req.session.name, username: username, 
-			status: 'student', submissionID: ID, files: files, endTime: submission.milliseconds}})
+			status: 'student', submissionID: ID, files: files, endTime: submission.milliseconds, 
+			title: submission.title }})
 		}
 		else {
 			const files = submission.files;
 			return res.render('submissionWindow', {user: {name: req.session.name, username: username, 
-			status: 'faculty', submissionID: ID, files: files, endTime: submission.milliseconds}})
+			status: 'faculty', submissionID: ID, files: files, endTime: submission.milliseconds, 
+			title: submission.title }})
 		}
 	});
 });

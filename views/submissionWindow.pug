@@ -4,6 +4,10 @@ block header
   include layout.pug
 
 block content
+  if user.status === 'student'
+    h4 Your submissions of !{user.title}
+  else
+    h4 All submissions of !{user.title}
   p#remain
   if user.status === 'student'
     form.form-inline#upload(enctype="multipart/form-data" action="/user/"+user.username+"/submission/"+user.submissionID method="post")
