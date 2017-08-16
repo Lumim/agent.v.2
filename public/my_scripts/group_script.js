@@ -22,7 +22,7 @@ $(document).ready(function(){
 
     $('.remove').on('click', function () {
         const index1 = $(this).closest('#group-list').children().index($(this).closest('.card'));
-        const index2 = $(this).closest('.member-list').children().index($(this).closest('span'));
+        const index2 = $(this).closest('.member-list').children().index($(this).closest('div'));
         const element = $(this);
         const data = {};
         data.groupNo = index1;
