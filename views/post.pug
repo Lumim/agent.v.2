@@ -12,7 +12,10 @@ block content
       .card
         .card-block
           .media
-            img.d-flex.mr-3(src='/'+value.poster.image.path width="50" height="50")
+            if !value.poster.image.path
+              img.d-flex.mr-3(src='/public/image/avatar.jpeg' width="50" height="50")
+            else
+              img.d-flex.mr-3(src='/'+value.poster.image.path width="50" height="50")
             .media-body(data-id=value._id)
               span !{value.text} <br>
               small !{value.date}
