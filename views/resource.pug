@@ -7,9 +7,10 @@ block links
 
 block content
   h3 Resource
-  .row.mb-3
-    .col-4.push-md-10
-        button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#resourceModal" href='javascript:;') New Resource
+  if user.status == 'faculty'
+    .row.mb-3
+      .col-4.push-md-10
+          button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#resourceModal" href='javascript:;') New Resource
   #resources-list.mt-3
     each value, index in user.resources
       .card

@@ -26,7 +26,7 @@ $(document).ready(function(){
 
                         const image = $('<img>', {
                             class: 'd-flex mr-3',
-                            src: '/'+data.message.posterImage.path,
+                            src: '/'+data.message.poster.image.path,
                             width: '50',
                             height: '50',
                            
@@ -50,8 +50,8 @@ $(document).ready(function(){
 
                         const a0 = $('<a>', {
                             class: 'ml-2',
-                            href: '/user/'+data.message.username+'/profile',
-                            text: data.message.posterName,
+                            href: '/user/'+data.message.poster.username+'/profile',
+                            text: data.message.poster.name,
                         }).appendTo(small);
 
                         const a1 = $('<a>', {
@@ -114,7 +114,7 @@ $(document).ready(function(){
 
                         const image = $('<img>', {
                             class: 'd-flex mr-3',
-                            src: '/'+data.message.posterImage.path,
+                            src: '/'+data.message.poster.image.path,
                             width: '30',
                             height: '30',
                            
@@ -138,8 +138,8 @@ $(document).ready(function(){
 
                         const a0 = $('<a>', {
                             class: 'ml-2',
-                            href: '/user/'+data.message.username+'/profile',
-                            text: data.message.posterName,
+                            href: '/user/'+data.message.poster.username+'/profile',
+                            text: data.message.poster.name,
                         }).appendTo(small);
 
                         const a1 = $('<a>', {
@@ -189,7 +189,7 @@ $(document).ready(function(){
                 url: postPath+'/discussion/edit',                      
                 success: function(data, status) {
                     if (status === 'success') {
-                        element.html(text + '<br>');
+                        element.html(text);
                     }
                 }
             });

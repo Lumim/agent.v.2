@@ -1,0 +1,66 @@
+h1
+{
+	color: #13FF56;
+	font-size: 50px;
+	text-align: center;
+}
+
+.p1
+{
+	background-color: red;
+}
+.p2
+{
+	background-color: green;
+}
+.p3, .p4
+{
+	background-color: blue;
+}
+p
+{
+	color: red;
+}
+.p5
+{
+	border: 1px solid;
+	border-radius: 5px;
+	border-color: cyan;
+}
+body
+{
+	background-image: url('Desert.jpg');
+	background-repeat: no-repeat;
+	background-repeat: repeat-x; 
+}
+.p6
+{
+	border-left: 1px solid;
+	border-bottom: 3px dashed;
+}
+.p7
+{
+	border: solid;
+	/*margin-left: 50px;
+	margin-top: 100px;
+	margin-right: 20px;*/
+	/*margin: 100px 50px 0px 80px; /*top right bottom left*/
+	margin: 10% 5%; /*top and bottom, left and ryt*/
+
+}
+.p8
+{
+	border: solid 1px;
+	padding: 5px 20px;
+	text-transform: capitalize;
+	text-decoration: underline;
+	text-decoration: line-through;
+	letter-spacing: 10px;
+	direction: rtl;
+	word-spacing: 50px;
+}
+.p9
+{
+	border: solid 1px;
+	text-shadow: 4px 2px black;
+}

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const marksheetSchema = new mongoose.Schema({
     name: [{
         type: String,
-        required: true,
+        //required: true,
         maxlengthL: 100,
     }],
     ID: [{
@@ -13,7 +13,7 @@ const marksheetSchema = new mongoose.Schema({
     }],
     email: [{
         type: String,
-        required: true,
+        //required: true,
         maxlength: 100,
     }],
     courseStatus: [{
