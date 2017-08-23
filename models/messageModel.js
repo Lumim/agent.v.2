@@ -8,15 +8,9 @@ const messageSchema = new mongoose.Schema({
 			type: Date,
 			default: Date.now,
 	},
-	username: {
-		type: String,
-	},
-	posterName: {
-		type: String,
-	},
-	posterImage: {
+	poster: {
 		type: mongoose.Schema.Types.ObjectId,
-        ref: 'File'
+        ref: 'User'
 	},
 	comments: [{
 		type: mongoose.Schema.Types.ObjectId,

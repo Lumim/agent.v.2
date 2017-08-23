@@ -19,8 +19,8 @@ module.exports = {
       // but the session interface remains the same – the req.session object
       store: new MongoStore({
         mongooseConnection: mongoose.connection,
-        ttl: 2 * 60 * 60 * 60, // time to live
-        touchAfter: 2 * 3600, // time period in seconds
+        ttl: 2 * 60 * 60 * 60 * 60, // time to live
+        touchAfter: 2 * 3600 * 60, // time period in seconds
       }),
     }));
   },

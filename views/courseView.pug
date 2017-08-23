@@ -4,7 +4,8 @@ block header
 	include layout.pug
 
 block content
-	.container(style="margin-top:3rem;")
+	h3 Course Details
+	.container(style="margin-top:1rem;")
 		.row
 			.col-4
 				.card(style="width: 60rem;")
@@ -28,8 +29,6 @@ block content
 						p <b>Faculty Name: </b>
 							a(href='/user/'+user.course.facultyUsername+'/profile') !{user.course.facultyName}
 						p <b>Faculty Email: </b> !{user.course.facultyEmail}
-						a(href='/user/'+user.username title="Back")
-									i.fa.fa-arrow-left(aria-hidden="true")
 	
 
 	.modal.fade#courseEditModal(role="dialog" aria-hidden="true")
@@ -101,7 +100,7 @@ block content
 						label Description:
 						textarea#description(placeholder="Description").form-control
 				.modal-footer
-					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
 					button#courseEditButton(type="button" class="btn btn-primary" data-dismiss="modal") Save
 
 block scripts

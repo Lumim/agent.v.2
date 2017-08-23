@@ -3,6 +3,7 @@ block header
   include layout.pug
 
 block content
+  h3 Discussion
   .row.mb-3
     .col-4.push-md-10
         button.btn.btn-primary.btn-lg(type="button" data-toggle="modal" data-target="#discussionModal" href='javascript:;') New Discussion
@@ -11,30 +12,30 @@ block content
       .card
         .card-block
           .media
-            img.d-flex.mr-3(src='/'+value.posterImage.path width="50" height="50")
+            if !value.poster.image.path
+              img.d-flex.mr-3(src='/public/image/avatar.jpeg' width="50" height="50")
+            else
+              img.d-flex.mr-3(src='/'+value.poster.image.path width="50" height="50")
             .media-body(data-id=value._id)
               span !{value.text} <br>
               small !{value.date}
-                a.ml-2(href='/user/'+value.username+'/profile') !{value.posterName}
+                a.ml-2(href='/user/'+value.poster.username+'/profile') !{value.poster.name}
                 a.ml-2.comments(href='javascript:;') Comments
                 a.ml-2.addComment(href='javascript:;' data-toggle="modal" data-target="#commentModal") Add comment
-                if user.username === value.username
+                if user.username === value.poster.username
                   a.ml-2(href='javascript:;' data-toggle="modal" data-target="#editModal").edit Edit
                   a.delete.ml-2(href='javascript:;') Delete
               .toggle
                 each value1, index1 in value.comments
                   .media.mt-3
-                    img.d-flex.mr-3(src='/'+value1.posterImage.path width="30" height="30")
+                    img.d-flex.mr-3(src='/'+value1.poster.image.path width="30" height="30")
                     .media-body(data-id=value1._id)
                       span !{value1.text} <br>
                       small !{value1.date}
-                        a.ml-2(href='/user/'+value1.username+'/profile') !{value1.posterName}
-                        if user.username === value1.username
+                        a.ml-2(href='/user/'+value1.poster.username+'/profile') !{value1.poster.name}
+                        if user.username === value1.poster.username
                           a.ml-2(href='javascript:;' data-toggle="modal" data-target="#editModal").edit Edit
                           a.delete.ml-2(href='javascript:;') Delete
-
-  a.mt-2(href='/user/'+user.username+'/course/'+user.courseNo+'/group' title="Back")
-    i.fa.fa-arrow-left(aria-hidden="true")
 
   .modal.fade#discussionModal(role="dialog" aria-hidden="true")
     .modal-dialog(role="document")

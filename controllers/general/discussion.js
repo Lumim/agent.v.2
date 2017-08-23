@@ -18,8 +18,10 @@ router.get('/course/:index/group/:groupNo/discussion', function(req, res, next){
 	.populate({path: 'courses', 
 		populate:{path: 'groups',
 			populate:{path: 'discussions',
-				populate:{path: 'posterImage comments',
-					populate:{path: 'posterImage'}}}}})
+				populate:{path: 'poster comments',
+					populate:{path: 'image',},
+					populate:{path: 'poster',
+						populate:{path: 'image'}}}}}})
 	.exec(function(err, user) {
 		if (err) return next(err);
 		const discussions = user.courses[courseNo].groups[groupNo].discussions;
@@ -44,9 +46,7 @@ router.post('/course/:index/group/:groupNo/discussion', function(req, res, next)
 		if(err) return next(err);
 		const message = new Message({
 			text,
-			username,
-			posterName: user.name,
-			posterImage: user.image,
+			poster: user._id,
 		});
 		message.save(function(err) {
 			if(err) return next(err);
@@ -54,7 +54,7 @@ router.post('/course/:index/group/:groupNo/discussion', function(req, res, next)
 			group.discussions.push(message._id);
 			group.save(function(err) {
 				if(err) return next(err);
-				Message.populate(message, {path: 'posterImage'},
+				Message.populate(message, {path: 'poster', populate:{path: 'image'}},
 					function(err, message) {
 						const data = {};
 						data.message = message;
@@ -77,16 +77,14 @@ router.post('/course/:index/group/:groupNo/discussion/comment', function(req, re
 		if(err) return next(err);
 		const message = new Message({
 			text,
-			username,
-			posterName: user.name,
-			posterImage: user.image,
+			poster: user._id,
 		});
 		message.save(function(err) {
 			if(err) return next(err);
 			Message.update({_id: postID},
 				{$push: {comments: message._id}}, function(err) {
 					if (err) return next(err);
-					Message.populate(message, {path: 'posterImage'},
+					Message.populate(message, {path: 'poster', populate:{path: 'image'}},
 					function(err, message) {
 						const data = {};
 						data.message = message;

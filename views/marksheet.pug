@@ -7,6 +7,7 @@ block header
 	include layout.pug
 
 block content
+	h3 Marksheet
 	- var examTitle = function(x, no)
 		each exam, no2 in x
 			if no2 > 0
@@ -121,8 +122,6 @@ block content
 									td !{user.marksheet.attendance[no]}
 									td !{user.marksheet.total[no]}
 									td !{user.marksheet.grade[no]}
-	a.mt-2(href='/user/'+user.username title="Back")
-		i.fa.fa-arrow-left(aria-hidden="true")
 
 	.modal.fade#csvModal(role="dialog" aria-hidden="true")
 		.modal-dialog(role="document")
@@ -154,7 +153,7 @@ block content
 						input#email(type="text" placeholder="Email").form-control
 						small#email-error
 				.modal-footer
-					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
 					button#studentButton(type="button" class="btn btn-primary") Save
 
 	.modal.fade#assessmentModal(role="dialog" aria-hidden="true")
@@ -172,7 +171,7 @@ block content
 						option(value="presentation") Presentation
 						option(value="project") Project
 				.modal-footer
-					button(type="button" class="btn btn-secondary" data-dismiss="modal") Close
+					button(type="button" class="btn btn-secondary" data-dismiss="modal") Cancel
 					button#assessmentButton(type="button" class="btn btn-primary") Save
 
 	.modal.fade#assessmentHeadModal(role="dialog" aria-hidden="true")

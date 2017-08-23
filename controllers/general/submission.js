@@ -27,8 +27,10 @@ router.get('/course/:index/submission', function(req, res, next){
 		if (err) return next(err);
 		const submissions = user.courses[index].submissions;
 		submissions.reverse();
+		const currentTime = new Date();
 		return res.render('submission', {user: {name: user.name, username: username, 
-			status: user.status, courseNo: index, submissions: submissions}});
+			status: user.status, courseNo: index, submissions: submissions, 
+			currentTime: currentTime}});
 	});
 });
 
@@ -149,12 +151,14 @@ router.get('/submission/:ID', function(req, res, next) {
 			}
 
 			return res.render('submissionWindow', {user: {name: req.session.name, username: username, 
-			status: 'student', submissionID: ID, files: files, endTime: submission.milliseconds}})
+			status: 'student', submissionID: ID, files: files, endTime: submission.milliseconds, 
+			title: submission.title }})
 		}
 		else {
 			const files = submission.files;
 			return res.render('submissionWindow', {user: {name: req.session.name, username: username, 
-			status: 'faculty', submissionID: ID, files: files, endTime: submission.milliseconds}})
+			status: 'faculty', submissionID: ID, files: files, endTime: submission.milliseconds, 
+			title: submission.title }})
 		}
 	});
 });

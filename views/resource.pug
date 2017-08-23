@@ -6,9 +6,11 @@ block links
   link(href="/public/my_styles/document_style.css", rel='stylesheet')
 
 block content
-  .row.mb-3
-    .col-4.push-md-10
-        button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#resourceModal" href='javascript:;') New Resource
+  h3 Resource
+  if user.status == 'faculty'
+    .row.mb-3
+      .col-4.push-md-10
+          button.btn.btn-primary.btn-lg#new(type="button" data-toggle="modal" data-target="#resourceModal" href='javascript:;') New Resource
   #resources-list.mt-3
     each value, index in user.resources
       .card
@@ -24,8 +26,6 @@ block content
           small
             a.name(href='/user/'+value.username+'/profile') !{value.posterName}<br>
           small !{value.date}
-  a.mt-2(href='/user/'+user.username title="Back")
-    i.fa.fa-arrow-left(aria-hidden="true")
 
   .modal.fade#resourceModal(role="dialog" aria-hidden="true")
     .modal-dialog(role="resource")

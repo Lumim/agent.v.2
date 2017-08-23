@@ -26,6 +26,12 @@ block content
 									td
 										- var id = courses[i].courseID
 										form(action="/preregistrations/"+id, method="post")
-											input(class="btn btn-primary",type="submit", name="register", value="register")
-									br
+											input(class="btn btn-primary", id=("register" + !{i}),type="submit", name="register", value="register")
 						- }
+
+block scripts
+	script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js")
+	//To pass variable from jade template file to below script file
+	script.
+		var courses = "#{courses}"
+	script(src="/public/my_scripts/preregistration_script.js")

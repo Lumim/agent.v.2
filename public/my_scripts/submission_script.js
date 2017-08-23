@@ -1,30 +1,23 @@
 $(document).ready(function(){
-  	$( "#datepicker" ).datepicker({ dateFormat: 'mm/dd/yy'});
-  	$('#timepicker').timepicker({ timeFormat: 'HH:mm:ss' });
-
-	$('.status').hover(function() {
-		const element = $(this);
-		const endTime = element.data('ms');
-		const currentTime = new Date();
-		if (Number(endTime) > Number(currentTime)) {
-			element.html('Running');
-		}
-		else {
-			element.html('Closed');
-		}
-	});
+	$('#two').hide();
+  	$( ".datepicker" ).datepicker({ dateFormat: 'mm/dd/yy'});
+  	$('.timepicker').timepicker({ timeFormat: 'HH:mm:ss' });
+  	$( ".datepicker1" ).datepicker({ dateFormat: 'mm/dd/yy'});
+  	$('.timepicker1').timepicker({ timeFormat: 'HH:mm:ss' });
 
   	$('#create').click(function() {
-  		const title = $('#title').val();
-  		const date = $('#datepicker').val();
-  		const time = $('#timepicker').val();
+  		const title = $('.title').val();
+  		const date = $('.datepicker').val();
+  		const time = $('.timepicker').val();
   		if (date != '' && time != '') {
+  			const ddmmyyy = date.split('/');
+  			const str = ddmmyyy[1]+'/'+ddmmyyy[0]+'/'+ddmmyyy[2]+' '+time;
   			const dateTime = date+' '+time;
 	  		const myDate = new Date(dateTime);
 			const milliseconds = myDate.getTime();
 			const data = {};
 			data.title = title;
-			data.endTime = dateTime;
+			data.endTime = str;
 	        data.milliseconds = milliseconds;
 	        $.ajax({
 	                type: 'POST',
@@ -33,19 +26,20 @@ $(document).ready(function(){
 	                url: postPath+'/submission',                      
 	                success: function(data, status) {
 	                    if (status === 'success') {
+	                    	
 	                        const card = $('<div>', {
 	                            class: 'card',
 	                            "data-id": data.submission._id, 
 	                        }).prependTo('#submission-list');
-
+	                        
 	                        const cardBlock = $('<div>', {
 	                            class: 'card-block',
 	                        }).appendTo(card);
-
+	                        
 	                        const cardTitle = $('<div>', {
 	                            class: 'card-title',
 	                        }).appendTo(cardBlock);
-
+	                        
 	                        $('<p>', {
 	                        	text: data.submission.title,
 	                        }).appendTo(cardTitle);
@@ -54,64 +48,76 @@ $(document).ready(function(){
 	                        	href: '/user/'+username+'/submission/'+data.submission._id,
 	                        	target: '_blank',
 	                        }).appendTo(cardBlock);
-
+	                        
 	                        const img = $('<img>', {
 	                        	src: '/public/image/folder_image.png',
 	                        	width: '50',
 	                        	height: '50',
 	                        }).appendTo(a);
-
+	                        
 	                        $('<br>', {
 	                        }).appendTo(cardBlock);
 
 	                        $('<small>', {
-	                        	class: 'mr-3',
+	                        	class: 'time mr-3',
 	                        	text: data.submission.endTime,
 	                        }).appendTo(cardBlock);
-
-	                        $('<small>', {
-	                        	class: 'mr-3 status',
-	                        	text: Status,
-	                        	"data-ms": data.submission.milliseconds,
-	                        }).appendTo(cardBlock);
-
+	                        
+	                        const currentTime = new Date();
+	                        if(Number(data.submission.milliseconds) > Number(currentTime)) {
+	                        	$('<small>', {
+		                        	class: 'status mr-3',
+		                        	text: 'Open',
+		                        }).appendTo(cardBlock);
+	                        } else {
+	                        	$('<small>', {
+		                        	class: 'status mr-3',
+		                        	text: 'Closed',
+		                        }).appendTo(cardBlock);
+	                        }
+	                        
 	                        const small = $('<small>', {
 	                        }).appendTo(cardBlock);
 
 	                        $('<a>', {
 	                            class: 'mr-3 change',
 	                            href: 'javascript:;',
-	                            text: Change Time,
+	                            text: 'Change Time',
 	                        }).appendTo(small);
-
+	                        
 	                        $('<a>', {
 	                            class: 'mr-3 delete',
 	                            href: 'javascript:;',
-	                            text: Deltete,
+	                            text: 'Delete',
 	                        }).appendTo(small);
-
-							//location.reload();
+	                        
 	                    }
 	                }
 	            });
   		}
 	});
 
-	$('.change').click(function() {
-		const text = $(this).closest('.card-block').find('p').text();
-		const ID = $(this).closest('card').data('ID');
-		$('#fac').html('Change time here');
-		$('#fac').css('color', 'red');
-		$('#title').val(text); 
-		const date = $('#datepicker').val();
-  		const time = $('#timepicker').val();
+  	var ID, element;
+	$('#submission-list').on('click', 'a.change', function() {
+		element = $(this);
+		$('#one').hide();
+		$('#two').show();
+		const text = element.closest('.card-block').find('p').text();
+		ID = element.closest('.card').data('id'); // I spent more than an hour behind this ID
+		$('.title1').html(text); 
+	});
+
+	$('#change').click(function() {
+		const date = $('.datepicker1').val();
+  		const time = $('.timepicker1').val();
   		if (date != '' && time != '') {
+  			const ddmmyyy = date.split('/');
+  			const str = ddmmyyy[1]+'/'+ddmmyyy[0]+'/'+ddmmyyy[2]+' '+time;
   			const dateTime = date+' '+time;
 	  		const myDate = new Date(dateTime);
 			const milliseconds = myDate.getTime();
-			//alert(milliseconds);
 			const data = {};
-			data.endTime = dateTime;
+			data.endTime = str;
 	        data.milliseconds = milliseconds;
 	        data.submissionID = ID;
 	        $.ajax({
@@ -121,15 +127,23 @@ $(document).ready(function(){
 	                url: postPath+'/submission/change',                      
 	                success: function(data, status) {
 	                    if (status === 'success') {
-							location.reload();
+							element.closest('.card-block').find('.time').html(str);
+							const currentTime = new Date();
+							if(Number(milliseconds) > Number(currentTime))
+								element.closest('.card-block').find('.status').html('Open');
+							else
+								element.closest('.card-block').find('.status').html('Closed');	
 	                    }
 	                }
 	            });
   		}
+  		$('#two').hide();
+		$('#one').show();
 	});
 
-	$('.delete').click(function() {
+	$('#submission-list').on('click', 'a.delete', function() {
 		const ID = $(this).closest('.card').data('id');
+		const element = $(this);
 		const data = {};
         data.submissionID = ID;
         $.ajax({
@@ -139,7 +153,7 @@ $(document).ready(function(){
                 url: postPath+'/submission/delete',                      
                 success: function(data, status) {
                     if (status === 'success') {
-						location.reload();
+						element.closest('.card').remove();
                     }
                 }
             });

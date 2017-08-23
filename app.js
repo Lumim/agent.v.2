@@ -45,19 +45,11 @@ require('./controllers/general/marksheetAssessment.js').addRouter(app);
 require('./controllers/general/marksheetStudent.js').addRouter(app);
 require('./controllers/general/download.js').addRouter(app);
 require('./controllers/general/resource.js').addRouter(app);
+require('./controllers/general/submission.js').addRouter(app);
 
 require('./controllers/facultyPage/faculty.js').addRouter(app);
 
-require('./controllers/facultyPage/submission.js').addRouter(app);
-
 require('./controllers/preRegistration/preRegistration.js').addRouter(app);
-
-// require('./controllers/studentPage/student.js').addRouter(app);
-// require('./controllers/studentPage/course.js').addRouter(app);
-// require('./controllers/studentPage/marksheet.js').addRouter(app);
-// require('./controllers/studentPage/profile.js').addRouter(app);
-require('./controllers/studentPage/resource.js').addRouter(app);
-require('./controllers/studentPage/submission.js').addRouter(app);
 
 //Express error handling middleware
 app.use(function(err, req, res, next) {

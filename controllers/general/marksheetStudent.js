@@ -145,19 +145,20 @@ router.post('/course/:index/marksheet/student/delete', onlyFaculty, function(req
 		if(err) return next(err);
 		else{
 			// Pull out the course from student list
-			User.update({email: user.courses[index].marksheet.email[studentNo]},
+			User.findOneAndUpdate({email: user.courses[index].marksheet.email[studentNo]},
 				{$pull: {courses: user.courses[index]._id}}, function(err) {
 					if (err) return next(err);
 					const marksheet = user.courses[index].marksheet;
 					marksheet.name.splice(studentNo, 1);
 					marksheet.ID.splice(studentNo, 1);
-					marksheet.courseStatus.splice(studentNo, 1);
 					marksheet.email.splice(studentNo, 1);
 					marksheet.attendance.splice(studentNo, 1);
 					marksheet.total.splice(studentNo, 1);
 					marksheet.grade.splice(studentNo, 1);
 					marksheet.save(function(err){
-						if(err) return next(err);
+						if(err){
+							return next(err);
+						}
 						async.parallel([
 						function(cb){deleteExam(user.courses[index].marksheet.quiz, studentNo, cb)},
 						function(cb){deleteExam(user.courses[index].marksheet.mid, studentNo, cb)},
@@ -179,7 +180,9 @@ router.post('/course/:index/marksheet/student/delete', onlyFaculty, function(req
 								function(cb){calculationEx(user.courses[index].marksheet.fieldWork, studentNo, req, cb)},
 								function(cb){calculationEx(user.courses[index].marksheet.final, studentNo, req, cb)}],
 								function(err){
-									if(err) return next(err);
+									if(err){
+										return next(err);
+									} 
 									return res.send(null);
 								});
 						});
